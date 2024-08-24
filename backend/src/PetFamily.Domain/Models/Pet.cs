@@ -48,10 +48,21 @@ namespace PetFamily.Domain.Models
 
         private Pet(Guid id) : base(id) { }
 
-        private Pet(Guid id, string name, string species, string description, string breed,
-           string color, string healthInfo, string address, double weight,
-           double height, string phoneNumber, bool isCastrated, DateOnly birthDay, 
-           bool isVaccinated, HelpStatus helpStatus) : base(id)
+        private Pet(Guid id,
+                    string name, 
+                    string species, 
+                    string description, 
+                    string breed,
+                    string color, 
+                    string healthInfo, 
+                    string address, 
+                    double weight,
+                    double height,
+                    string phoneNumber,
+                    bool isCastrated,
+                    DateOnly birthDay, 
+                    bool isVaccinated,
+                    HelpStatus helpStatus) : base(id)
         {
             Name = name;
             Species = species;
@@ -70,10 +81,21 @@ namespace PetFamily.Domain.Models
             DateCteate = DateTime.UtcNow;
         }
 
-        public static Result<Pet> Create(Guid id, string name, string species, string description, string breed,
-           string color, string healthInfo, string address, double weight,
-           double height, string phoneNumber, bool isCastrated, DateOnly birthDay,
-           bool isVaccinated, HelpStatus helpStatus)
+        public static Result<Pet> Create(Guid id, 
+                                         string name, 
+                                         string species, 
+                                         string description, 
+                                         string breed,
+                                         string color, 
+                                         string healthInfo, 
+                                         string address,
+                                         double weight,
+                                         double height, 
+                                         string phoneNumber, 
+                                         bool isCastrated, 
+                                         DateOnly birthDay,
+                                         bool isVaccinated, 
+                                         HelpStatus helpStatus)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -116,10 +138,21 @@ namespace PetFamily.Domain.Models
                 return Result.Failure<Pet>("PhoneNumber can not be empty");
             }
 
-            var pet = new Pet(id, name, species, description, breed,
-                      color, healthInfo, address, weight,
-                      height, phoneNumber, isCastrated, birthDay,
-                      isVaccinated, helpStatus);
+            var pet = new Pet(id,
+                              name,
+                              species,
+                              description,
+                              breed,                      
+                              color, 
+                              healthInfo,
+                              address,
+                              weight,
+                              height,
+                              phoneNumber,
+                              isCastrated, 
+                              birthDay,
+                              isVaccinated, 
+                              helpStatus);
             return pet;
         }
 
