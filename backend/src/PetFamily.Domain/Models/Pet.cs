@@ -64,8 +64,8 @@ namespace PetFamily.Domain.Models
             Height = height;
             PhoneNumber = phoneNumber;
             IsCastrated = isCastrated;
-            IsVaccinated = isVaccinated;
             BirthDay = birthDay;
+            IsVaccinated = isVaccinated;
             HelpStatus = helpStatus;
             DateCteate = DateTime.UtcNow;
         }
@@ -110,10 +110,6 @@ namespace PetFamily.Domain.Models
             if (height <= 0)
             {
                 return Result.Failure<Pet>("Incorrect value for field Height");
-            }
-            if (string.IsNullOrWhiteSpace(address))
-            {
-                return Result.Failure<Pet>("Address can not be empty");
             }
             if (string.IsNullOrWhiteSpace(phoneNumber))
             {
