@@ -12,9 +12,9 @@ namespace PetFamily.Domain.Models
 
         private readonly List<Pet> _pets = new List<Pet>();
 
-        public FullName FullName { get; set; } = null!;
+        public FullName FullName { get; private set; } = null!;
 
-        public string Email { get; set; } = string.Empty;
+        public string Email { get; private set; } = string.Empty;
 
         public string Description { get; private set; } = string.Empty;
 
