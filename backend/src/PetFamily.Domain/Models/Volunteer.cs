@@ -12,9 +12,7 @@ namespace PetFamily.Domain.Models
 
         private readonly List<Pet> _pets = new List<Pet>();
 
-        public string Name { get; private set; } = string.Empty;
-
-        public string FIO { get; set; } = string.Empty;
+        public FullName FullName { get; set; } = null!;
 
         public string Email { get; set; } = string.Empty;
 
@@ -54,16 +52,14 @@ namespace PetFamily.Domain.Models
         private Volunteer(Guid id) : base(id) { }
 
         private Volunteer(Guid id,
-                          string name,
-                          string fio,
+                          FullName fullName,
                           string email,
                           string description,
                           int yearsExperience,
                           string phoneNumber
                           ) : base(id) 
-        {   
-            Name = name;    
-            FIO = fio;
+        {
+            FullName = fullName;
             Email = email;
             Description = description;
             YearsExperience = yearsExperience;
@@ -71,20 +67,19 @@ namespace PetFamily.Domain.Models
         }
 
         public static Result<Volunteer> Create(Guid id,
-                                               string name,
-                                               string fio,
+                                               FullName  fullName,
                                                string email,
                                                string description,
                                                int yearsExperience,
                                                string phoneNumber)
         {
-            if (string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(fullName.FirstName))
             {
-                return Result.Failure<Volunteer>("Name can not be empty");
+                return Result.Failure<Volunteer>("First name can not be empty");
             }
-            if (string.IsNullOrWhiteSpace(fio))
+            if (string.IsNullOrWhiteSpace(fullName.LastName))
             {
-                return Result.Failure<Volunteer>("FIO can not be empty");
+                return Result.Failure<Volunteer>("Last name can not be empty");
             }
             if (string.IsNullOrWhiteSpace(email))
             {
@@ -100,8 +95,7 @@ namespace PetFamily.Domain.Models
             }
 
             var volunteer = new Volunteer(id,
-                                          name,
-                                          fio,
+                                          fullName,
                                           email,
                                           description,
                                           yearsExperience,
