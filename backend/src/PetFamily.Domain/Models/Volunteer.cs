@@ -1,10 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.Models.Base;
 using PetFamily.Domain.Models.Shared;
-
 namespace PetFamily.Domain.Models
 {
-    public class Volunteer : BaseModel
+    public class Volunteer : Shared.Entity<VolunteerId>
     {
         private readonly List<SocialNetwork> _socialNetworks = new List<SocialNetwork>();
 
@@ -49,9 +47,9 @@ namespace PetFamily.Domain.Models
 
         public int PetsCountFoundHome() => _pets.Count(p => p.HelpStatus == Enums.HelpStatus.FoundHome);
 
-        private Volunteer(Guid id) : base(id) { }
+        private Volunteer(VolunteerId id) : base(id) { }
 
-        private Volunteer(Guid id,
+        private Volunteer(VolunteerId id,
                           FullName fullName,
                           string email,
                           string description,
@@ -66,7 +64,7 @@ namespace PetFamily.Domain.Models
             PhoneNumber = phoneNumber;
         }
 
-        public static Result<Volunteer> Create(Guid id,
+        public static Result<Volunteer> Create(VolunteerId id,
                                                FullName  fullName,
                                                string email,
                                                string description,

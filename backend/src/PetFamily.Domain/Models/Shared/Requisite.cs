@@ -1,10 +1,10 @@
 ﻿
 namespace PetFamily.Domain.Models.Shared
 {
-    public class Requisite
+    public record Requisite
     {
-        public string Name { get; private set; } = string.Empty;
+        public string Name { get; } = string.Empty;
 
-        public string Description { get; private set; } = string.Empty;
+        public string Description { get; } = string.Empty;
     }
 }
