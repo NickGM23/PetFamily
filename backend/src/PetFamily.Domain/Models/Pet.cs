@@ -1,11 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Enums;
-using PetFamily.Domain.Models.Base;
 using PetFamily.Domain.Models.Shared;
 
 namespace PetFamily.Domain.Models
 {
-    public class Pet : BaseModel
+    public class Pet : Shared.Entity<PetId>
     {
         private readonly List<Requisite> _requisites = new List<Requisite>();
 
@@ -46,9 +45,9 @@ namespace PetFamily.Domain.Models
 
         public DateTime DateCteate { get; private set; }
 
-        private Pet(Guid id) : base(id) { }
+        private Pet(PetId id) : base(id) { }
 
-        private Pet(Guid id,
+        private Pet(PetId id,
                     string name, 
                     string species, 
                     string description, 
@@ -81,7 +80,7 @@ namespace PetFamily.Domain.Models
             DateCteate = DateTime.UtcNow;
         }
 
-        public static Result<Pet> Create(Guid id, 
+        public static Result<Pet> Create(PetId petId, 
                                          string name, 
                                          string species, 
                                          string description, 
@@ -138,7 +137,7 @@ namespace PetFamily.Domain.Models
                 return Result.Failure<Pet>("PhoneNumber can not be empty");
             }
 
-            var pet = new Pet(id,
+            var pet = new Pet(petId,
                               name,
                               species,
                               description,
