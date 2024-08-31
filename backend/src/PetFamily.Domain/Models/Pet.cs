@@ -1,13 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Enums;
-using PetFamily.Domain.Models.Shared;
+using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Models
 {
     public class Pet : Shared.Entity<PetId>
     {
-        private readonly List<Requisite> _requisites = new List<Requisite>();
-
         public string Name { get; private set; } = string.Empty;
 
         public string Species { get; private set; } = string.Empty;
@@ -36,12 +34,9 @@ namespace PetFamily.Domain.Models
 
         public HelpStatus HelpStatus { get; private set; }
 
-        public IReadOnlyList<Requisite> Requisites => _requisites;
+        public RequisiteList? Requisites { get; private set; } = null!;
 
-        public void AddRequisite(Requisite requisite)
-        {
-            _requisites.Add(requisite);
-        }
+        public PetPhotoList? PetPhotos { get; private set; } = null!;
 
         public DateTime DateCteate { get; private set; }
 
