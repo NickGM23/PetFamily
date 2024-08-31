@@ -10,12 +10,10 @@ namespace PetFamily.Infrastructure
 
         private const string DATABASE = "Database";
 
-        public DbSet<Pet> Pets { get; set; }
         public DbSet<Volunteer> Volunteers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql();
             optionsBuilder.UseSnakeCaseNamingConvention();
             optionsBuilder.UseLoggerFactory(CreateLoggerFactory());
             optionsBuilder.UseNpgsql(configuration.GetConnectionString(DATABASE));

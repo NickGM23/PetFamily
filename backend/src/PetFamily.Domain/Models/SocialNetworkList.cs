@@ -1,15 +1,10 @@
 ﻿
 namespace PetFamily.Domain.Models
 {
-    public class SocialNetworkList
+    public record SocialNetworkList
     {
-        private readonly List<SocialNetwork> _socialNetworks = [];
 
-        public IReadOnlyList<SocialNetwork> SocialNetworks => _socialNetworks;
+        public IReadOnlyList<SocialNetwork> SocialNetworks { get; private set; } = null!;
 
-        public void AddSocialNetwork(SocialNetwork socialNetwork)
-        {
-            _socialNetworks.Add(socialNetwork);
-        }
     }
 }

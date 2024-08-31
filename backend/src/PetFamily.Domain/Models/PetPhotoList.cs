@@ -1,15 +1,10 @@
 ﻿
 namespace PetFamily.Domain.Models
 {
-    public class PetPhotoList
+    public record PetPhotoList
     {
-        private List<PetPhoto> _petPhoto = [];
 
-        public IReadOnlyList<PetPhoto> PetPhotos => _petPhoto.AsReadOnly();
+        public IReadOnlyList<PetPhoto> PetPhotos { get; private set; } = null!;
 
-        public void AddPetPhoto(PetPhoto petPhoto)
-        {
-            _petPhoto.Add(petPhoto);
-        }
     }
 }

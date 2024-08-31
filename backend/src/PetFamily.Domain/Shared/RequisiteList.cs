@@ -1,14 +1,9 @@
 ﻿namespace PetFamily.Domain.Shared
 {
-    public class RequisiteList
+    public record RequisiteList
     {
-        private readonly List<Requisite> _requisites = [];
 
-        public IReadOnlyList<Requisite> Requisites => _requisites;
+        public IReadOnlyList<Requisite> Requisites { get; private set; } = null!;
 
-        public void AddRequisite(Requisite requisite)
-        {
-            _requisites.Add(requisite);
-        }
     }
 }
