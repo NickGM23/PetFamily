@@ -1,5 +1,4 @@
-﻿
-namespace PetFamily.Domain.Models.Shared
+﻿namespace PetFamily.Domain.Shared
 {
     public abstract class Entity<Tid> where Tid : notnull
     {

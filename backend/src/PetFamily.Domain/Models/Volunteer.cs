@@ -1,13 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.Models.Shared;
+using PetFamily.Domain.Shared;
+
 namespace PetFamily.Domain.Models
 {
     public class Volunteer : Shared.Entity<VolunteerId>
     {
-        private readonly List<SocialNetwork> _socialNetworks = new List<SocialNetwork>();
-
-        private readonly List<Requisite> _requisites = new List<Requisite>();
-
         private readonly List<Pet> _pets = new List<Pet>();
 
         public FullName FullName { get; private set; } = null!;
@@ -20,19 +17,9 @@ namespace PetFamily.Domain.Models
 
         public string PhoneNumber { get; private set; } = string.Empty;
 
-        public IReadOnlyList<SocialNetwork> SocialNetworks => _socialNetworks;
+        public SocialNetworkList? SocialNetworks { get; private set; } = null!;
 
-        public void AddSocialNetwork(SocialNetwork socialNetwork)
-        {
-            _socialNetworks.Add(socialNetwork);
-        }
-
-        public IReadOnlyList<Requisite> Requisites => _requisites;
-
-        public void AddRequisite(Requisite requisite)
-        {
-            _requisites.Add(requisite);
-        }
+        public RequisiteList? Requisites { get; private set; } = null!;
 
         public IReadOnlyList<Pet> Pets => _pets;
 
