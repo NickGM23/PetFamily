@@ -62,11 +62,16 @@ namespace PetFamily.Infrastructure.Configurations
                   .IsRequired()
                   .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
 
+                pa.Property(a => a.PostalCode)
+                  .IsRequired();
+
                 pa.Property(a => a.HouseNumber)
                    .IsRequired()
                    .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
 
-
+                pa.Property(a => a.FlatNumber)
+                   .IsRequired(false)
+                   .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
             });
 
             builder.Property(p => p.Weight)
