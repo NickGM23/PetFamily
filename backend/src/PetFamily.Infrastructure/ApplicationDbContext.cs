@@ -12,6 +12,8 @@ namespace PetFamily.Infrastructure
 
         public DbSet<Volunteer> Volunteers { get; set; }
 
+        public DbSet<Species> Species { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSnakeCaseNamingConvention();

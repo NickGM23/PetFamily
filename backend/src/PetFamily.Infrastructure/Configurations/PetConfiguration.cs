@@ -21,17 +21,24 @@ namespace PetFamily.Infrastructure.Configurations
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
 
-            builder.Property(p => p.Species)
-                .IsRequired()
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+            builder.ComplexProperty(p => p.Breed, pb =>
+            {
+                pb.Property(c => c.SpeciesId)
+                   .IsRequired()
+                   .HasConversion(
+                   id => id.Value,
+                   value => SpeciesId.Create(value)
+                   )
+                   .HasColumnName("species_id");
+                pb.Property(c => c.BreedId)
+                 .IsRequired()
+                 .HasColumnName("breed_id");
+
+            });
 
             builder.Property(p => p.Description)
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
-
-            builder.Property(p => p.Breed)
-                .IsRequired()
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
 
             builder.Property(p => p.Color)
                 .IsRequired()
@@ -41,9 +48,26 @@ namespace PetFamily.Infrastructure.Configurations
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
 
-            builder.Property(p => p.Address)
-                .IsRequired()
-                .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
+            builder.ComplexProperty(p => p.Address, pa =>
+            {
+                pa.Property(a => a.Country)
+                  .IsRequired()
+                  .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+
+                pa.Property(a => a.City)
+                  .IsRequired()
+                  .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+
+                pa.Property(a => a.Street)
+                  .IsRequired()
+                  .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+
+                pa.Property(a => a.HouseNumber)
+                   .IsRequired()
+                   .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+
+
+            });
 
             builder.Property(p => p.Weight)
                 .IsRequired();

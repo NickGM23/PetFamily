@@ -8,17 +8,15 @@ namespace PetFamily.Domain.Models
     {
         public string Name { get; private set; } = string.Empty;
 
-        public string Species { get; private set; } = string.Empty;
+        public PetBreed Breed { get; private set; } = null!;
 
         public string Description { get; private set; } = string.Empty;
-
-        public string Breed { get; private set; } = string.Empty;
 
         public string Color { get; private set; } = string.Empty;
 
         public string HealthInfo { get; private set; } = string.Empty;
 
-        public string Address { get; private set; } = string.Empty;
+        public Address Address { get; private set; } = null!;
 
         public double Weight { get; private set; }
 
@@ -44,12 +42,11 @@ namespace PetFamily.Domain.Models
 
         private Pet(PetId id,
                     string name, 
-                    string species, 
+                    PetBreed breed, 
                     string description, 
-                    string breed,
                     string color, 
                     string healthInfo, 
-                    string address, 
+                    Address address, 
                     double weight,
                     double height,
                     string phoneNumber,
@@ -59,9 +56,8 @@ namespace PetFamily.Domain.Models
                     HelpStatus helpStatus) : base(id)
         {
             Name = name;
-            Species = species;
-            Description = description;
             Breed = breed;
+            Description = description;
             Color = color;
             HealthInfo = healthInfo;
             Address = address;
@@ -77,12 +73,11 @@ namespace PetFamily.Domain.Models
 
         public static Result<Pet> Create(PetId petId, 
                                          string name, 
-                                         string species, 
+                                         PetBreed breed,
                                          string description, 
-                                         string breed,
                                          string color, 
-                                         string healthInfo, 
-                                         string address,
+                                         string healthInfo,
+                                         Address address,
                                          double weight,
                                          double height, 
                                          string phoneNumber, 
@@ -95,17 +90,9 @@ namespace PetFamily.Domain.Models
             {
                 return Result.Failure<Pet>("Name can not be empty");
             }
-            if (string.IsNullOrWhiteSpace(species))
-            {
-                return Result.Failure<Pet>("Species can not be empty");
-            }
             if (string.IsNullOrWhiteSpace(description))
             {
                 return Result.Failure<Pet>("Description can not be empty");
-            }
-            if (string.IsNullOrWhiteSpace(breed))
-            {
-                return Result.Failure<Pet>("Breed can not be empty");
             }
             if (string.IsNullOrWhiteSpace(color))
             {
@@ -114,10 +101,6 @@ namespace PetFamily.Domain.Models
             if (string.IsNullOrWhiteSpace(healthInfo))
             {
                 return Result.Failure<Pet>("HealthInfo can not be empty");
-            }
-            if (string.IsNullOrWhiteSpace(address))
-            {
-                return Result.Failure<Pet>("Address can not be empty");
             }
             if (weight <= 0)
             {
@@ -134,9 +117,8 @@ namespace PetFamily.Domain.Models
 
             var pet = new Pet(petId,
                               name,
-                              species,
+                              breed,
                               description,
-                              breed,                      
                               color, 
                               healthInfo,
                               address,
