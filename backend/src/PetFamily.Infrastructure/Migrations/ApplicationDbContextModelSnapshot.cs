@@ -252,7 +252,7 @@ namespace PetFamily.Infrastructure.Migrations
                                 .HasColumnType("character varying(100)")
                                 .HasColumnName("full_name_last_name");
 
-                            b1.Property<string>("SecondName")
+                            b1.Property<string>("Patronymic")
                                 .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")

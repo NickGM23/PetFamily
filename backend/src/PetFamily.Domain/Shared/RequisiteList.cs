@@ -2,8 +2,11 @@
 {
     public record RequisiteList
     {
+        public IReadOnlyList<Requisite> Requisites { get; } = null!;
 
-        public IReadOnlyList<Requisite> Requisites { get; private set; } = null!;
-
+        public RequisiteList(IEnumerable<Requisite> requisites)
+        {
+            Requisites = requisites.ToList();
+        }
     }
 }

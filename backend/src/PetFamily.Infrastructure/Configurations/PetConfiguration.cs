@@ -25,15 +25,12 @@ namespace PetFamily.Infrastructure.Configurations
             {
                 pb.Property(c => c.SpeciesId)
                    .IsRequired()
-                   .HasConversion(
-                   id => id.Value,
-                   value => SpeciesId.Create(value)
-                   )
+                   .HasConversion(id => id.Value,
+                   value => SpeciesId.Create(value))
                    .HasColumnName("species_id");
                 pb.Property(c => c.BreedId)
                  .IsRequired()
                  .HasColumnName("breed_id");
-
             });
 
             builder.Property(p => p.Description)
@@ -52,26 +49,32 @@ namespace PetFamily.Infrastructure.Configurations
             {
                 pa.Property(a => a.Country)
                   .IsRequired()
-                  .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+                  .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
+                  .HasColumnName("country");
 
                 pa.Property(a => a.City)
                   .IsRequired()
-                  .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+                  .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
+                  .HasColumnName("city"); 
 
                 pa.Property(a => a.Street)
                   .IsRequired()
-                  .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+                  .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
+                  .HasColumnName("street");
 
                 pa.Property(a => a.PostalCode)
-                  .IsRequired();
+                  .IsRequired()
+                  .HasColumnName("postal_code");
 
                 pa.Property(a => a.HouseNumber)
                    .IsRequired()
-                   .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+                   .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
+                   .HasColumnName("house_number");
 
                 pa.Property(a => a.FlatNumber)
                    .IsRequired(false)
-                   .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+                   .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
+                   .HasColumnName("flat_number");
             });
 
             builder.Property(p => p.Weight)
@@ -110,7 +113,6 @@ namespace PetFamily.Infrastructure.Configurations
                     prb.Property(r => r.Description)
                     .IsRequired()
                     .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
-
                 });
             });
 

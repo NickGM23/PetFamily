@@ -22,7 +22,7 @@ namespace PetFamily.Infrastructure.Configurations
                 nameBuilder.Property(fn => fn.FirstName)
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
-                nameBuilder.Property(fn => fn.SecondName)
+                nameBuilder.Property(fn => fn.Patronymic)
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
                 nameBuilder.Property(fn => fn.LastName)
