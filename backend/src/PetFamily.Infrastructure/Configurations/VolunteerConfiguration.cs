@@ -21,13 +21,16 @@ namespace PetFamily.Infrastructure.Configurations
             {
                 nameBuilder.Property(fn => fn.FirstName)
                 .IsRequired()
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
+                .HasColumnName("first_name"); 
                 nameBuilder.Property(fn => fn.Patronymic)
                 .IsRequired()
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
+                .HasColumnName("patronymic"); 
                 nameBuilder.Property(fn => fn.LastName)
                 .IsRequired()
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
+                .HasColumnName("last_name"); ;
             });
 
             builder.Property(v => v.Email)
