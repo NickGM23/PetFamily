@@ -7,7 +7,7 @@ namespace PetFamily.Domain.Models
         {
         }
 
-        public IReadOnlyList<SocialNetwork> SocialNetworks { get; } = null!;
+        public IReadOnlyList<SocialNetwork> SocialNetworks { get; }
 
         public SocialNetworkList(IEnumerable<SocialNetwork> socialNetworks)
         {

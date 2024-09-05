@@ -42,8 +42,8 @@ namespace PetFamily.Domain.Models
                           string description,
                           int yearsExperience,
                           string phoneNumber,
-                          SocialNetworkList? socialNetworks,
-                          RequisiteList? requisites                          
+                          SocialNetworkList socialNetworks,
+                          RequisiteList requisites                          
                           ) : base(id) 
         {
             FullName = fullName;
@@ -56,13 +56,13 @@ namespace PetFamily.Domain.Models
         }
 
         public static Result<Volunteer, Error> Create(VolunteerId id,
-                                               FullName  fullName,
-                                               string email,
-                                               string description,
-                                               int yearsExperience,
-                                               string phoneNumber,
-                                               SocialNetworkList? socialNetworks = null,
-                                               RequisiteList? requisites = null)
+                                                      FullName  fullName,
+                                                      string email,
+                                                      string description,
+                                                      int yearsExperience,
+                                                      string phoneNumber,
+                                                      SocialNetworkList socialNetworks,
+                                                      RequisiteList requisites)
         {
             if (string.IsNullOrWhiteSpace(email))
             {

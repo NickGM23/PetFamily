@@ -6,7 +6,7 @@
         {
         }
 
-        public IReadOnlyList<Requisite> Requisites { get; } = null!;
+        public IReadOnlyList<Requisite> Requisites { get; }
 
         public RequisiteList(IEnumerable<Requisite> requisites)
         {
