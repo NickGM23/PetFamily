@@ -41,7 +41,9 @@ namespace PetFamily.Domain.Models
                           string email,
                           string description,
                           int yearsExperience,
-                          string phoneNumber
+                          string phoneNumber,
+                          SocialNetworkList socialNetworks,
+                          RequisiteList requisites                          
                           ) : base(id) 
         {
             FullName = fullName;
@@ -49,34 +51,30 @@ namespace PetFamily.Domain.Models
             Description = description;
             YearsExperience = yearsExperience;
             PhoneNumber = phoneNumber;
+            SocialNetworks = socialNetworks;
+            Requisites = requisites;
         }
 
-        public static Result<Volunteer> Create(VolunteerId id,
-                                               FullName  fullName,
-                                               string email,
-                                               string description,
-                                               int yearsExperience,
-                                               string phoneNumber)
+        public static Result<Volunteer, Error> Create(VolunteerId id,
+                                                      FullName  fullName,
+                                                      string email,
+                                                      string description,
+                                                      int yearsExperience,
+                                                      string phoneNumber,
+                                                      SocialNetworkList socialNetworks,
+                                                      RequisiteList requisites)
         {
-            if (string.IsNullOrWhiteSpace(fullName.FirstName))
-            {
-                return Result.Failure<Volunteer>("First name can not be empty");
-            }
-            if (string.IsNullOrWhiteSpace(fullName.LastName))
-            {
-                return Result.Failure<Volunteer>("Last name can not be empty");
-            }
             if (string.IsNullOrWhiteSpace(email))
             {
-                return Result.Failure<Volunteer>("Email can not be empty");
+                return Errors.General.ValueIsInvalid("Email");
             }
             if (string.IsNullOrWhiteSpace(description))
             {
-                return Result.Failure<Volunteer>("Description can not be empty");
+                return Errors.General.ValueIsInvalid("Description");
             }
             if (string.IsNullOrWhiteSpace(phoneNumber))
             {
-                return Result.Failure<Volunteer>("PhoneNumber can not be empty");
+                return Errors.General.ValueIsInvalid("PhoneNumber");
             }
 
             var volunteer = new Volunteer(id,
@@ -84,7 +82,9 @@ namespace PetFamily.Domain.Models
                                           email,
                                           description,
                                           yearsExperience,
-                                          phoneNumber);
+                                          phoneNumber,
+                                          socialNetworks,
+                                          requisites);
             return volunteer;
         }
 

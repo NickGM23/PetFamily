@@ -132,34 +132,34 @@ namespace PetFamily.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
-                                .HasColumnName("address_city");
+                                .HasColumnName("city");
 
                             b1.Property<string>("Country")
                                 .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
-                                .HasColumnName("address_country");
+                                .HasColumnName("country");
 
                             b1.Property<string>("FlatNumber")
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
-                                .HasColumnName("address_flat_number");
+                                .HasColumnName("flat_number");
 
                             b1.Property<string>("HouseNumber")
                                 .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
-                                .HasColumnName("address_house_number");
+                                .HasColumnName("house_number");
 
                             b1.Property<int>("PostalCode")
                                 .HasColumnType("integer")
-                                .HasColumnName("address_postal_code");
+                                .HasColumnName("postal_code");
 
                             b1.Property<string>("Street")
                                 .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
-                                .HasColumnName("address_street");
+                                .HasColumnName("street");
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("Breed", "PetFamily.Domain.Models.Pet.Breed#PetBreed", b1 =>
@@ -244,19 +244,19 @@ namespace PetFamily.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
-                                .HasColumnName("full_name_first_name");
+                                .HasColumnName("first_name");
 
                             b1.Property<string>("LastName")
                                 .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
-                                .HasColumnName("full_name_last_name");
+                                .HasColumnName("last_name");
 
-                            b1.Property<string>("SecondName")
+                            b1.Property<string>("Patronymic")
                                 .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)")
-                                .HasColumnName("full_name_second_name");
+                                .HasColumnName("patronymic");
                         });
 
                     b.HasKey("Id")

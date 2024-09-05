@@ -1,5 +1,4 @@
 ﻿
-
 namespace PetFamily.Domain.Models
 {
     public record VolunteerId
@@ -16,5 +15,7 @@ namespace PetFamily.Domain.Models
         public static VolunteerId Empty() => new(Guid.Empty);
 
         public static VolunteerId Create(Guid id) => new(id);
+
+        public static implicit operator Guid(VolunteerId id) => id.Value;
     }
 }
