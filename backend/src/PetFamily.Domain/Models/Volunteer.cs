@@ -5,13 +5,13 @@ namespace PetFamily.Domain.Models
 {
     public class Volunteer : Shared.Entity<VolunteerId>
     {
-        private readonly List<Pet> _pets = new List<Pet>();
+        private readonly List<Pet> _pets = [];
 
         public FullName FullName { get; private set; } = null!;
 
-        public string Email { get; private set; } = string.Empty;
+        public Email Email { get; private set; } = default!;
 
-        public string Description { get; private set; } = string.Empty;
+        public Description Description { get; private set; } = default!;
 
         public int YearsExperience { get; private set; }
 
@@ -23,11 +23,6 @@ namespace PetFamily.Domain.Models
 
         public IReadOnlyList<Pet> Pets => _pets;
 
-        public void AddPet(Pet pet)
-        {
-            _pets.Add(pet);
-        }
-
         public int PetsCountNeedHelp() => _pets.Count(p => p.HelpStatus == Enums.HelpStatus.NeedHelp);
 
         public int PetsCountLookingFoHome() => _pets.Count(p => p.HelpStatus == Enums.HelpStatus.LookingFoHome);
@@ -38,8 +33,8 @@ namespace PetFamily.Domain.Models
 
         private Volunteer(VolunteerId id,
                           FullName fullName,
-                          string email,
-                          string description,
+                          Email email,
+                          Description description,
                           int yearsExperience,
                           string phoneNumber,
                           SocialNetworkList socialNetworks,
@@ -57,22 +52,14 @@ namespace PetFamily.Domain.Models
 
         public static Result<Volunteer, Error> Create(VolunteerId id,
                                                       FullName  fullName,
-                                                      string email,
-                                                      string description,
+                                                      Email email,
+                                                      Description description,
                                                       int yearsExperience,
                                                       string phoneNumber,
                                                       SocialNetworkList socialNetworks,
                                                       RequisiteList requisites)
         {
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                return Errors.General.ValueIsInvalid("Email");
-            }
-            if (string.IsNullOrWhiteSpace(description))
-            {
-                return Errors.General.ValueIsInvalid("Description");
-            }
-            if (string.IsNullOrWhiteSpace(phoneNumber))
+            if (string.IsNullOrWhiteSpace(phoneNumber) || phoneNumber.Length > Constants.MAX_PHONENUMBER_LENGHT)
             {
                 return Errors.General.ValueIsInvalid("PhoneNumber");
             }

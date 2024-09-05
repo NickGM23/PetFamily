@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Models
 {
@@ -6,36 +7,32 @@ namespace PetFamily.Domain.Models
     {
         public string Name { get; private set; } = string.Empty;
 
-        public string Description { get; private set; } = string.Empty;
+        public Description Description { get; private set; } = default!;
 
         private Breed(BreedId id) : base(id)
         {
         }
 
-        private Breed(BreedId id,
-                      string name,
-                      string description) : base(id)
+        private Breed(BreedId id, string name, Description description)
+            : base(id)
         {
             Name = name;
             Description = description;
         }
 
-        public static Result<Breed> Create(BreedId breedId,
-                                          string name,
-                                          string description)
+        public static Result<Breed, Error> Create(
+            BreedId breedId,
+            string name,
+            Description description)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                return Result.Failure<Breed>("Name can not be empty");
-            }
-            if (string.IsNullOrWhiteSpace(description))
-            {
-                return Result.Failure<Breed>("Description can not be empty");
+                return Errors.General.ValueIsInvalid("Name");
             }
 
             var breed = new Breed(breedId,
-                  name,
-                  description);
+                name,
+                description);
             return breed;
         }
     }
