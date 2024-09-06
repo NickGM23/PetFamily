@@ -8,15 +8,15 @@ namespace PetFamily.Domain.Models
     {
         public string Name { get; private set; } = string.Empty;
 
-        public PetBreed Breed { get; private set; } = null!;
+        public PetBreed Breed { get; private set; } = default!;
 
-        public string Description { get; private set; } = string.Empty;
+        public Description Description { get; private set; } = default!;
 
         public string Color { get; private set; } = string.Empty;
 
         public string HealthInfo { get; private set; } = string.Empty;
 
-        public Address Address { get; private set; } = null!;
+        public Address Address { get; private set; } = default!;
 
         public double Weight { get; private set; }
 
@@ -42,8 +42,8 @@ namespace PetFamily.Domain.Models
 
         private Pet(PetId id,
                     string name, 
-                    PetBreed breed, 
-                    string description, 
+                    PetBreed breed,
+                    Description description, 
                     string color, 
                     string healthInfo, 
                     Address address, 
@@ -71,10 +71,10 @@ namespace PetFamily.Domain.Models
             DateCteate = DateTime.UtcNow;
         }
 
-        public static Result<Pet> Create(PetId petId, 
+        public static Result<Pet, Error> Create(PetId petId, 
                                          string name, 
                                          PetBreed breed,
-                                         string description, 
+                                         Description description, 
                                          string color, 
                                          string healthInfo,
                                          Address address,
@@ -88,31 +88,27 @@ namespace PetFamily.Domain.Models
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                return Result.Failure<Pet>("Name can not be empty");
-            }
-            if (string.IsNullOrWhiteSpace(description))
-            {
-                return Result.Failure<Pet>("Description can not be empty");
+                return Errors.General.ValueIsInvalid("Name");
             }
             if (string.IsNullOrWhiteSpace(color))
             {
-                return Result.Failure<Pet>("Color can not be empty");
+                return Errors.General.ValueIsInvalid("Color");
             }
             if (string.IsNullOrWhiteSpace(healthInfo))
             {
-                return Result.Failure<Pet>("HealthInfo can not be empty");
+                return Errors.General.ValueIsInvalid("HealthInfo");
             }
             if (weight <= 0)
             {
-                return Result.Failure<Pet>("Incorrect value for field Weight");
+                return Errors.General.ValueIsInvalid("Weight");
             }
             if (height <= 0)
             {
-                return Result.Failure<Pet>("Incorrect value for field Height");
+                return Errors.General.ValueIsInvalid("Height");
             }
-            if (string.IsNullOrWhiteSpace(phoneNumber))
+            if (string.IsNullOrWhiteSpace(phoneNumber) || phoneNumber.Length > Constants.MAX_PHONENUMBER_LENGHT)
             {
-                return Result.Failure<Pet>("PhoneNumber can not be empty");
+                return Errors.General.ValueIsInvalid("PhoneNumber");
             }
 
             var pet = new Pet(petId,

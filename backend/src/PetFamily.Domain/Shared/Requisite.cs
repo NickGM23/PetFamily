@@ -9,9 +9,9 @@ namespace PetFamily.Domain.Shared
 
         }
 
-        public string Name { get; } = string.Empty;
+        public string Name { get; }
 
-        public string Description { get; } = string.Empty;
+        public string Description { get; }
 
         private Requisite(string name, string description)
         {

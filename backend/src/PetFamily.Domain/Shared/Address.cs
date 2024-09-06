@@ -31,7 +31,7 @@ namespace PetFamily.Domain.Shared
             FlatNumber = flatNumber;
         }
 
-        public static Result<Address> Create(string country,
+        public static Result<Address, Error> Create(string country,
                                              string city,
                                              string street,
                                              int postalCode,
@@ -40,23 +40,23 @@ namespace PetFamily.Domain.Shared
         {
             if (string.IsNullOrEmpty(country))
             {
-                return Result.Failure<Address>("Country can not be empty");
+                return Errors.General.ValueIsInvalid("Country");
             }
             if (string.IsNullOrEmpty(city))
             {
-                return Result.Failure<Address>("City can not be empty");
+                return Errors.General.ValueIsInvalid("City");
             }
             if (string.IsNullOrEmpty(street))
             {
-                return Result.Failure<Address>("Street can not be empty");
+                return Errors.General.ValueIsInvalid("Street");
             }
             if (postalCode <= 0)
             {
-                return Result.Failure<Address>("Incorrect value for field PostalCode");
+                return Errors.General.ValueIsInvalid("PostalCode");
             }
             if (string.IsNullOrEmpty(houseNumber))
             {
-                return Result.Failure<Address>("HouseNumber can not be empty");
+                return Errors.General.ValueIsInvalid("HouseNumber");
             }
             var address = new Address(country,
                                       city,

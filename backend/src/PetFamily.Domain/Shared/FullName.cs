@@ -4,9 +4,9 @@ namespace PetFamily.Domain.Shared
 {
     public record FullName
     {
-        public string LastName { get; } = string.Empty;
+        public string LastName { get; }
 
-        public string FirstName { get; } = string.Empty;
+        public string FirstName { get; }
 
         public string? Patronymic { get; }
         

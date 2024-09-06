@@ -15,5 +15,7 @@ namespace PetFamily.Domain.Models
         public static BreedId Empty() => new(Guid.Empty);
 
         public static BreedId Create(Guid id) => new(id);
+
+        public static implicit operator Guid(BreedId id) => id.Value;
     }
 }
