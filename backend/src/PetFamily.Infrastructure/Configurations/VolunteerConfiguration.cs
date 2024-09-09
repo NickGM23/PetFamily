@@ -33,20 +33,32 @@ namespace PetFamily.Infrastructure.Configurations
                 .HasColumnName("last_name"); ;
             });
 
-            builder.Property(v => v.Email)
-                .IsRequired()
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+            builder.ComplexProperty(v => v.Email, vb =>
+            {
+                vb.Property(vp => vp.Value)
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
+                    .HasColumnName("email");
+            });
 
-            builder.Property(v => v.Description)
-                .IsRequired()
-                .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
+            builder.ComplexProperty(v => v.Description, vb =>
+            {
+                vb.Property(vp => vp.Value)
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH)
+                    .HasColumnName("description");
+            });
 
             builder.Property(v => v.YearsExperience)
                 .IsRequired();
 
-            builder.Property(v => v.PhoneNumber)
-                .IsRequired()
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+            builder.ComplexProperty(v => v.PhoneNumber, vb =>
+            {
+                vb.Property(vp => vp.Value)
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_PHONENUMBER_LENGHT)
+                    .HasColumnName("phone_number");
+            });
 
             builder.OwnsOne(v => v.SocialNetworks, vb =>
             {
@@ -83,6 +95,8 @@ namespace PetFamily.Infrastructure.Configurations
             builder.HasMany(v => v.Pets)
                 .WithOne()
                 .HasForeignKey("volunteer_id");
+
+            builder.Navigation(v => v.Pets).AutoInclude();
         }
     }
 }

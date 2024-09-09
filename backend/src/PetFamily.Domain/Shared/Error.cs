@@ -1,11 +1,17 @@
 ﻿
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+
 namespace PetFamily.Domain.Shared
 {
     public record Error
     {
+        public const string SEPARATOR = "||";
+
         public string Code { get; }
         public string Message { get; }
-        private ErrorType Type { get; }
+        [JsonIgnore]
+        public ErrorType Type { get; }
         public string TypeError => Enum.GetName(typeof(ErrorType), Type)?.ToLower() ?? string.Empty;
         public string? InvalidField { get; }
 
@@ -28,6 +34,30 @@ namespace PetFamily.Domain.Shared
 
         public static Error Conflict(string code, string message) =>
            new Error(code, message, ErrorType.Conflict);
+
+        public string Serialize()
+        {
+            return string.Join(SEPARATOR, Code, Message, Type, InvalidField);
+        }
+
+        public static Error Deserialize(string serialized)
+        {
+            var parts = serialized.Split(SEPARATOR);
+
+            if (parts.Length < 3)
+            {
+                throw new ArgumentException("Invalid serialized format");
+            }
+
+            if (Enum.TryParse<ErrorType>(parts[2], out var type) == false)
+            {
+                throw new ArgumentException("Invalid serialized format");
+            }
+
+            return new Error(parts[0], parts[1], type);
+        }
+
+        public ErrorList ToErrorList() => new([this]);
 
     }
 

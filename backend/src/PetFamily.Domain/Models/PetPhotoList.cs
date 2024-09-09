@@ -3,12 +3,16 @@ namespace PetFamily.Domain.Models
 {
     public record PetPhotoList
     {
+        private PetPhotoList()
+        {
+            
+        }
 
         public IReadOnlyList<PetPhoto> PetPhotos { get; }
 
-        public PetPhotoList(IEnumerable<PetPhoto> petPhotso)
+        public PetPhotoList(IEnumerable<PetPhoto> petPhotos)
         {
-            PetPhotos = petPhotso.ToList();
+            PetPhotos = petPhotos.ToList();
         }
 
     }

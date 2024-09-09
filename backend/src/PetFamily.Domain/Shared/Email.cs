@@ -17,7 +17,7 @@ namespace PetFamily.Domain.Shared
         {
             if (!Regex.IsMatch(value, @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"))
             {
-                return Errors.Volunteer.WrongEmail(value);
+                return Errors.General.WrongEmail(value);
             }
 
             return new Email(value);

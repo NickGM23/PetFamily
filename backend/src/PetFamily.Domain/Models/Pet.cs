@@ -22,7 +22,7 @@ namespace PetFamily.Domain.Models
 
         public double Height { get; private set; }
 
-        public string PhoneNumber { get; private set; } = string.Empty;
+        public PhoneNumber PhoneNumber { get; private set; } = default!;
 
         public bool IsCastrated { get; private set; } 
 
@@ -49,7 +49,7 @@ namespace PetFamily.Domain.Models
                     Address address, 
                     double weight,
                     double height,
-                    string phoneNumber,
+                    PhoneNumber phoneNumber,
                     bool isCastrated,
                     DateOnly birthDay, 
                     bool isVaccinated,
@@ -79,8 +79,8 @@ namespace PetFamily.Domain.Models
                                          string healthInfo,
                                          Address address,
                                          double weight,
-                                         double height, 
-                                         string phoneNumber, 
+                                         double height,
+                                         PhoneNumber phoneNumber, 
                                          bool isCastrated, 
                                          DateOnly birthDay,
                                          bool isVaccinated, 
@@ -105,10 +105,6 @@ namespace PetFamily.Domain.Models
             if (height <= 0)
             {
                 return Errors.General.ValueIsInvalid("Height");
-            }
-            if (string.IsNullOrWhiteSpace(phoneNumber) || phoneNumber.Length > Constants.MAX_PHONENUMBER_LENGHT)
-            {
-                return Errors.General.ValueIsInvalid("PhoneNumber");
             }
 
             var pet = new Pet(petId,

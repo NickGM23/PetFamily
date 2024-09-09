@@ -10,6 +10,10 @@ namespace PetFamily.Domain.Shared
                 var label = name == null ? " " : $" '{name}' ";
                 return Error.Validation("value.is.invalid", $"value{label}is invalid.");
             }
+            public static Error ValueIsInvalid(string value, string invalidFieldName)
+            {
+                return Error.Validation("value.is.invalid", $"value '{value}' is invalid.", invalidFieldName);
+            }
 
             public static Error NotFound(Guid? id = null)
             {
@@ -22,19 +26,23 @@ namespace PetFamily.Domain.Shared
                 var label = name == null ? " " : $" '{name}' ";
                 return Error.Validation("length.is.invalid", $"invalid{label}length.");
             }
-        }
 
-        public static class Volunteer
-        {
-            public static Error AlreadyExist()
+            public static Error AlreadyExist(string? name = null)
             {
-                return Error.Validation("record.already.exist", $"Volunteer already exist");
+                var label = name == null ? " " : $" '{name}' ";
+                return Error.Validation("record.already.exist", $"record{label}already exist");
             }
 
             public static Error WrongEmail(string? email = null)
             {
                 var label = email == null ? " " : $" '{email}' ";
-                return Error.Validation("email.is.invalid", $"Email{label}is invalid.");
+                return Error.Validation("email.is.invalid", $"email{label}is invalid.");
+            }
+
+            public static Error WrongPhoneNumber(string? phoneNumber = null)
+            {
+                var label = phoneNumber == null ? " " : $" '{phoneNumber}' ";
+                return Error.Validation("phone.is.invalid", $"phone number{label}is invalid.");
             }
         }
     }

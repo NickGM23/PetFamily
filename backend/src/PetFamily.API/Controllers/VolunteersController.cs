@@ -1,5 +1,5 @@
-﻿using CSharpFunctionalExtensions;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using PetFamily.API.Extensions;
 using PetFamily.Application.Volunteers.CreateVolunteer;
 
 namespace PetFamily.API.Controllers
@@ -18,12 +18,14 @@ namespace PetFamily.API.Controllers
         public async Task<ActionResult<Guid>> Create(
             [FromServices] CreateVolunteerHandler createVolunteerHandler,
             [FromBody] CreateVolunteerRequest createVolunteerRequest,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
             var result = await createVolunteerHandler.Handle(createVolunteerRequest, cancellationToken);
+            
             if (result.IsFailure)
-                return BadRequest(result.Error);
-            return Ok(result.Value);
+                return result.Error.ToResponse();
+
+            return new ObjectResult(result.Value) { StatusCode = 201};
         }
     }
 }
