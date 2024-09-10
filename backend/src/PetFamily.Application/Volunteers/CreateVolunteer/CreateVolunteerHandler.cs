@@ -1,7 +1,6 @@
 ﻿
 using CSharpFunctionalExtensions;
 using FluentValidation;
-using PetFamily.Application.Extensions;
 using PetFamily.Domain.Models;
 using PetFamily.Domain.Shared;
 
@@ -21,13 +20,6 @@ namespace PetFamily.Application.Volunteers.CreateVolunteer
         public async Task<Result<Guid, ErrorList>>  Handle(CreateVolunteerRequest request,
             CancellationToken cancellationToken = default)
         {
-
-            var validationResult = await _validator.ValidateAsync(request, cancellationToken);
-
-            if (validationResult.IsValid == false)
-            {
-                return validationResult.ToList();
-            }
 
             var volunteerId = VolunteerId.NewVolunteerId();
 
