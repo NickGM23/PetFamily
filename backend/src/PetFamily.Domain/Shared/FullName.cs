@@ -25,7 +25,7 @@ namespace PetFamily.Domain.Shared
             }
             if (string.IsNullOrWhiteSpace(firstName))
             {
-                return Errors.General.ValueIsInvalid("FirstName"); ;
+                return Errors.General.ValueIsInvalid("FirstName");
             }
 
             return new FullName(lastName, firstName, patronymic);

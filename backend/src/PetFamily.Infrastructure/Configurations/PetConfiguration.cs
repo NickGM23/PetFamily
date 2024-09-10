@@ -33,9 +33,13 @@ namespace PetFamily.Infrastructure.Configurations
                  .HasColumnName("breed_id");
             });
 
-            builder.Property(p => p.Description)
-                .IsRequired()
-                .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
+            builder.ComplexProperty(p => p.Description, pb =>
+            {
+                pb.Property(pp => pp.Value)
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH)
+                    .HasColumnName("description");
+            });
 
             builder.Property(p => p.Color)
                 .IsRequired()
@@ -83,9 +87,13 @@ namespace PetFamily.Infrastructure.Configurations
             builder.Property(p => p.Height)
                 .IsRequired();
 
-            builder.Property(p => p.PhoneNumber)
-                .IsRequired()
-                .HasMaxLength(Constants.MAX_PHONENUMBER_LENGHT);
+            builder.ComplexProperty(v => v.PhoneNumber, vb =>
+            {
+                vb.Property(vp => vp.Value)
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_PHONENUMBER_LENGHT)
+                    .HasColumnName("phone_number");
+            });
 
             builder.Property(p => p.IsCastrated)
                 .IsRequired();

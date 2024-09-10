@@ -15,7 +15,7 @@ namespace PetFamily.Domain.Models
 
         public int YearsExperience { get; private set; }
 
-        public string PhoneNumber { get; private set; } = string.Empty;
+        public PhoneNumber PhoneNumber { get; private set; } = default!;
 
         public SocialNetworkList? SocialNetworks { get; private set; } = null!;
 
@@ -36,7 +36,7 @@ namespace PetFamily.Domain.Models
                           Email email,
                           Description description,
                           int yearsExperience,
-                          string phoneNumber,
+                          PhoneNumber phoneNumber,
                           SocialNetworkList socialNetworks,
                           RequisiteList requisites                          
                           ) : base(id) 
@@ -55,15 +55,10 @@ namespace PetFamily.Domain.Models
                                                       Email email,
                                                       Description description,
                                                       int yearsExperience,
-                                                      string phoneNumber,
+                                                      PhoneNumber phoneNumber,
                                                       SocialNetworkList socialNetworks,
                                                       RequisiteList requisites)
         {
-            if (string.IsNullOrWhiteSpace(phoneNumber) || phoneNumber.Length > Constants.MAX_PHONENUMBER_LENGHT)
-            {
-                return Errors.General.ValueIsInvalid("PhoneNumber");
-            }
-
             var volunteer = new Volunteer(id,
                                           fullName,
                                           email,
@@ -74,6 +69,5 @@ namespace PetFamily.Domain.Models
                                           requisites);
             return volunteer;
         }
-
     }
 }

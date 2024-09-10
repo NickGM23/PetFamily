@@ -4,8 +4,8 @@ using PetFamily.Domain.Shared;
 namespace PetFamily.Application.Volunteers.CreateVolunteer
 {
     public record CreateVolunteerRequest(FullNameDTO FullName,
-                                         Email Email,
-                                         Description Description,
+                                         string Email,
+                                         string Description,
                                          int YearsOfExperience,
                                          string PhoneNumber,
                                          ICollection<SocialNetworkDTO> SocialNetworksDTO,
