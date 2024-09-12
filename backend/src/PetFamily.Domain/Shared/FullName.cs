@@ -21,11 +21,11 @@ namespace PetFamily.Domain.Shared
         {
             if (string.IsNullOrWhiteSpace(lastName))
             {
-                return Errors.General.ValueIsInvalid("LastName");
+                return Errors.General.ValueIsInvalid(lastName, "LastName");
             }
             if (string.IsNullOrWhiteSpace(firstName))
             {
-                return Errors.General.ValueIsInvalid("FirstName");
+                return Errors.General.ValueIsInvalid(firstName, "FirstName");
             }
 
             return new FullName(lastName, firstName, patronymic);
