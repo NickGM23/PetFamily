@@ -1,4 +1,5 @@
 ﻿using PetFamily.API.Validation;
+using Serilog;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 namespace PetFamily.API
@@ -10,6 +11,8 @@ namespace PetFamily.API
             serviceCollection.AddEndpointsApiExplorer();
             serviceCollection.AddSwaggerGen();
             serviceCollection.AddControllers();
+
+            serviceCollection.AddSerilog();
 
             serviceCollection.AddFluentValidationAutoValidation(configuration =>
             {
