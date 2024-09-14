@@ -44,6 +44,13 @@ namespace PetFamily.Domain.Shared
                 var label = phoneNumber == null ? " " : $" '{phoneNumber}' ";
                 return Error.Validation("phone.is.invalid", $"phone number{label}is invalid.");
             }
+
+            public static Error InvalidCount(int min, string? name = null, int? max = null)
+            {
+                var label = name == null ? "" : $" '{name}'";
+                var forMaxLabel = max == null ? "" : $" and more than {max}";
+                return Error.Validation("out.of.range", $"Value{label} can not be less than {min}{forMaxLabel}");
+            }
         }
     }
 }

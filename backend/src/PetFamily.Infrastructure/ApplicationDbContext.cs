@@ -18,6 +18,7 @@ namespace PetFamily.Infrastructure
         {
             optionsBuilder.UseSnakeCaseNamingConvention();
             optionsBuilder.UseLoggerFactory(CreateLoggerFactory());
+            optionsBuilder.EnableSensitiveDataLogging();
             optionsBuilder.UseNpgsql(configuration.GetConnectionString(DATABASE));
         }
 

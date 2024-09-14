@@ -15,17 +15,17 @@ namespace PetFamily.Application.Volunteers.CreateVolunteer
             
             RuleFor(v => v.Description).MustBeValueObject(Description.Create);
 
-            RuleFor(v => v.YearsOfExperience).NotNull().InclusiveBetween(0, 50).WithError(Errors.General.ValueIsInvalid("{PropertyValue}", "YearsOfExperience"));
+            RuleFor(v => v.YearsExperience).MustBeValueObject(YearsExperience.Create);
 
             RuleFor(v => v.PhoneNumber).MustBeValueObject(PhoneNumber.Create);
 
-            RuleForEach(v => v.SocialNetworksDTO)
+            RuleForEach(v => v.SocialNetworksDto)
                 .MustBeValueObject(x =>
                     SocialNetwork.Create(
                         x.Link,
                         x.Name));
 
-            RuleForEach(v => v.RequisitesDTO)
+            RuleForEach(v => v.RequisitesDto)
                 .MustBeValueObject(x => 
                     Requisite.Create(
                         x.Name,

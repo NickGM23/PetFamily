@@ -13,10 +13,13 @@ namespace PetFamily.Application.Volunteers.CreateVolunteer
         private readonly IValidator<CreateVolunteerRequest> _validator;
         private readonly ILogger<CreateVolunteerHandler> _logger;
 
-        public CreateVolunteerHandler(IVolunteersRepository repository, IValidator<CreateVolunteerRequest> validator)
+        public CreateVolunteerHandler(IVolunteersRepository repository, 
+            IValidator<CreateVolunteerRequest> validator,
+            ILogger<CreateVolunteerHandler> logger)
         {
             _repository = repository;
             _validator = validator;
+            _logger = logger;
         }
 
         public async Task<Result<Guid, ErrorList>>  Handle(CreateVolunteerRequest request,
@@ -32,16 +35,18 @@ namespace PetFamily.Application.Volunteers.CreateVolunteer
 
             var descriptionResult = Description.Create(request.Description).Value;
 
+            var yearsExperience = YearsExperience.Create(request.YearsExperience).Value;
+
             var phoneNumberResult = PhoneNumber.Create(request.PhoneNumber).Value;
 
-            SocialNetworkList socialNetworksList = new(request.SocialNetworksDTO.
+            SocialNetworkList socialNetworksList = new(request.SocialNetworksDto.
                 Select(nw => SocialNetwork.Create(nw.Name, nw.Link).Value));
 
-            RequisiteList requisitesList = new(request.RequisitesDTO.
+            RequisiteList requisitesList = new(request.RequisitesDto.
                 Select(r => Requisite.Create(r.Name, r.Description).Value));
 
             var volunteerResult = Volunteer.Create(volunteerId, fullNameResult,
-                emailResult, descriptionResult, request.YearsOfExperience,
+                emailResult, descriptionResult, yearsExperience,
                 phoneNumberResult, socialNetworksList, requisitesList);
 
             if (volunteerResult.IsFailure)
