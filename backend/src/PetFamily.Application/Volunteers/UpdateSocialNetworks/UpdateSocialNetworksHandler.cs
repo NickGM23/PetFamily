@@ -3,6 +3,7 @@ using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Extensions;
+using PetFamily.Application.Volunteers.UpdateRequisites;
 using PetFamily.Domain.Models;
 using PetFamily.Domain.Shared;
 
@@ -13,6 +14,16 @@ namespace PetFamily.Application.Volunteers.UpdateSocialNetworks
         private readonly IVolunteersRepository _repository;
         private readonly IValidator<UpdateSocialNetworksCommand> _validator;
         private readonly ILogger<UpdateSocialNetworksHandler> _logger;
+
+        public UpdateSocialNetworksHandler(
+            IVolunteersRepository repository,
+            IValidator<UpdateSocialNetworksCommand> validator,
+            ILogger<UpdateSocialNetworksHandler> logger)
+        {
+            _repository = repository;
+            _validator = validator;
+            _logger = logger;
+        }
 
         public async Task<Result<Guid, ErrorList>> Handle(
             UpdateSocialNetworksCommand command,

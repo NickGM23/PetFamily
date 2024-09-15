@@ -1,8 +1,6 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Controllers.Volonteers.Requests;
 using PetFamily.API.Extensions;
-using PetFamily.Application.Dtos;
 using PetFamily.Application.Volunteers.CreateVolunteer;
 using PetFamily.Application.Volunteers.Delete;
 using PetFamily.Application.Volunteers.UpdateMainInfo;
@@ -21,11 +19,13 @@ namespace PetFamily.API.Controllers.Volonteers
 
         [HttpPost]
         public async Task<ActionResult> Create(
-            [FromServices] CreateVolunteerHandler createVolunteerHandler,
-            [FromBody] CreateVolunteerRequest createVolunteerRequest,
+            [FromServices] CreateVolunteerHandler handler,
+            [FromBody] CreateVolunteerRequest request,
             CancellationToken cancellationToken)
         {
-            var result = await createVolunteerHandler.Handle(createVolunteerRequest, cancellationToken);
+            var command = request.ToCommand();
+
+            var result = await handler.Handle(command, cancellationToken);
 
             if (result.IsFailure)
                 return result.Error.ToResponse();
@@ -82,8 +82,8 @@ namespace PetFamily.API.Controllers.Volonteers
             return Ok(result.Value);
         }
 
-        [HttpPatch("{id:guid}/social-medias")]
-        public async Task<ActionResult<Guid>> UpdateSocialMedias(
+        [HttpPatch("{id:guid}/social-networks")]
+        public async Task<ActionResult<Guid>> UpdateSocialNetworks(
             [FromRoute] Guid id,
             [FromBody] UpdateSocialNetworksRequest request,
             [FromServices] UpdateSocialNetworksHandler handler,
