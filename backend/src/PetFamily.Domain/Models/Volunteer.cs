@@ -3,8 +3,10 @@ using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Models
 {
-    public class Volunteer : Shared.Entity<VolunteerId>
+    public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
     {
+        private bool _isDeleted = false;
+
         private readonly List<Pet> _pets = [];
 
         public FullName FullName { get; private set; } = null!;
@@ -13,7 +15,7 @@ namespace PetFamily.Domain.Models
 
         public Description Description { get; private set; } = default!;
 
-        public int YearsExperience { get; private set; }
+        public YearsExperience YearsExperience { get; private set; }
 
         public PhoneNumber PhoneNumber { get; private set; } = default!;
 
@@ -31,15 +33,15 @@ namespace PetFamily.Domain.Models
 
         private Volunteer(VolunteerId id) : base(id) { }
 
-        private Volunteer(VolunteerId id,
-                          FullName fullName,
-                          Email email,
-                          Description description,
-                          int yearsExperience,
-                          PhoneNumber phoneNumber,
-                          SocialNetworkList socialNetworks,
-                          RequisiteList requisites                          
-                          ) : base(id) 
+        private Volunteer(
+            VolunteerId id,
+            FullName fullName,
+            Email email,
+            Description description,
+            YearsExperience yearsExperience,
+            PhoneNumber phoneNumber,
+            SocialNetworkList socialNetworks,
+            RequisiteList requisites) : base(id) 
         {
             FullName = fullName;
             Email = email;
@@ -50,24 +52,69 @@ namespace PetFamily.Domain.Models
             Requisites = requisites;
         }
 
-        public static Result<Volunteer, Error> Create(VolunteerId id,
-                                                      FullName  fullName,
-                                                      Email email,
-                                                      Description description,
-                                                      int yearsExperience,
-                                                      PhoneNumber phoneNumber,
-                                                      SocialNetworkList socialNetworks,
-                                                      RequisiteList requisites)
+        public static Result<Volunteer, Error> Create(
+            VolunteerId id,
+            FullName  fullName,
+            Email email,
+            Description description,
+            YearsExperience yearsExperience,
+            PhoneNumber phoneNumber,
+            SocialNetworkList socialNetworks,
+            RequisiteList requisites)
         {
-            var volunteer = new Volunteer(id,
-                                          fullName,
-                                          email,
-                                          description,
-                                          yearsExperience,
-                                          phoneNumber,
-                                          socialNetworks,
-                                          requisites);
+            var volunteer = new Volunteer(
+                id,
+                fullName,
+                email,
+                description,
+                yearsExperience,
+                phoneNumber,
+                socialNetworks,
+                requisites);
+
             return volunteer;
+        }
+
+        public void UpdateMainInfo(
+            FullName fullName,
+            Email email,
+            Description description,
+            YearsExperience yearsExperience,
+            PhoneNumber phoneNumber)
+        {
+            FullName = fullName;
+            Email = email;
+            Description = description;
+            YearsExperience = yearsExperience;
+            PhoneNumber = phoneNumber;
+        }
+
+        public void Delete()
+        {
+            if (_isDeleted == false)
+                _isDeleted = true;
+
+            foreach (var pet in _pets)
+                pet.Delete();
+        }
+
+        public void Restore()
+        {
+            if (!_isDeleted) return;
+
+            _isDeleted = false;
+            foreach (var pet in _pets)
+                pet.Restore();
+        }
+
+        public void UpdateRequisites(RequisiteList requisites)
+        {
+            Requisites = requisites;
+        }
+
+        public void UpdateSocialNetworks(SocialNetworkList socialNetworks)
+        {
+            SocialNetworks = socialNetworks;
         }
     }
 }

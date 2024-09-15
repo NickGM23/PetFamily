@@ -139,7 +139,11 @@ namespace PetFamily.Infrastructure.Configurations
             });
 
             builder.Property(p => p.DateCteate)
-                .IsRequired();  
+                .IsRequired();
+
+            builder.Property<bool>("_isDeleted")
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .HasColumnName("is_deleted");
         }
     }
 }

@@ -49,8 +49,13 @@ namespace PetFamily.Infrastructure.Configurations
                     .HasColumnName("description");
             });
 
-            builder.Property(v => v.YearsExperience)
-                .IsRequired();
+            builder.ComplexProperty(v => v.YearsExperience, vb =>
+            {
+                vb.Property(vp => vp.Value)
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH)
+                    .HasColumnName("years_experience");
+            });
 
             builder.ComplexProperty(v => v.PhoneNumber, vb =>
             {
@@ -97,6 +102,10 @@ namespace PetFamily.Infrastructure.Configurations
                 .HasForeignKey("volunteer_id");
 
             builder.Navigation(v => v.Pets).AutoInclude();
+
+            builder.Property<bool>("_isDeleted")
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .HasColumnName("is_deleted");
         }
     }
 }

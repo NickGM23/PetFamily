@@ -54,7 +54,7 @@ namespace PetFamily.Domain.Shared
                 throw new ArgumentException("Invalid serialized format");
             }
 
-            return new Error(parts[0], parts[1], type);
+            return new Error(parts[0], parts[1], type, parts.Length == 4 ? parts[3] : null);
         }
 
         public ErrorList ToErrorList() => new([this]);

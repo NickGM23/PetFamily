@@ -5,9 +5,9 @@ using PetFamily.Domain.Shared;
 
 namespace PetFamily.Application.Volunteers.CreateVolunteer
 {
-    public class CreateVolunteerValidator : AbstractValidator<CreateVolunteerRequest>
+    public class CreateVolunteerCommandValidator : AbstractValidator<CreateVolunteerCommand>
     {
-        public CreateVolunteerValidator()
+        public CreateVolunteerCommandValidator()
         {
             RuleFor(v => v.FullName).MustBeValueObject(x => FullName.Create(x.LastName, x.FirstName));
             
@@ -15,17 +15,17 @@ namespace PetFamily.Application.Volunteers.CreateVolunteer
             
             RuleFor(v => v.Description).MustBeValueObject(Description.Create);
 
-            RuleFor(v => v.YearsOfExperience).NotNull().InclusiveBetween(0, 50).WithError(Errors.General.ValueIsInvalid("{PropertyValue}", "YearsOfExperience"));
+            RuleFor(v => v.YearsExperience).MustBeValueObject(YearsExperience.Create);
 
             RuleFor(v => v.PhoneNumber).MustBeValueObject(PhoneNumber.Create);
 
-            RuleForEach(v => v.SocialNetworksDTO)
+            RuleForEach(v => v.SocialNetworks)
                 .MustBeValueObject(x =>
                     SocialNetwork.Create(
                         x.Link,
                         x.Name));
 
-            RuleForEach(v => v.RequisitesDTO)
+            RuleForEach(v => v.Requisites)
                 .MustBeValueObject(x => 
                     Requisite.Create(
                         x.Name,

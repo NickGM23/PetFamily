@@ -4,8 +4,10 @@ using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Models
 {
-    public class Pet : Shared.Entity<PetId>
+    public class Pet : Shared.Entity<PetId>, ISoftDeletable
     {
+        private bool _isDeleted = false;
+
         public string Name { get; private set; } = string.Empty;
 
         public PetBreed Breed { get; private set; } = default!;
@@ -124,5 +126,20 @@ namespace PetFamily.Domain.Models
             return pet;
         }
 
+        public void Delete()
+        {
+            if (_isDeleted)
+                return;
+
+            _isDeleted = true;
+        }
+
+        public void Restore()
+        {
+            if (!_isDeleted)
+                return;
+
+            _isDeleted = false;
+        }
     }
 }
