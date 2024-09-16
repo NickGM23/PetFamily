@@ -1,22 +1,25 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Enums;
+using PetFamily.Domain.Models;
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.ValueObjects;
+using PetFamily.Domain.Shared.ValueObjects.Ids;
 
-namespace PetFamily.Domain.Models
+namespace PetFamily.Domain.VolunteersManagement.Entities
 {
     public class Pet : Shared.Entity<PetId>, ISoftDeletable
     {
         private bool _isDeleted = false;
 
-        public string Name { get; private set; } = string.Empty;
+        public Name Name { get; private set; } = default!;
 
         public PetBreed Breed { get; private set; } = default!;
 
         public Description Description { get; private set; } = default!;
 
-        public string Color { get; private set; } = string.Empty;
+        public LowTextLength Color { get; private set; } = string.Empty;
 
-        public string HealthInfo { get; private set; } = string.Empty;
+        public HighTextLength HealthInfo { get; private set; } = string.Empty;
 
         public Address Address { get; private set; } = default!;
 
@@ -26,7 +29,7 @@ namespace PetFamily.Domain.Models
 
         public PhoneNumber PhoneNumber { get; private set; } = default!;
 
-        public bool IsCastrated { get; private set; } 
+        public bool IsCastrated { get; private set; }
 
         public DateOnly BirthDay { get; private set; }
 
@@ -43,17 +46,17 @@ namespace PetFamily.Domain.Models
         private Pet(PetId id) : base(id) { }
 
         private Pet(PetId id,
-                    string name, 
+                    Name name,
                     PetBreed breed,
-                    Description description, 
-                    string color, 
-                    string healthInfo, 
-                    Address address, 
+                    Description description,
+                    LowTextLength color,
+                    HighTextLength healthInfo,
+                    Address address,
                     double weight,
                     double height,
                     PhoneNumber phoneNumber,
                     bool isCastrated,
-                    DateOnly birthDay, 
+                    DateOnly birthDay,
                     bool isVaccinated,
                     HelpStatus helpStatus) : base(id)
         {
@@ -73,33 +76,21 @@ namespace PetFamily.Domain.Models
             DateCteate = DateTime.UtcNow;
         }
 
-        public static Result<Pet, Error> Create(PetId petId, 
-                                         string name, 
+        public static Result<Pet, Error> Create(PetId petId,
+                                         Name name,
                                          PetBreed breed,
-                                         Description description, 
-                                         string color, 
-                                         string healthInfo,
+                                         Description description,
+                                         LowTextLength color,
+                                         HighTextLength healthInfo,
                                          Address address,
                                          double weight,
                                          double height,
-                                         PhoneNumber phoneNumber, 
-                                         bool isCastrated, 
+                                         PhoneNumber phoneNumber,
+                                         bool isCastrated,
                                          DateOnly birthDay,
-                                         bool isVaccinated, 
+                                         bool isVaccinated,
                                          HelpStatus helpStatus)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                return Errors.General.ValueIsInvalid("Name");
-            }
-            if (string.IsNullOrWhiteSpace(color))
-            {
-                return Errors.General.ValueIsInvalid("Color");
-            }
-            if (string.IsNullOrWhiteSpace(healthInfo))
-            {
-                return Errors.General.ValueIsInvalid("HealthInfo");
-            }
             if (weight <= 0)
             {
                 return Errors.General.ValueIsInvalid("Weight");
@@ -113,15 +104,15 @@ namespace PetFamily.Domain.Models
                               name,
                               breed,
                               description,
-                              color, 
+                              color,
                               healthInfo,
                               address,
                               weight,
                               height,
                               phoneNumber,
-                              isCastrated, 
+                              isCastrated,
                               birthDay,
-                              isVaccinated, 
+                              isVaccinated,
                               helpStatus);
             return pet;
         }

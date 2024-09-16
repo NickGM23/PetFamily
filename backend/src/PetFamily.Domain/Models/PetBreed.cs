@@ -1,4 +1,6 @@
 ﻿
+using PetFamily.Domain.Shared.ValueObjects.Ids;
+
 namespace PetFamily.Domain.Models
 {
     public record PetBreed

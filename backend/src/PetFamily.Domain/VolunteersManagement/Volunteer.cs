@@ -1,7 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Models;
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.ValueObjects;
+using PetFamily.Domain.Shared.ValueObjects.Ids;
+using PetFamily.Domain.VolunteersManagement.Entities;
 
-namespace PetFamily.Domain.Models
+namespace PetFamily.Domain.VolunteersManagement
 {
     public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
     {
@@ -41,7 +45,7 @@ namespace PetFamily.Domain.Models
             YearsExperience yearsExperience,
             PhoneNumber phoneNumber,
             SocialNetworkList socialNetworks,
-            RequisiteList requisites) : base(id) 
+            RequisiteList requisites) : base(id)
         {
             FullName = fullName;
             Email = email;
@@ -54,7 +58,7 @@ namespace PetFamily.Domain.Models
 
         public static Result<Volunteer, Error> Create(
             VolunteerId id,
-            FullName  fullName,
+            FullName fullName,
             Email email,
             Description description,
             YearsExperience yearsExperience,

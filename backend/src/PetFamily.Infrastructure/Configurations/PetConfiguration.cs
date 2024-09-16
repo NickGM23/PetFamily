@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Domain.Models;
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.ValueObjects;
+using PetFamily.Domain.Shared.ValueObjects.Ids;
+using PetFamily.Domain.VolunteersManagement.Entities;
 
 namespace PetFamily.Infrastructure.Configurations
 {
@@ -17,9 +19,13 @@ namespace PetFamily.Infrastructure.Configurations
                 .HasConversion(id => id.Value,
                 value => PetId.Create(value));
 
-            builder.Property(p => p.Name)
-                .IsRequired()
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+            builder.ComplexProperty(p => p.Name, pb =>
+            {
+                pb.Property(pp => pp.Value)
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
+                    .HasColumnName("name");
+            });
 
             builder.ComplexProperty(p => p.Breed, pb =>
             {
@@ -41,13 +47,21 @@ namespace PetFamily.Infrastructure.Configurations
                     .HasColumnName("description");
             });
 
-            builder.Property(p => p.Color)
-                .IsRequired()
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+            builder.ComplexProperty(p => p.Color, pb =>
+            {
+                pb.Property(pp => pp.Value)
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
+                    .HasColumnName("color");
+            });
 
-            builder.Property(p => p.HealthInfo)
-                .IsRequired()
-                .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
+            builder.ComplexProperty(p => p.HealthInfo, pb =>
+            {
+                pb.Property(pp => pp.Value)
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH)
+                    .HasColumnName("health_info");
+            });
 
             builder.ComplexProperty(p => p.Address, pa =>
             {
@@ -111,7 +125,7 @@ namespace PetFamily.Infrastructure.Configurations
 
             builder.OwnsOne(p => p.Requisites, pb =>
             {
-                pb.ToJson();
+                pb.ToJson("requisites");
 
                 pb.OwnsMany(pr => pr.Requisites, prb =>
                 {
@@ -126,15 +140,19 @@ namespace PetFamily.Infrastructure.Configurations
 
             builder.OwnsOne(p => p.PetPhotos, pb =>
             {
-                pb.ToJson();
+                pb.ToJson("photos");
 
                 pb.OwnsMany(pp => pp.PetPhotos, ppp =>
                 {
                     ppp.Property(r => r.Path)
-                    .IsRequired()
-                    .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
+                       .HasConversion(
+                            p => p.Path,
+                            value => FilePath.Create(value).Value)
+                        .IsRequired()
+                        .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
+
                     ppp.Property(r => r.IsMain)
-                    .IsRequired();
+                        .IsRequired();
                 });
             });
 

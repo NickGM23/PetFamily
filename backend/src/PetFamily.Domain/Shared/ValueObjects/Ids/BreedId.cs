@@ -1,5 +1,4 @@
-﻿
-namespace PetFamily.Domain.Models
+﻿namespace PetFamily.Domain.Shared.ValueObjects.Ids
 {
     public record BreedId
     {

@@ -2,7 +2,7 @@
 using CSharpFunctionalExtensions;
 using System.Text.RegularExpressions;
 
-namespace PetFamily.Domain.Shared
+namespace PetFamily.Domain.Shared.ValueObjects
 {
     public record PhoneNumber
     {

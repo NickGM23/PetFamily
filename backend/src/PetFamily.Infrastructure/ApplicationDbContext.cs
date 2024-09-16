@@ -2,6 +2,7 @@
 using PetFamily.Domain.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using PetFamily.Domain.VolunteersManagement;
 
 namespace PetFamily.Infrastructure
 {

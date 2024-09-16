@@ -2,6 +2,7 @@
 using PetFamily.Application.Validation;
 using PetFamily.Domain.Models;
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.ValueObjects;
 
 namespace PetFamily.Application.Volunteers.CreateVolunteer
 {

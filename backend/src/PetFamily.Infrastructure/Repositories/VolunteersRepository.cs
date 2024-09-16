@@ -2,8 +2,9 @@
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using PetFamily.Application.Volunteers;
-using PetFamily.Domain.Models;
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.ValueObjects.Ids;
+using PetFamily.Domain.VolunteersManagement;
 
 namespace PetFamily.Infrastructure.Repositories
 {
@@ -18,7 +19,7 @@ namespace PetFamily.Infrastructure.Repositories
 
         public async Task<Guid> Add(Volunteer volunteer, CancellationToken cancellationToken = default)
         {
-            await _context.AddAsync(volunteer, cancellationToken);
+            await _context.Volunteers.AddAsync(volunteer, cancellationToken);
             await _context.SaveChangesAsync();
             return volunteer.Id;
         }
@@ -38,7 +39,7 @@ namespace PetFamily.Infrastructure.Repositories
 
         public async Task Save(Volunteer volunteer, CancellationToken cancellationToken = default)
         {
-            _context.Attach(volunteer);
+            _context.Volunteers.Attach(volunteer);
 
             await _context.SaveChangesAsync(cancellationToken);
         }

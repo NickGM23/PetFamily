@@ -1,7 +1,6 @@
-﻿
-namespace PetFamily.Domain.Models
+﻿namespace PetFamily.Domain.Shared.ValueObjects.Ids
 {
-    public record SpeciesId 
+    public record SpeciesId
     {
         private SpeciesId(Guid value)
         {
