@@ -1,27 +1,24 @@
 ﻿
 using CSharpFunctionalExtensions;
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.ValueObjects;
 
 namespace PetFamily.Domain.Models
 {
     public record PetPhoto
     {
-        public string Path { get; }
+        public FilePath Path { get; }
         public bool IsMain { get; }
 
-        private PetPhoto(string path, bool isMain)
+        private PetPhoto(FilePath path, bool isMain)
         {
             Path = path;
             IsMain = isMain;
         }
 
-        public static Result<PetPhoto, Error> Create(string path, bool isMain)
+        public static Result<PetPhoto, Error> Create(FilePath path, bool isMain)
         {
-            if (string.IsNullOrWhiteSpace(path) || path.Length > Constants.MAX_HIGH_TEXT_LENGTH)
-                return Errors.General.ValueIsInvalid("Path");
-
             return new PetPhoto(path, isMain);
         }
-
     }
 }

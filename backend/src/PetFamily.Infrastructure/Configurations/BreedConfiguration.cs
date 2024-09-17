@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Domain.Models;
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.ValueObjects.Ids;
 
 namespace PetFamily.Infrastructure.Configurations
 {
