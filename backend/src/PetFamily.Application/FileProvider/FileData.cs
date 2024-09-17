@@ -1,5 +1,7 @@
 ﻿
 namespace PetFamily.Application.FileProvider
 {
-    public record class FileData(Stream? Stream, string BucketName, string Path);
+    public record FileData(Stream Stream, FileInfo FileInfo);
+    public record FileInfo(string BucketName, string Path);
+
 }

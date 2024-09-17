@@ -21,15 +21,15 @@ namespace PetFamily.Application.Files.Get.GetFiles
             GetFilesCommand command,
             CancellationToken cancellationToken = default)
         {
-            List<FileData> filesData = [];
+            List<FileProvider.FileInfo> filesInfo = [];
             foreach (var getFileRequest in command.GetFileCommands)
             {
-                var fileData = new FileData(null, getFileRequest.BucketName, getFileRequest.Path);
+                var fileInfo = new FileProvider.FileInfo(getFileRequest.BucketName, getFileRequest.Path);
 
-                filesData.Add(fileData);
+                filesInfo.Add(fileInfo);
             }
 
-            var result = await _fileProvider.GetFiles(filesData, cancellationToken);
+            var result = await _fileProvider.GetFiles(filesInfo, cancellationToken);
             if (result.IsFailure)
                 return result.Error;
 

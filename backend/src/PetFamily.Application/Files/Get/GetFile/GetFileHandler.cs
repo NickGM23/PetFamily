@@ -21,9 +21,9 @@ namespace PetFamily.Application.Files.Get.GetFile
             GetFileCommand comand,
             CancellationToken cancellationToken = default)
         {
-            var fileData = new FileData(null, comand.BucketName, comand.Path);
+            var fileInfo = new FileProvider.FileInfo(comand.BucketName, comand.Path);
 
-            var result = await _fileProvider.GetFile(fileData, cancellationToken);
+            var result = await _fileProvider.GetFile(fileInfo, cancellationToken);
 
             return result.Value;
         }

@@ -21,12 +21,12 @@ namespace PetFamily.Application.Files.Delete
             RemoveFileCommand command,
             CancellationToken cancellationToken = default)
         {
-            var fileData = new FileData(null, command.BucketName, command.Path);
+            var fileInfo = new FileProvider.FileInfo(command.BucketName, command.Path);
 
-            var result = await _fileProvider.Remove(fileData, cancellationToken);
+            var result = await _fileProvider.Remove(fileInfo, cancellationToken);
 
             _logger.LogInformation("File with path '{path}' has been deleted from bucket '{bucket}'",
-                fileData.Path, fileData.BucketName);
+                fileInfo.Path, fileInfo.BucketName);
 
             return result.Value;
         }

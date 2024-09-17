@@ -23,13 +23,15 @@ namespace PetFamily.Application.Files.Upload
         {
             var path = Guid.NewGuid().ToString();
 
-            var fileData = new FileData(command.Stream, command.BucketName, path);
+            var fileInfo = new FileProvider.FileInfo(command.BucketName, path);
+
+            var fileData = new FileData(command.Stream, fileInfo);
 
             var result = await _fileProvider.Upload(fileData, cancellationToken);
             if (result.IsFailure)
                 return result.Error;
 
-            _logger.LogInformation("Uploaded file with path {path} in bucket {bucket}", path, fileData.BucketName);
+            _logger.LogInformation("Uploaded file with path {path} in bucket {bucket}", path, fileInfo.BucketName);
 
             return result.Value;
         }
