@@ -3,7 +3,6 @@ using FluentValidation;
 using PetFamily.Application.Validation;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.ValueObjects;
-using System.Drawing;
 
 namespace PetFamily.Application.Volunteers.AddPet
 {

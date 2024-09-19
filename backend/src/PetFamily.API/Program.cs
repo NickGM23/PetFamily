@@ -5,6 +5,7 @@ using PetFamily.API.Extensions;
 using Serilog.Events;
 using Serilog;
 using PetFamily.API.Middlewares;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,9 @@ builder.Services
     .AddApiServices()
     .AddInfrastructure(builder.Configuration)
     .AddApplication();
+
+var xmlDoc = Path.ChangeExtension(Assembly.GetExecutingAssembly().Location, "xml");
+builder.Services.AddSwaggerGen(options => options.IncludeXmlComments(xmlDoc, true));
 
 var app = builder.Build();
 

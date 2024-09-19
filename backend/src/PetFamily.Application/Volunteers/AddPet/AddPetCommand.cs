@@ -14,7 +14,7 @@ namespace PetFamily.Application.Volunteers.AddPet
         double Height,
         string PhoneNumber,
         bool IsCastrated,
-        DateTime BirthDate,
+        DateOnly BirthDate,
         bool IsVaccinated,
         string HelpStatus,
         IEnumerable<RequisiteDto> Requisites);

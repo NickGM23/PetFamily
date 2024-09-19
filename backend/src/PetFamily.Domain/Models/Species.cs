@@ -1,44 +1,48 @@
-﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.Shared;
+﻿using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.Shared.ValueObjects.Ids;
 
 namespace PetFamily.Domain.Models
 {
-    public class Species : Shared.Entity<SpeciesId>
+    public class Species : Shared.Entity<SpeciesId>, ISoftDeletable
     {
-        public string Name { get; private set; } = string.Empty;
+        private bool _isDeleted = false;
 
-        public Description Description { get; private set; } 
+        private readonly List<Breed> _breeds = [];
 
-        public IReadOnlyList<Breed> Breeds { get; private set; } = [];
+        public Name Name { get; private set; } = default!;
+
+        public Description Description { get; private set; } = default!;
+
+        public IReadOnlyList<Breed> Breeds => _breeds;
 
         private Species(SpeciesId id) : base(id)
         {
         }
 
-        private Species(SpeciesId id, string name, Description description)
+        public Species(SpeciesId id, Name name, Description description)
             : base(id)
         {
             Name = name;
             Description = description;
         }
 
-        public static Result<Species, Error> Create(
-            SpeciesId speciesId,
-            string name,
-            Description description)
+        public void Delete()
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                return Errors.General.ValueIsInvalid("Name"); ;
-            }
+            if (_isDeleted == false)
+                _isDeleted = true;
 
-            var species = new Species(
-                speciesId,
-                name,
-                description);
-            return species;
+            foreach (var breed in _breeds)
+                breed.Delete();
+        }
+
+        public void Restore()
+        {
+            if (!_isDeleted) return;
+
+            _isDeleted = false;
+            foreach (var breed in _breeds)
+                breed.Restore();
         }
     }
 }

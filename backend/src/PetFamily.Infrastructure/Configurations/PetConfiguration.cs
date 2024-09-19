@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PetFamily.Domain.Enums;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.Shared.ValueObjects.Ids;
@@ -119,9 +120,14 @@ namespace PetFamily.Infrastructure.Configurations
             builder.Property(p => p.IsVaccinated)
                 .IsRequired();
 
+            //builder.Property(p => p.HelpStatus)
+            //    .IsRequired()
+            //    .HasConversion<string>();
+
             builder.Property(p => p.HelpStatus)
-                .IsRequired()
-                .HasConversion<string>();
+                .HasConversion(
+                status => status.ToString(),
+                value => (HelpStatus)Enum.Parse(typeof(HelpStatus), value));
 
             builder.OwnsOne(p => p.Requisites, pb =>
             {
