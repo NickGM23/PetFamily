@@ -58,7 +58,8 @@ namespace PetFamily.Domain.VolunteersManagement.Entities
                     bool isCastrated,
                     DateOnly birthDay,
                     bool isVaccinated,
-                    HelpStatus helpStatus) : base(id)
+                    HelpStatus helpStatus,
+                    RequisiteList requisites) : base(id)
         {
             Name = name;
             Breed = breed;
@@ -74,6 +75,7 @@ namespace PetFamily.Domain.VolunteersManagement.Entities
             IsVaccinated = isVaccinated;
             HelpStatus = helpStatus;
             DateCteate = DateTime.UtcNow;
+            Requisites = requisites;
         }
 
         public static Result<Pet, Error> Create(PetId petId,
@@ -89,15 +91,16 @@ namespace PetFamily.Domain.VolunteersManagement.Entities
                                          bool isCastrated,
                                          DateOnly birthDay,
                                          bool isVaccinated,
-                                         HelpStatus helpStatus)
+                                         HelpStatus helpStatus,
+                                         RequisiteList requisites)
         {
             if (weight <= 0)
             {
-                return Errors.General.ValueIsInvalid("Weight");
+                return Errors.General.ValueIsInvalid(weight.ToString(), "Weight");
             }
             if (height <= 0)
             {
-                return Errors.General.ValueIsInvalid("Height");
+                return Errors.General.ValueIsInvalid(height.ToString(),"Height");
             }
 
             var pet = new Pet(petId,
@@ -113,7 +116,8 @@ namespace PetFamily.Domain.VolunteersManagement.Entities
                               isCastrated,
                               birthDay,
                               isVaccinated,
-                              helpStatus);
+                              helpStatus,
+                              requisites);
             return pet;
         }
 
@@ -132,5 +136,8 @@ namespace PetFamily.Domain.VolunteersManagement.Entities
 
             _isDeleted = false;
         }
+
+        public void UpdatePhotos(IEnumerable<PetPhoto> petPhotos) =>
+            PetPhotos = new PetPhotoList(petPhotos);
     }
 }

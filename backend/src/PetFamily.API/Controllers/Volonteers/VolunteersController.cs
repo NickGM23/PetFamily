@@ -1,21 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Controllers.Volonteers.Requests;
 using PetFamily.API.Extensions;
+using PetFamily.API.Processors;
+using PetFamily.Application.Volunteers.AddPet;
 using PetFamily.Application.Volunteers.CreateVolunteer;
 using PetFamily.Application.Volunteers.Delete;
 using PetFamily.Application.Volunteers.UpdateMainInfo;
 using PetFamily.Application.Volunteers.UpdateRequisites;
 using PetFamily.Application.Volunteers.UpdateSocialNetworks;
+using PetFamily.Application.Volunteers.UploadFilesToPet;
 
 namespace PetFamily.API.Controllers.Volonteers
 {
     public class VolunteersController : ApplicationController
     {
-        [HttpGet]
-        public string Get()
-        {
-            return "Test";
-        }
+        private const string BUCKET_NAME = "photos";
 
         [HttpPost]
         public async Task<ActionResult> Create(
@@ -99,24 +98,42 @@ namespace PetFamily.API.Controllers.Volonteers
             return Ok(result.Value);
         }
 
-        //[HttpPost("{id:guid}/pet/{petId:guid}/files")]
-        //public async Task<ActionResult> UploadFilesToPet(
-        //    [FromRoute] Guid id,
-        //    [FromRoute] Guid petId,
-        //    [FromForm] IFormFileCollection files,
-        //    [FromServices] UploadFilesToPetHandler handler,
-        //    CancellationToken cancellationToken = default)
-        //{
-        //    await using var fileProcessor = new FormFileProcessor();
-        //    var fileDtos = fileProcessor.Process(files);
+        [HttpPost("{id:guid}/pet")]
+        [ProducesResponseType(typeof(AddPetRequest), StatusCodes.Status200OK)]
+        public async Task<ActionResult> AddPet(
+            [FromRoute] Guid id,
+            [FromBody] AddPetRequest request,
+            [FromServices] AddPetHandler handler,
+            CancellationToken cancellationToken = default)
+        {
+            var command = request.ToCommand(id);
 
-        //    var command = new UploadFilesToPetCommand(id, petId, fileDtos);
+            var result = await handler.Handle(command, cancellationToken);
 
-        //    var result = await handler.Handle(command, cancellationToken);
-        //    if (result.IsFailure)
-        //        return result.Error.ToResponse();
+            if (result.IsFailure)
+                return result.Error.ToResponse();
 
-        //    return Ok(result.Value);
-        //}
+            return Ok(result.Value);
+        }
+
+        [HttpPost("{id:guid}/pet/{petId:guid}/files")]
+        public async Task<ActionResult> UploadFilesToPet(
+            [FromRoute] Guid id,
+            [FromRoute] Guid petId,
+            [FromForm] IFormFileCollection files,
+            [FromServices] UploadFilesToPetHandler handler,
+            CancellationToken cancellationToken = default)
+        {
+            await using var fileProcessor = new FormFileProcessor();
+            var fileDtos = fileProcessor.Process(files);
+
+            var command = new UploadFilesToPetCommand(id, petId, BUCKET_NAME, fileDtos);
+
+            var result = await handler.Handle(command, cancellationToken);
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
+        }
     }
 }

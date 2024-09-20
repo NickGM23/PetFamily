@@ -18,9 +18,13 @@ namespace PetFamily.Infrastructure.Configurations
                 .HasConversion(id => id.Value,
                 value => SpeciesId.Create(value));
 
-            builder.Property(v => v.Name)
-                .IsRequired()
-                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+            builder.ComplexProperty(p => p.Name, pb =>
+            {
+                pb.Property(pp => pp.Value)
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
+                    .HasColumnName("name");
+            });
 
             builder.ComplexProperty(v => v.Description, vb =>
             {

@@ -1,13 +1,14 @@
-﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.Shared;
+﻿using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.Shared.ValueObjects.Ids;
 
 namespace PetFamily.Domain.Models
 {
-    public class Breed : Shared.Entity<BreedId>
+    public class Breed : Shared.Entity<BreedId>, ISoftDeletable
     {
-        public string Name { get; private set; } = string.Empty;
+        private bool _isDeleted = false;
+
+        public Name Name { get; private set; } = default!;
 
         public Description Description { get; private set; } = default!;
 
@@ -15,27 +16,27 @@ namespace PetFamily.Domain.Models
         {
         }
 
-        private Breed(BreedId id, string name, Description description)
+        public Breed(BreedId id, Name name, Description description)
             : base(id)
         {
             Name = name;
             Description = description;
         }
 
-        public static Result<Breed, Error> Create(
-            BreedId breedId,
-            string name,
-            Description description)
+        public void Delete()
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                return Errors.General.ValueIsInvalid("Name");
-            }
+            if (_isDeleted)
+                return;
 
-            var breed = new Breed(breedId,
-                name,
-                description);
-            return breed;
+            _isDeleted = true;
+        }
+
+        public void Restore()
+        {
+            if (!_isDeleted)
+                return;
+
+            _isDeleted = false;
         }
     }
 }

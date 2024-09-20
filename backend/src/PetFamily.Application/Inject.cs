@@ -5,11 +5,13 @@ using PetFamily.Application.Files.Delete;
 using PetFamily.Application.Files.Get.GetFile;
 using PetFamily.Application.Files.Get.GetFiles;
 using PetFamily.Application.Files.Upload;
+using PetFamily.Application.Volunteers.AddPet;
 using PetFamily.Application.Volunteers.CreateVolunteer;
 using PetFamily.Application.Volunteers.Delete;
 using PetFamily.Application.Volunteers.UpdateMainInfo;
 using PetFamily.Application.Volunteers.UpdateRequisites;
 using PetFamily.Application.Volunteers.UpdateSocialNetworks;
+using PetFamily.Application.Volunteers.UploadFilesToPet;
 
 namespace PetFamily.Application
 {
@@ -27,6 +29,9 @@ namespace PetFamily.Application
             serviceCollection.AddScoped<RemoveFileHandler>();
             serviceCollection.AddScoped<GetFileHandler>();
             serviceCollection.AddScoped<GetFilesHandler>();
+
+            serviceCollection.AddScoped<AddPetHandler>();
+            serviceCollection.AddScoped<UploadFilesToPetHandler>();
 
             serviceCollection.AddValidatorsFromAssembly(typeof(Inject).Assembly);
             return serviceCollection;
