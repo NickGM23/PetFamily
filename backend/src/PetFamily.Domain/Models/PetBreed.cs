@@ -14,13 +14,15 @@ namespace PetFamily.Domain.Models
         {
         }
 
-        private PetBreed(SpeciesId speciesId, BreedId breedId)
+        private PetBreed(SpeciesId speciesId, Guid breedId)
         {
             SpeciesId = speciesId;
             BreedId = breedId;
         }
 
-        public static Result<PetBreed> Create(SpeciesId speciesId, BreedId breedId)
+        public static PetBreed None => PetBreed.Create(SpeciesId.Empty(), Guid.Empty).Value;
+
+        public static Result<PetBreed> Create(SpeciesId speciesId, Guid breedId)
         {
             return new PetBreed(speciesId, breedId);
         }

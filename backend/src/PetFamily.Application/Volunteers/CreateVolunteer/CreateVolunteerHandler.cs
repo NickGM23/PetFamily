@@ -2,6 +2,7 @@
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Database;
 using PetFamily.Application.Extensions;
 using PetFamily.Domain.Models;
 using PetFamily.Domain.Shared;
@@ -14,14 +15,17 @@ namespace PetFamily.Application.Volunteers.CreateVolunteer
     public class CreateVolunteerHandler
     {
         private readonly IVolunteersRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<CreateVolunteerCommand> _validator;
         private readonly ILogger<CreateVolunteerHandler> _logger;
 
-        public CreateVolunteerHandler(IVolunteersRepository repository, 
+        public CreateVolunteerHandler(IVolunteersRepository repository,
+            IUnitOfWork unitOfWork,
             IValidator<CreateVolunteerCommand> validator,
             ILogger<CreateVolunteerHandler> logger)
         {
             _repository = repository;
+            _unitOfWork = unitOfWork;
             _validator = validator;
             _logger = logger;
         }

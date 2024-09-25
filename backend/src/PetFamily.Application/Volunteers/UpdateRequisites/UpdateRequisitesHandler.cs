@@ -2,6 +2,7 @@
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Database;
 using PetFamily.Application.Extensions;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.ValueObjects;
@@ -11,15 +12,18 @@ namespace PetFamily.Application.Volunteers.UpdateRequisites
     public class UpdateRequisitesHandler
     {
         private readonly IVolunteersRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<UpdateRequisitesCommand> _validator;
         private readonly ILogger<UpdateRequisitesHandler> _logger;
 
         public UpdateRequisitesHandler(
             IVolunteersRepository repository,
+            IUnitOfWork unitOfWork,
             IValidator<UpdateRequisitesCommand> validator,
             ILogger<UpdateRequisitesHandler> logger)
         {
             _repository = repository;
+            _unitOfWork = unitOfWork;
             _validator = validator;
             _logger = logger;
         }
@@ -50,7 +54,7 @@ namespace PetFamily.Application.Volunteers.UpdateRequisites
 
             volunteerResult.Value.UpdateRequisites(requisitesToUpdate.Value);
 
-            await _repository.Save(volunteerResult.Value, cancellationToken);
+            await _unitOfWork.SaveChanges(cancellationToken);
 
             _logger.LogInformation("Requisites of volunteer with {id} has been updated", command.VolunteerId);
 
