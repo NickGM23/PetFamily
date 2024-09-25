@@ -2,8 +2,8 @@
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Database;
 using PetFamily.Application.Extensions;
-using PetFamily.Application.Volunteers.UpdateRequisites;
 using PetFamily.Domain.Models;
 using PetFamily.Domain.Shared;
 
@@ -12,15 +12,18 @@ namespace PetFamily.Application.Volunteers.UpdateSocialNetworks
     public class UpdateSocialNetworksHandler
     {
         private readonly IVolunteersRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<UpdateSocialNetworksCommand> _validator;
         private readonly ILogger<UpdateSocialNetworksHandler> _logger;
 
         public UpdateSocialNetworksHandler(
             IVolunteersRepository repository,
+            IUnitOfWork unitOfWork,
             IValidator<UpdateSocialNetworksCommand> validator,
             ILogger<UpdateSocialNetworksHandler> logger)
         {
             _repository = repository;
+            _unitOfWork = unitOfWork;
             _validator = validator;
             _logger = logger;
         }
@@ -47,7 +50,7 @@ namespace PetFamily.Application.Volunteers.UpdateSocialNetworks
 
             volunteerResult.Value.UpdateSocialNetworks(socialNetworksToUpdate);
 
-            await _repository.Save(volunteerResult.Value, cancellationToken);
+            await _unitOfWork.SaveChanges(cancellationToken);
 
             _logger.LogInformation("Social medias of volunteer with {id} has been updated", command.VolunteerId);
 

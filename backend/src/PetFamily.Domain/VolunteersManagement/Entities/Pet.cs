@@ -43,6 +43,8 @@ namespace PetFamily.Domain.VolunteersManagement.Entities
 
         public DateTime DateCteate { get; private set; }
 
+        public SerialNumber SerialNumber { get; private set; } = default!;
+
         private Pet(PetId id) : base(id) { }
 
         private Pet(PetId id,
@@ -139,5 +141,14 @@ namespace PetFamily.Domain.VolunteersManagement.Entities
 
         public void UpdatePhotos(IEnumerable<PetPhoto> petPhotos) =>
             PetPhotos = new PetPhotoList(petPhotos);
+
+        public void SetSerialNumber(SerialNumber serialNumber) =>
+            SerialNumber = serialNumber;
+
+        public void MoveSerialNumberToForward() =>
+            SerialNumber = SerialNumber.Create(SerialNumber.Value + 1).Value;
+
+        public void MoveSerialNumberToBackward() =>
+            SerialNumber = SerialNumber.Create(SerialNumber.Value - 1).Value;
     }
 }

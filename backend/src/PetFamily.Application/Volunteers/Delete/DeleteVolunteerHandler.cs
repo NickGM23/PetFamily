@@ -2,6 +2,7 @@
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Database;
 using PetFamily.Application.Extensions;
 using PetFamily.Domain.Shared;
 
@@ -10,15 +11,18 @@ namespace PetFamily.Application.Volunteers.Delete
     public class DeleteVolunteerHandler
     {
         private readonly IVolunteersRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<DeleteVolunteerCommand> _validator;
         private readonly ILogger<DeleteVolunteerHandler> _logger;
 
         public DeleteVolunteerHandler(
             IVolunteersRepository repository,
+            IUnitOfWork unitOfWork,
             IValidator<DeleteVolunteerCommand> validator,
             ILogger<DeleteVolunteerHandler> logger)
         {
             _repository = repository;
+            _unitOfWork = unitOfWork;
             _validator = validator;
             _logger = logger;
         }
@@ -39,7 +43,7 @@ namespace PetFamily.Application.Volunteers.Delete
 
             volunteerResult.Value.Delete();
 
-            await _repository.Save(volunteerResult.Value, cancellationToken);
+            await _unitOfWork.SaveChanges(cancellationToken);
 
             _logger.LogInformation("Updated deleted with id {volunteerId}", command.VolunteerId);
 

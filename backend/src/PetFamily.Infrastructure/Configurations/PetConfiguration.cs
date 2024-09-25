@@ -120,10 +120,6 @@ namespace PetFamily.Infrastructure.Configurations
             builder.Property(p => p.IsVaccinated)
                 .IsRequired();
 
-            //builder.Property(p => p.HelpStatus)
-            //    .IsRequired()
-            //    .HasConversion<string>();
-
             builder.Property(p => p.HelpStatus)
                 .HasConversion(
                 status => status.ToString(),
@@ -168,6 +164,13 @@ namespace PetFamily.Infrastructure.Configurations
             builder.Property<bool>("_isDeleted")
                 .UsePropertyAccessMode(PropertyAccessMode.Field)
                 .HasColumnName("is_deleted");
+
+            builder.ComplexProperty(v => v.SerialNumber, vb =>
+            {
+                vb.Property(vp => vp.Value)
+                    .IsRequired()
+                    .HasColumnName("serial_number");
+            });
         }
     }
 }

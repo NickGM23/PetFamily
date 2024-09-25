@@ -8,6 +8,7 @@ using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.Shared;
 using PetFamily.Application.Extensions;
 using PetFamily.Domain.Models;
+using PetFamily.Application.Database;
 
 namespace PetFamily.Application.Volunteers.UploadFilesToPet
 {
@@ -15,17 +16,20 @@ namespace PetFamily.Application.Volunteers.UploadFilesToPet
     {
         private readonly IFileProvider _fileProvider;
         private readonly IVolunteersRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<UploadFilesToPetCommand> _validator;
         private readonly ILogger<UploadFilesToPetHandler> _logger;
 
         public UploadFilesToPetHandler(
             IFileProvider fileProvider,
             IVolunteersRepository volunteersRepository,
+            IUnitOfWork unitOfWork,
             IValidator<UploadFilesToPetCommand> validator,
             ILogger<UploadFilesToPetHandler> logger)
         {
             _fileProvider = fileProvider;
             _repository = volunteersRepository;
+            _unitOfWork = unitOfWork;
             _validator = validator;
             _logger = logger;
         }
@@ -75,7 +79,7 @@ namespace PetFamily.Application.Volunteers.UploadFilesToPet
 
             petResult.Value.UpdatePhotos(petPhotos);
 
-            await _repository.Save(volunteerResult.Value, cancellationToken);
+            await _unitOfWork.SaveChanges(cancellationToken);
 
             _logger.LogInformation("Success uploaded photos to pet - {petId}", petId.Value);
 

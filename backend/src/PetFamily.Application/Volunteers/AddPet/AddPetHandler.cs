@@ -10,6 +10,7 @@ using PetFamily.Application.FileProvider;
 using PetFamily.Application.Extensions;
 using PetFamily.Domain.Models;
 using PetFamily.Domain.Enums;
+using PetFamily.Application.Database;
 
 namespace PetFamily.Application.Volunteers.AddPet
 {
@@ -18,17 +19,21 @@ namespace PetFamily.Application.Volunteers.AddPet
         private const string BUCKET_NAME = "photos";
         private readonly IFileProvider _fileProvider;
         private readonly IVolunteersRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<AddPetCommand> _validator;
         private readonly ILogger<AddPetHandler> _logger;
+
 
         public AddPetHandler(
             IFileProvider fileProvider,
             IVolunteersRepository volunteersRepository,
+            IUnitOfWork unitOfWork,
             IValidator<AddPetCommand> validator,
             ILogger<AddPetHandler> logger)
         {
             _fileProvider = fileProvider;
             _repository = volunteersRepository;
+            _unitOfWork = unitOfWork;
             _validator = validator;
             _logger = logger;
         }
@@ -49,7 +54,7 @@ namespace PetFamily.Application.Volunteers.AddPet
             var pet = InitPet(command);
             volunteerResult.Value.AddPet(pet);
 
-            await _repository.Save(volunteerResult.Value, cancellationToken);
+            await _unitOfWork.SaveChanges(cancellationToken);
 
             _logger.LogInformation("Pet added with id: {PetId}.", pet.Id.Value);
 

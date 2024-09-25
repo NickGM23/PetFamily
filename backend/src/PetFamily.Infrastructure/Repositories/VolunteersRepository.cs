@@ -20,7 +20,7 @@ namespace PetFamily.Infrastructure.Repositories
         public async Task<Guid> Add(Volunteer volunteer, CancellationToken cancellationToken = default)
         {
             await _context.Volunteers.AddAsync(volunteer, cancellationToken);
-            await _context.SaveChangesAsync();
+
             return volunteer.Id;
         }
 
@@ -37,11 +37,11 @@ namespace PetFamily.Infrastructure.Repositories
             return res;
         }
 
-        public async Task Save(Volunteer volunteer, CancellationToken cancellationToken = default)
+        public Guid Save(Volunteer volunteer, CancellationToken cancellationToken = default)
         {
             _context.Volunteers.Attach(volunteer);
 
-            await _context.SaveChangesAsync(cancellationToken);
+            return volunteer.Id;
         }
 
         public Guid Delete(Volunteer volunteer, CancellationToken cancellationToken = default)
