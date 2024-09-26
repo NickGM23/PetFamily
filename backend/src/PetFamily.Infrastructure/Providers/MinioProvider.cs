@@ -5,6 +5,7 @@ using Minio.DataModel.Args;
 using Minio;
 using PetFamily.Domain.Shared;
 using PetFamily.Application.FileProvider;
+using FileInfo = PetFamily.Application.FileProvider.FileInfo;
 
 namespace PetFamily.Infrastructure.Providers
 {
@@ -83,7 +84,7 @@ namespace PetFamily.Infrastructure.Providers
         }
 
         public async Task<Result<string, Error>> Remove(
-            Application.FileProvider.FileInfo fileInfo,
+            FileInfo fileInfo,
             CancellationToken cancellationToken = default)
         {
             try
@@ -106,7 +107,7 @@ namespace PetFamily.Infrastructure.Providers
         }
 
         public async Task<Result<string, Error>> GetFile(
-            Application.FileProvider.FileInfo fileInfo,
+            FileInfo fileInfo,
             CancellationToken cancellationToken = default)
         {
             try
@@ -128,7 +129,7 @@ namespace PetFamily.Infrastructure.Providers
         }
 
         public async Task<Result<List<string>, Error>> GetFiles(
-            IEnumerable<Application.FileProvider.FileInfo> filesInfo,
+            IEnumerable<FileInfo> filesInfo,
             CancellationToken cancellationToken = default)
         {
             List<string> filesLinks = [];

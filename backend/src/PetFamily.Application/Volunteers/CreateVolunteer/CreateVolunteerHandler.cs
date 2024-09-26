@@ -67,6 +67,8 @@ namespace PetFamily.Application.Volunteers.CreateVolunteer
 
             await _repository.Add(volunteer);
 
+            await _unitOfWork.SaveChanges(cancellationToken);
+
             _logger.LogInformation("Created Volunteer {FullName} with id {VolunteerId}", fullNameResult, volunteer.Id);
 
             return (Guid)volunteer.Id;

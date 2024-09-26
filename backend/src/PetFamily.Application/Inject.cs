@@ -1,6 +1,7 @@
 ﻿
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using PetFamily.Application.Files.Delete;
 using PetFamily.Application.Files.Get.GetFile;
 using PetFamily.Application.Files.Get.GetFiles;
@@ -12,6 +13,7 @@ using PetFamily.Application.Volunteers.UpdateMainInfo;
 using PetFamily.Application.Volunteers.UpdateRequisites;
 using PetFamily.Application.Volunteers.UpdateSocialNetworks;
 using PetFamily.Application.Volunteers.UploadFilesToPet;
+using PetFamily.Application.Abstractions;
 
 namespace PetFamily.Application
 {
@@ -34,6 +36,17 @@ namespace PetFamily.Application
             serviceCollection.AddScoped<UploadFilesToPetHandler>();
 
             serviceCollection.AddValidatorsFromAssembly(typeof(Inject).Assembly);
+
+            serviceCollection.Scan(type => type.FromAssemblies(typeof(Inject).Assembly)
+                .AddClasses(classes => classes.AssignableToAny(typeof(ICommandHandler<,>), typeof(ICommandHandler<>)))
+                .AsSelfWithInterfaces()
+                .WithScopedLifetime());
+
+            serviceCollection.Scan(type => type.FromAssemblies(typeof(Inject).Assembly)
+                .AddClasses(classes => classes.AssignableToAny(typeof(IQueryHandler<,>)))
+                .AsSelfWithInterfaces()
+                .WithScopedLifetime());
+
             return serviceCollection;
         }
     }
