@@ -1,8 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PetFamily.Application.Dtos;
+using PetFamily.Domain.Models;
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.Shared.ValueObjects.Ids;
 using PetFamily.Domain.VolunteersManagement;
+using PetFamily.Infrastructure.Extensions;
 
 namespace PetFamily.Infrastructure.Configurations
 {
@@ -66,37 +70,55 @@ namespace PetFamily.Infrastructure.Configurations
                     .HasColumnName("phone_number");
             });
 
-            builder.OwnsOne(v => v.SocialNetworks, vb =>
-            {
-                vb.ToJson();
-
-                vb.OwnsMany(vs => vs.SocialNetworks, vsb =>
-                {
-                    vsb.Property(r => r.Name)
-                    .IsRequired()
-                    .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
-                    vsb.Property(r => r.Link)
-                    .IsRequired()
-                    .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
-
-                });
-            });
-
             builder.OwnsOne(v => v.Requisites, vb =>
             {
-                vb.ToJson();
-
-                vb.OwnsMany(vr => vr.Requisites, vrb =>
-                {
-                    vrb.Property(r => r.Name)
-                    .IsRequired()
-                    .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
-                    vrb.Property(r => r.Description)
-                    .IsRequired()
-                    .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
-
-                });
+                vb.Property(r => r.Requisites)
+                    .ValueObjectsCollectionJsonConversion(
+                        r => new RequisiteDto(r.Name, r.Description),
+                        dto => Requisite.Create(dto.Name, dto.Description).Value)
+                    .HasColumnName("requisites");
             });
+
+            builder.OwnsOne(v => v.SocialNetworks, sb =>
+            {
+                sb.Property(s => s.SocialNetworks)
+                    .ValueObjectsCollectionJsonConversion(
+                        sn => new SocialNetworkDto(sn.Link, sn.Name),
+                        dto => SocialNetwork.Create(dto.Link, dto.Name).Value)
+                    .HasColumnName("social_networks");
+            });
+
+            //builder.OwnsOne(v => v.SocialNetworks, vb =>
+            //{
+            //    vb.ToJson();
+
+            //    vb.OwnsMany(vs => vs.SocialNetworks, vsb =>
+            //    {
+            //        vsb.Property(r => r.Name)
+            //        .IsRequired()
+            //        .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+            //        vsb.Property(r => r.Link)
+            //        .IsRequired()
+            //        .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
+
+            //    });
+            //});
+
+            //builder.OwnsOne(v => v.Requisites, vb =>
+            //{
+            //    vb.ToJson();
+
+            //    vb.OwnsMany(vr => vr.Requisites, vrb =>
+            //    {
+            //        vrb.Property(r => r.Name)
+            //        .IsRequired()
+            //        .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+            //        vrb.Property(r => r.Description)
+            //        .IsRequired()
+            //        .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
+
+            //    });
+            //});
 
             builder.HasMany(v => v.Pets)
                 .WithOne()

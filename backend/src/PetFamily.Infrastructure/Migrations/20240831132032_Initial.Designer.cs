@@ -26,7 +26,7 @@ namespace PetFamily.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("PetFamily.Domain.Models.Pet", b =>
+            modelBuilder.Entity("PetFamily.Domain.PagedList.Pet", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -123,7 +123,7 @@ namespace PetFamily.Infrastructure.Migrations
                     b.ToTable("pets", (string)null);
                 });
 
-            modelBuilder.Entity("PetFamily.Domain.Models.Volunteer", b =>
+            modelBuilder.Entity("PetFamily.Domain.PagedList.Volunteer", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -151,7 +151,7 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("years_experience");
 
-                    b.ComplexProperty<Dictionary<string, object>>("FullName", "PetFamily.Domain.Models.Volunteer.FullName#FullName", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("FullName", "PetFamily.Domain.PagedList.Volunteer.FullName#FullName", b1 =>
                         {
                             b1.IsRequired();
 
@@ -180,9 +180,9 @@ namespace PetFamily.Infrastructure.Migrations
                     b.ToTable("volunteers", (string)null);
                 });
 
-            modelBuilder.Entity("PetFamily.Domain.Models.Pet", b =>
+            modelBuilder.Entity("PetFamily.Domain.PagedList.Pet", b =>
                 {
-                    b.HasOne("PetFamily.Domain.Models.Volunteer", null)
+                    b.HasOne("PetFamily.Domain.PagedList.Volunteer", null)
                         .WithMany("Pets")
                         .HasForeignKey("volunteer_id")
                         .HasConstraintName("fk_pets_volunteers_volunteer_id");
@@ -235,7 +235,7 @@ namespace PetFamily.Infrastructure.Migrations
                             b1.Navigation("Requisites");
                         });
 
-                    b.OwnsOne("PetFamily.Domain.Models.PetPhotoList", "PetPhotos", b1 =>
+                    b.OwnsOne("PetFamily.Domain.PagedList.PetPhotoList", "PetPhotos", b1 =>
                         {
                             b1.Property<Guid>("PetId")
                                 .HasColumnType("uuid")
@@ -251,7 +251,7 @@ namespace PetFamily.Infrastructure.Migrations
                                 .HasForeignKey("PetId")
                                 .HasConstraintName("fk_pets_pets_id");
 
-                            b1.OwnsMany("PetFamily.Domain.Models.PetPhoto", "PetPhotos", b2 =>
+                            b1.OwnsMany("PetFamily.Domain.PagedList.PetPhoto", "PetPhotos", b2 =>
                                 {
                                     b2.Property<Guid>("PetPhotoListPetId")
                                         .HasColumnType("uuid");
@@ -286,9 +286,9 @@ namespace PetFamily.Infrastructure.Migrations
                     b.Navigation("Requisites");
                 });
 
-            modelBuilder.Entity("PetFamily.Domain.Models.Volunteer", b =>
+            modelBuilder.Entity("PetFamily.Domain.PagedList.Volunteer", b =>
                 {
-                    b.OwnsOne("PetFamily.Domain.Models.SocialNetworkList", "SocialNetworks", b1 =>
+                    b.OwnsOne("PetFamily.Domain.PagedList.SocialNetworkList", "SocialNetworks", b1 =>
                         {
                             b1.Property<Guid>("VolunteerId")
                                 .HasColumnType("uuid")
@@ -304,7 +304,7 @@ namespace PetFamily.Infrastructure.Migrations
                                 .HasForeignKey("VolunteerId")
                                 .HasConstraintName("fk_volunteers_volunteers_id");
 
-                            b1.OwnsMany("PetFamily.Domain.Models.SocialNetwork", "SocialNetworks", b2 =>
+                            b1.OwnsMany("PetFamily.Domain.PagedList.SocialNetwork", "SocialNetworks", b2 =>
                                 {
                                     b2.Property<Guid>("SocialNetworkListVolunteerId")
                                         .HasColumnType("uuid");
@@ -389,7 +389,7 @@ namespace PetFamily.Infrastructure.Migrations
                     b.Navigation("SocialNetworks");
                 });
 
-            modelBuilder.Entity("PetFamily.Domain.Models.Volunteer", b =>
+            modelBuilder.Entity("PetFamily.Domain.PagedList.Volunteer", b =>
                 {
                     b.Navigation("Pets");
                 });

@@ -248,6 +248,15 @@ namespace PetFamily.Infrastructure.Migrations
                                 .HasColumnName("phone_number");
                         });
 
+                    b.ComplexProperty<Dictionary<string, object>>("SerialNumber", "PetFamily.Domain.VolunteersManagement.Entities.Pet.SerialNumber#SerialNumber", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<int>("Value")
+                                .HasColumnType("integer")
+                                .HasColumnName("serial_number");
+                        });
+
                     b.HasKey("Id")
                         .HasName("pk_pets");
 
@@ -435,8 +444,7 @@ namespace PetFamily.Infrastructure.Migrations
                                         .HasMaxLength(100)
                                         .HasColumnType("character varying(100)");
 
-                                    b2.HasKey("RequisiteListPetId", "Id")
-                                        .HasName("pk_pets");
+                                    b2.HasKey("RequisiteListPetId", "Id");
 
                                     b2.ToTable("pets");
 
@@ -461,46 +469,18 @@ namespace PetFamily.Infrastructure.Migrations
                                 .HasColumnType("uuid")
                                 .HasColumnName("id");
 
+                            b1.Property<string>("SocialNetworks")
+                                .IsRequired()
+                                .HasColumnType("jsonb")
+                                .HasColumnName("social_networks");
+
                             b1.HasKey("VolunteerId");
 
                             b1.ToTable("volunteers");
 
-                            b1.ToJson("SocialNetworks");
-
                             b1.WithOwner()
                                 .HasForeignKey("VolunteerId")
                                 .HasConstraintName("fk_volunteers_volunteers_id");
-
-                            b1.OwnsMany("PetFamily.Domain.Models.SocialNetwork", "SocialNetworks", b2 =>
-                                {
-                                    b2.Property<Guid>("SocialNetworkListVolunteerId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<int>("Id")
-                                        .ValueGeneratedOnAdd()
-                                        .HasColumnType("integer");
-
-                                    b2.Property<string>("Link")
-                                        .IsRequired()
-                                        .HasMaxLength(2000)
-                                        .HasColumnType("character varying(2000)");
-
-                                    b2.Property<string>("Name")
-                                        .IsRequired()
-                                        .HasMaxLength(100)
-                                        .HasColumnType("character varying(100)");
-
-                                    b2.HasKey("SocialNetworkListVolunteerId", "Id")
-                                        .HasName("pk_volunteers");
-
-                                    b2.ToTable("volunteers");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("SocialNetworkListVolunteerId")
-                                        .HasConstraintName("fk_volunteers_volunteers_social_network_list_volunteer_id");
-                                });
-
-                            b1.Navigation("SocialNetworks");
                         });
 
                     b.OwnsOne("PetFamily.Domain.Shared.RequisiteList", "Requisites", b1 =>
@@ -509,46 +489,18 @@ namespace PetFamily.Infrastructure.Migrations
                                 .HasColumnType("uuid")
                                 .HasColumnName("id");
 
+                            b1.Property<string>("Requisites")
+                                .IsRequired()
+                                .HasColumnType("jsonb")
+                                .HasColumnName("requisites");
+
                             b1.HasKey("VolunteerId");
 
                             b1.ToTable("volunteers");
 
-                            b1.ToJson("Requisites");
-
                             b1.WithOwner()
                                 .HasForeignKey("VolunteerId")
                                 .HasConstraintName("fk_volunteers_volunteers_id");
-
-                            b1.OwnsMany("PetFamily.Domain.Shared.ValueObjects.Requisite", "Requisites", b2 =>
-                                {
-                                    b2.Property<Guid>("RequisiteListVolunteerId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<int>("Id")
-                                        .ValueGeneratedOnAdd()
-                                        .HasColumnType("integer");
-
-                                    b2.Property<string>("Description")
-                                        .IsRequired()
-                                        .HasMaxLength(2000)
-                                        .HasColumnType("character varying(2000)");
-
-                                    b2.Property<string>("Name")
-                                        .IsRequired()
-                                        .HasMaxLength(100)
-                                        .HasColumnType("character varying(100)");
-
-                                    b2.HasKey("RequisiteListVolunteerId", "Id")
-                                        .HasName("pk_volunteers");
-
-                                    b2.ToTable("volunteers");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("RequisiteListVolunteerId")
-                                        .HasConstraintName("fk_volunteers_volunteers_requisite_list_volunteer_id");
-                                });
-
-                            b1.Navigation("Requisites");
                         });
 
                     b.Navigation("Requisites");
