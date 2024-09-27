@@ -8,6 +8,7 @@ using PetFamily.Application.Models;
 using PetFamily.Application.Volunteers.AddPet;
 using PetFamily.Application.Volunteers.CreateVolunteer;
 using PetFamily.Application.Volunteers.Delete;
+using PetFamily.Application.Volunteers.Queries.GetVolunteer;
 using PetFamily.Application.Volunteers.Queries.GetVolunteersWithPagination;
 using PetFamily.Application.Volunteers.UpdateMainInfo;
 using PetFamily.Application.Volunteers.UpdateRequisites;
@@ -149,6 +150,20 @@ namespace PetFamily.API.Controllers.Volonteers
             var query = request.ToQuery();
 
             var result = await handler.Handle(query, cancellationToken);
+            return Ok(result.Value);
+        }
+
+        [HttpGet("{id:guid}")]
+        public async Task<ActionResult> GetById(
+            [FromRoute] Guid id,
+            [FromServices] IQueryHandler<VolunteerDto, GetVolunteerQuery> handler,
+            CancellationToken cancellationToken = default)
+        {
+            var query = new GetVolunteerQuery(id);
+
+            var result = await handler.Handle(query, cancellationToken);
+            if (result.IsFailure)
+                return result.Error.ToResponse();
             return Ok(result.Value);
         }
     }
