@@ -1,4 +1,5 @@
-﻿using CSharpFunctionalExtensions;
+﻿
+using CSharpFunctionalExtensions;
 using Dapper;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Abstractions;
@@ -8,35 +9,30 @@ using PetFamily.Application.Extensions;
 using PetFamily.Application.Models;
 using PetFamily.Domain.Shared;
 using System.Text;
-using System.Text.Json;
 
-namespace PetFamily.Application.Volunteers.Queries.GetVolunteersWithPagination
+namespace PetFamily.Application.Volunteers.Queries.GetVolunteer
 {
-    public class GetVolunteersWithPaginationHandler
-        : IQueryHandler<PagedList<VolunteerDto>, GetVolunteersWithPaginationQuery>
+    public class GetVolunteerHandler
+        : IQueryHandler<VolunteerDto, GetVolunteerQuery>
     {
-        private readonly ILogger<GetVolunteersWithPaginationHandler> _logger;
+
+        private readonly ILogger<GetVolunteerHandler> _logger;
         private readonly ISqlConnectionFactory _factory;
 
-        public GetVolunteersWithPaginationHandler(
-            ILogger<GetVolunteersWithPaginationHandler> logger,
+        public GetVolunteerHandler(
+            ILogger<GetVolunteerHandler> logger,
             ISqlConnectionFactory factory)
         {
             _logger = logger;
             _factory = factory;
         }
 
-        public async Task<Result<PagedList<VolunteerDto>, ErrorList>> Handle(
-            GetVolunteersWithPaginationQuery query,
+        public async Task<Result<VolunteerDto, ErrorList>> Handle(
+            GetVolunteerQuery query, 
             CancellationToken cancellationToken)
         {
             var connection = _factory.Create();
-
             var parameters = new DynamicParameters();
-
-            var totalCount = await connection.ExecuteScalarAsync<long>(
-                "  SELECT COUNT(1) FROM volunteers;");
-
             var sql = new StringBuilder("""
                                     SELECT 
                                         id, 
@@ -48,24 +44,20 @@ namespace PetFamily.Application.Volunteers.Queries.GetVolunteersWithPagination
                                         years_experience,
                                         phone_number, 
                                         social_networks,  
-                                        requisites  
+                                        requisites 
                                     FROM 
-                                        volunteers 
+                                        volunteers
+                                    WHERE
+                                        id = @id
                                     """);
-
-            sql.ApplyPagination(parameters, query.Page, query.PageSize);
-
+            parameters.Add("@id", query.Id);
             var volunteers = await connection.QueryVolunteersAsync(sql.ToString(), parameters);
+            var volunteer = volunteers.FirstOrDefault();
+            if (volunteer is null)
+                return Errors.General.NotFound().ToErrorList();
 
-            var pagedList = new PagedList<VolunteerDto>()
-            {
-                Items = volunteers.ToList(),
-                Page = query.Page,
-                PageSize = query.PageSize,
-                TotalCount = totalCount
-            };
-
-            return pagedList;
+            _logger.LogInformation("Got volunteer with id = {Id}", query.Id);
+            return volunteer;
         }
     }
 }
