@@ -21,7 +21,9 @@ namespace PetFamily.API.Controllers.Volonteers.Requests
             DateOnly birthDate, 
             bool isVaccinated,
             string status,
-            IEnumerable<RequisiteDto> requisites)
+            IEnumerable<RequisiteDto> requisites,            
+            Guid speciesId,
+            Guid breedId)
         {
             Name = name;
             Description = description;
@@ -36,6 +38,8 @@ namespace PetFamily.API.Controllers.Volonteers.Requests
             IsVaccinated = isVaccinated;
             Status = status;
             Requisites = requisites;
+            SpeciesId = speciesId;
+            BreedId = breedId;
         }
 
         public string Name { get; }
@@ -51,7 +55,8 @@ namespace PetFamily.API.Controllers.Volonteers.Requests
         public int Weight { get; }
         
         public int Height { get; }
-        
+
+        /// <example>+380967875645</example>
         public string PhoneNumber { get; }
         
         public bool IsCastrated { get; }
@@ -68,6 +73,10 @@ namespace PetFamily.API.Controllers.Volonteers.Requests
 
         public IEnumerable<RequisiteDto> Requisites { get; }
 
+        public Guid SpeciesId { get; }
+
+        public Guid BreedId { get; }
+
         public AddPetCommand ToCommand(Guid volunteerId) =>
             new(volunteerId,
                 Name,
@@ -82,6 +91,8 @@ namespace PetFamily.API.Controllers.Volonteers.Requests
                 BirthDate,
                 IsVaccinated,
                 Status,
-                Requisites);
+                Requisites,
+                SpeciesId,
+                BreedId);
     }
 }

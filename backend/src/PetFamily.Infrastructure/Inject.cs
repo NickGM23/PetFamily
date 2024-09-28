@@ -5,6 +5,7 @@ using Minio;
 using PetFamily.Application.Database;
 using PetFamily.Application.FileProvider;
 using PetFamily.Application.Messaging;
+using PetFamily.Application.Species;
 using PetFamily.Application.Volunteers;
 using PetFamily.Infrastructure.BackgroundServices;
 using PetFamily.Infrastructure.Files;
@@ -24,6 +25,8 @@ namespace PetFamily.Infrastructure
             services.AddScoped<ApplicationDbContext>();
 
             services.AddScoped<IVolunteersRepository, VolunteersRepository>();
+
+            services.AddScoped<ISpeciesRepository, SpeciesRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

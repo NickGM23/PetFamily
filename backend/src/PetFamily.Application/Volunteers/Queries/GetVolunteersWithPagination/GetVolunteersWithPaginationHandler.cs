@@ -8,7 +8,6 @@ using PetFamily.Application.Extensions;
 using PetFamily.Application.Models;
 using PetFamily.Domain.Shared;
 using System.Text;
-using System.Text.Json;
 
 namespace PetFamily.Application.Volunteers.Queries.GetVolunteersWithPagination
 {

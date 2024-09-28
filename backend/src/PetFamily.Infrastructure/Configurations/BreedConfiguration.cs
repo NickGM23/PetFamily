@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Domain.Models;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.ValueObjects.Ids;
+using PetFamily.Domain.SpeciesManagement.Entities;
 
 namespace PetFamily.Infrastructure.Configurations
 {
@@ -33,6 +33,10 @@ namespace PetFamily.Infrastructure.Configurations
                     .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH)
                     .HasColumnName("description");
             });
+
+            builder.Property<bool>("_isDeleted")
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .HasColumnName("is_deleted");
         }
     }
 }

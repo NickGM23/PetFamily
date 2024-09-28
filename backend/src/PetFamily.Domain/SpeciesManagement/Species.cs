@@ -1,8 +1,10 @@
-﻿using PetFamily.Domain.Shared;
+﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.Shared.ValueObjects.Ids;
+using PetFamily.Domain.SpeciesManagement.Entities;
 
-namespace PetFamily.Domain.Models
+namespace PetFamily.Domain.SpeciesManagement
 {
     public class Species : Shared.Entity<SpeciesId>, ISoftDeletable
     {
@@ -25,6 +27,13 @@ namespace PetFamily.Domain.Models
         {
             Name = name;
             Description = description;
+        }
+
+        public UnitResult<Error> AddBreed(Breed breed)
+        {
+            _breeds.Add(breed);
+
+            return Result.Success<Error>();
         }
 
         public void Delete()
