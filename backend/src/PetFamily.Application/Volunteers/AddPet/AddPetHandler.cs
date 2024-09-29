@@ -20,6 +20,7 @@ namespace PetFamily.Application.Volunteers.AddPet
         private const string BUCKET_NAME = "photos";
         private readonly IFileProvider _fileProvider;
         private readonly IVolunteersRepository _repository;
+        private readonly IReadDbContext _readDbContext;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<AddPetCommand> _validator;
         private readonly ILogger<AddPetHandler> _logger;
@@ -29,6 +30,7 @@ namespace PetFamily.Application.Volunteers.AddPet
         public AddPetHandler(
             IFileProvider fileProvider,
             IVolunteersRepository volunteersRepository,
+            IReadDbContext readDbContext,
             IUnitOfWork unitOfWork,
             IValidator<AddPetCommand> validator,
             ILogger<AddPetHandler> logger,
@@ -36,6 +38,7 @@ namespace PetFamily.Application.Volunteers.AddPet
         {
             _fileProvider = fileProvider;
             _repository = volunteersRepository;
+            _readDbContext = readDbContext;
             _unitOfWork = unitOfWork;
             _validator = validator;
             _logger = logger;
@@ -55,24 +58,16 @@ namespace PetFamily.Application.Volunteers.AddPet
             if (volunteerResult.IsFailure)
                 return volunteerResult.Error.ToErrorList();
 
-            var speciesResult = await _speciesRepository
-                .GetById(command.SpeciesId, cancellationToken);
-            if (speciesResult.IsFailure)
-                return speciesResult.Error.ToErrorList();
+            var isSpeciesExists = _readDbContext.Species.Any(s => s.Id == command.SpeciesId);
 
-            var breedResult = speciesResult.Value.Breeds.FirstOrDefault(x => x.Id == command.BreedId);
-            if (breedResult == null)
+            if (isSpeciesExists == false)
+                return Errors.General.NotFound(command.SpeciesId).ToErrorList();
+
+            var isBreedExists = _readDbContext.Breeds.Any(b =>
+                b.Id == command.BreedId && b.SpeciesId == command.SpeciesId);
+
+            if (isBreedExists == false)
                 return Errors.General.NotFound(command.BreedId).ToErrorList();
-
-            //var speciesResult = _readDbContext.Species.Any(x => x.Id == command.SpeciesId);
-
-            //if (speciesResult.IsFailure)
-            //    return Errors.General.NotFound(command.SpeciesId).ToErrorList();
-
-            //var breedExists = _readDbContext.Breeds.Any(x => x.Id == command.BreedId);
-
-            //if (isBreedExists == false)
-            //    return Errors.General.NotFound(command.BreedId).ToErrorList();
 
             var pet = InitPet(command);
             volunteerResult.Value.AddPet(pet);

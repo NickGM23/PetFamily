@@ -49,7 +49,11 @@ namespace PetFamily.Application.Species.AddBreed
                 return speciesResult.Error.ToErrorList();
 
             var breed = InitBreed(command);
-            speciesResult.Value.AddBreed(breed);
+            
+            var addBreedResult = speciesResult.Value.AddBreed(breed);
+
+            if (addBreedResult.IsFailure)
+                return addBreedResult.Error.ToErrorList();
 
             await _unitOfWork.SaveChanges(cancellationToken);
 

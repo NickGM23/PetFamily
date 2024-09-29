@@ -8,6 +8,7 @@ using PetFamily.Application.Messaging;
 using PetFamily.Application.Species;
 using PetFamily.Application.Volunteers;
 using PetFamily.Infrastructure.BackgroundServices;
+using PetFamily.Infrastructure.DbContexts;
 using PetFamily.Infrastructure.Files;
 using PetFamily.Infrastructure.MessageQueues;
 using PetFamily.Infrastructure.Options;
@@ -22,7 +23,9 @@ namespace PetFamily.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.AddScoped<ApplicationDbContext>();
+            services.AddScoped<WriteDbContext>();
+
+            services.AddScoped<IReadDbContext, ReadDbContext>();
 
             services.AddScoped<IVolunteersRepository, VolunteersRepository>();
 

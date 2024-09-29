@@ -8,7 +8,7 @@ using PetFamily.Domain.Shared.ValueObjects.Ids;
 using PetFamily.Domain.VolunteersManagement;
 using PetFamily.Infrastructure.Extensions;
 
-namespace PetFamily.Infrastructure.Configurations
+namespace PetFamily.Infrastructure.Configurations.Write
 {
     public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
     {
@@ -27,11 +27,11 @@ namespace PetFamily.Infrastructure.Configurations
                 nameBuilder.Property(fn => fn.FirstName)
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
-                .HasColumnName("first_name"); 
+                .HasColumnName("first_name");
                 nameBuilder.Property(fn => fn.Patronymic)
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
-                .HasColumnName("patronymic"); 
+                .HasColumnName("patronymic");
                 nameBuilder.Property(fn => fn.LastName)
                 .IsRequired()
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)

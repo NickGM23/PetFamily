@@ -1,5 +1,5 @@
 ﻿
 namespace PetFamily.Application.Dtos
 {
-    public record BreedDto(Guid Id, string Name, string Description);
+    public record BreedDto(Guid Id, Guid SpeciesId, string Name, string Description);
 }

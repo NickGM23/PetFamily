@@ -4,7 +4,7 @@ using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.ValueObjects.Ids;
 using PetFamily.Domain.SpeciesManagement;
 
-namespace PetFamily.Infrastructure.Configurations
+namespace PetFamily.Infrastructure.Configurations.Write
 {
     public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
     {

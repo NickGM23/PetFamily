@@ -31,6 +31,9 @@ namespace PetFamily.Domain.SpeciesManagement
 
         public UnitResult<Error> AddBreed(Breed breed)
         {
+            if (_breeds.Exists(b => b.Name == breed.Name))
+                return Errors.General.AlreadyExist(nameof(breed));
+
             _breeds.Add(breed);
 
             return Result.Success<Error>();

@@ -17,17 +17,20 @@ namespace PetFamily.Application.Species.CreateSpecies
         private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<CreateSpeciesCommand> _validator;
         private readonly ISpeciesRepository _repository;
+        private readonly IReadDbContext _readDbContext;
 
         public CreateSpeciesHandler(
             ILogger<CreateSpeciesHandler> logger,
             IUnitOfWork unitOfWork,
             IValidator<CreateSpeciesCommand> validator,
-            ISpeciesRepository repository)
+            ISpeciesRepository repository,
+            IReadDbContext readDbContext)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
             _validator = validator;
             _repository = repository;
+            _readDbContext = readDbContext;
         }
 
         public async Task<Result<Guid, ErrorList>> Handle(
@@ -46,6 +49,11 @@ namespace PetFamily.Application.Species.CreateSpecies
 
             var species = new Domain.SpeciesManagement.Species(speciesId, nameResult, descriptionResult);
 
+            var speciesNameNotExistsResult = CheckSpeciesNameNotExists(species);
+
+            if (speciesNameNotExistsResult.IsFailure)
+                return speciesNameNotExistsResult.Error.ToErrorList();
+
             await _repository.Add(species);
 
             await _unitOfWork.SaveChanges(cancellationToken);
@@ -53,6 +61,16 @@ namespace PetFamily.Application.Species.CreateSpecies
             _logger.LogInformation("Created Species {Name} with id {SpeciesId}", nameResult, species.Id);
 
             return (Guid)species.Id;
+        }
+
+        private UnitResult<Error> CheckSpeciesNameNotExists(Domain.SpeciesManagement.Species species)
+        {
+            var foundedSpecies = _readDbContext.Species.FirstOrDefault(s => s.Name == species.Name.Value);
+
+            if (foundedSpecies is null)
+                return Result.Success<Error>();
+
+            return Errors.General.AlreadyExists("species", "name", species.Name.Value);
         }
     }
 }
