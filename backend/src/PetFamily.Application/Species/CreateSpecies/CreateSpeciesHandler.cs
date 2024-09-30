@@ -49,10 +49,10 @@ namespace PetFamily.Application.Species.CreateSpecies
 
             var species = new Domain.SpeciesManagement.Species(speciesId, nameResult, descriptionResult);
 
-            var speciesNameNotExistsResult = CheckSpeciesNameNotExists(species);
+            var speciesNameExistsResult = await _repository.GetByName(species.Name.Value);
 
-            if (speciesNameNotExistsResult.IsFailure)
-                return speciesNameNotExistsResult.Error.ToErrorList();
+            if (speciesNameExistsResult.IsSuccess)
+                return Errors.General.AlreadyExists("species", "name", species.Name.Value).ToErrorList(); 
 
             await _repository.Add(species);
 
@@ -61,16 +61,6 @@ namespace PetFamily.Application.Species.CreateSpecies
             _logger.LogInformation("Created Species {Name} with id {SpeciesId}", nameResult, species.Id);
 
             return (Guid)species.Id;
-        }
-
-        private UnitResult<Error> CheckSpeciesNameNotExists(Domain.SpeciesManagement.Species species)
-        {
-            var foundedSpecies = _readDbContext.Species.FirstOrDefault(s => s.Name == species.Name.Value);
-
-            if (foundedSpecies is null)
-                return Result.Success<Error>();
-
-            return Errors.General.AlreadyExists("species", "name", species.Name.Value);
         }
     }
 }

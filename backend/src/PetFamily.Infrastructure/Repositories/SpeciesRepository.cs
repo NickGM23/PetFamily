@@ -45,6 +45,19 @@ namespace PetFamily.Infrastructure.Repositories
             return res;
         }
 
+        public async Task<Result<Species, Error>> GetByName(string speciesName, CancellationToken cancellationToken = default)
+        {
+            var res = await _context.Species
+                .FirstOrDefaultAsync(v => v.Name.Value.ToLower().Equals(speciesName.ToLower()), cancellationToken);
+
+            if (res is null)
+            {
+                return Errors.General.NotFound();
+            }
+
+            return res;
+        }
+
         public Guid Save(Species species, CancellationToken cancellationToken = default)
         {
             _context.Species.Attach(species);
