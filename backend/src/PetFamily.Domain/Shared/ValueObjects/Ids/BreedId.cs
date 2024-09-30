@@ -9,7 +9,7 @@
 
         public Guid Value { get; }
 
-        public static BreedId NewVolunteerId() => new(Guid.NewGuid());
+        public static BreedId NewBreedId() => new(Guid.NewGuid());
 
         public static BreedId Empty() => new(Guid.Empty);
 

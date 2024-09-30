@@ -22,6 +22,22 @@ namespace PetFamily.Application.Validation
             });
         }
 
+        public static IRuleBuilderOptionsConditions<T, string> MustBeAllowedExtension<T>(
+            this IRuleBuilder<T, string> ruleBuilder,
+            IEnumerable<string> allowedExtensions)
+        {
+            return ruleBuilder.Custom((path, context) =>
+            {
+                var extension = Path.GetExtension(path);
+
+                var isAllowedExtension = allowedExtensions.Contains(extension);
+
+                if (isAllowedExtension == false)
+                    context.AddFailure(Error.Validation("file.path", "Extension is invalid", "path")
+                        .Serialize());
+            });
+        }
+
         public static IRuleBuilderOptions<T, TProperty> WithError<T, TProperty>(
             this IRuleBuilderOptions<T, TProperty> rule, Error error)
         {

@@ -17,5 +17,7 @@ namespace PetFamily.Application.Volunteers.AddPet
         DateOnly BirthDate,
         bool IsVaccinated,
         string HelpStatus,
-        IEnumerable<RequisiteDto> Requisites);
+        IEnumerable<RequisiteDto> Requisites,
+        Guid SpeciesId,
+        Guid BreedId);
 }

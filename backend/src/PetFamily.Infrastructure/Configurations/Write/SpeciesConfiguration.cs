@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Domain.Models;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.ValueObjects.Ids;
+using PetFamily.Domain.SpeciesManagement;
 
-namespace PetFamily.Infrastructure.Configurations
+namespace PetFamily.Infrastructure.Configurations.Write
 {
     public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
     {
@@ -37,6 +37,12 @@ namespace PetFamily.Infrastructure.Configurations
             builder.HasMany(v => v.Breeds)
                 .WithOne()
                 .HasForeignKey("species_id");
+
+            builder.Navigation(v => v.Breeds).AutoInclude();
+
+            builder.Property<bool>("_isDeleted")
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .HasColumnName("is_deleted");
         }
     }
 }

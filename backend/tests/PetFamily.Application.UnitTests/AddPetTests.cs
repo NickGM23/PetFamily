@@ -15,6 +15,7 @@ using PetFamily.Domain.Shared.ValueObjects.Ids;
 using PetFamily.Domain.VolunteersManagement;
 using PetFamily.Domain.VolunteersManagement.Entities;
 using PetFamily.Application.FileProvider;
+using PetFamily.Application.Species;
 
 namespace PetFamily.Application.UnitTests
 {
@@ -23,8 +24,10 @@ namespace PetFamily.Application.UnitTests
         private readonly Mock<IFileProvider> _fileProviderMock;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
         private readonly Mock<IVolunteersRepository> _volunteersRepositoryMock;
+        private readonly Mock<ISpeciesRepository> _speciesRepositoryMock;
         private readonly Mock<ILogger<AddPetHandler>> _loggerMock;
         private readonly Mock<IValidator<AddPetCommand>> _validatorMock;
+        private readonly Mock<IReadDbContext> _readDbContext;
 
         public AddPetTests()
         {
@@ -33,6 +36,8 @@ namespace PetFamily.Application.UnitTests
             _volunteersRepositoryMock = new Mock<IVolunteersRepository>();
             _loggerMock = new Mock<ILogger<AddPetHandler>>();
             _validatorMock = new Mock<IValidator<AddPetCommand>>();
+            _speciesRepositoryMock = new Mock<ISpeciesRepository>();
+            _readDbContext = new Mock<IReadDbContext>();  
         }
 
         [Fact]
@@ -52,9 +57,11 @@ namespace PetFamily.Application.UnitTests
             var addPetHandler = new AddPetHandler(
                 _fileProviderMock.Object,
                 _volunteersRepositoryMock.Object,
+                _readDbContext.Object,
                 _unitOfWorkMock.Object,
                 _validatorMock.Object,
-                _loggerMock.Object);
+                _loggerMock.Object,
+                _speciesRepositoryMock.Object);
 
             // act
             var handleResult = await addPetHandler.Handle(command, ct);
@@ -88,9 +95,11 @@ namespace PetFamily.Application.UnitTests
             var addPetHandler = new AddPetHandler(
                 _fileProviderMock.Object,
                 _volunteersRepositoryMock.Object,
+                _readDbContext.Object,
                 _unitOfWorkMock.Object,
                 _validatorMock.Object,
-                _loggerMock.Object);
+                _loggerMock.Object,
+                _speciesRepositoryMock.Object);
 
             // act
             var handleResult = await addPetHandler.Handle(command, ct);
@@ -126,9 +135,11 @@ namespace PetFamily.Application.UnitTests
             var addPetHandler = new AddPetHandler(
                 _fileProviderMock.Object,
                 _volunteersRepositoryMock.Object,
+                _readDbContext.Object,
                 _unitOfWorkMock.Object,
                 _validatorMock.Object,
-                _loggerMock.Object);
+                _loggerMock.Object,
+                _speciesRepositoryMock.Object);
 
             // act
             var handleResult = await addPetHandler.Handle(command, ct);
@@ -157,9 +168,11 @@ namespace PetFamily.Application.UnitTests
             var addPetHandler = new AddPetHandler(
                 _fileProviderMock.Object,
                 _volunteersRepositoryMock.Object,
+                _readDbContext.Object,
                 _unitOfWorkMock.Object,
                 _validatorMock.Object,
-                _loggerMock.Object);
+                _loggerMock.Object,
+                _speciesRepositoryMock.Object);
 
             // act
             var handleResult = await addPetHandler.Handle(command, ct);
@@ -248,6 +261,7 @@ namespace PetFamily.Application.UnitTests
 
             return pet;
         }
+
         private AddPetCommand CreateValidAddPetCommand(VolunteerId volunteerId)
         {
             var name = "test";
@@ -272,7 +286,9 @@ namespace PetFamily.Application.UnitTests
                 DateOnly.FromDateTime(DateTime.Now),
                 true,
                 "FoundHome",
-                requisites);
+                requisites,
+                Guid.NewGuid(),
+                Guid.NewGuid());
         }
 
         private AddPetCommand CreateNotValidAddPetCommand(VolunteerId volunteerId)
@@ -299,7 +315,9 @@ namespace PetFamily.Application.UnitTests
                 DateOnly.FromDateTime(DateTime.Now),
                 true,
                 "FoundHome",
-                requisites);
+                requisites,
+                Guid.NewGuid(),
+                Guid.NewGuid());
         }
     }
 }

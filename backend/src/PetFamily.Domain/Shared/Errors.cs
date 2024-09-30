@@ -30,7 +30,12 @@ namespace PetFamily.Domain.Shared
             public static Error AlreadyExist(string? name = null)
             {
                 var label = name == null ? " " : $" '{name}' ";
-                return Error.Validation("record.already.exist", $"record{label}already exist");
+                return Error.Conflict("record.already.exist", $"record{label}already exist");
+            }
+
+            public static Error AlreadyExists(string name, string key, string value)
+            {
+                return Error.Conflict("record.already.exists", $"{name} already exists with {key + " = " + value}");
             }
 
             public static Error WrongEmail(string? email = null)
@@ -50,6 +55,11 @@ namespace PetFamily.Domain.Shared
                 var label = name == null ? "" : $" '{name}'";
                 var forMaxLabel = max == null ? "" : $" and more than {max}";
                 return Error.Validation("out.of.range", $"Value{label} can not be less than {min}{forMaxLabel}");
+            }
+
+            public static Error AlreadyUsed(Guid id)
+            {
+                return Error.Conflict("value.already.used", $"{id} is already used");
             }
         }
     }

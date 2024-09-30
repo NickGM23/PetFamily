@@ -11,6 +11,7 @@ using PetFamily.Application.Extensions;
 using PetFamily.Domain.Models;
 using PetFamily.Domain.Enums;
 using PetFamily.Application.Database;
+using PetFamily.Application.Species;
 
 namespace PetFamily.Application.Volunteers.AddPet
 {
@@ -19,23 +20,29 @@ namespace PetFamily.Application.Volunteers.AddPet
         private const string BUCKET_NAME = "photos";
         private readonly IFileProvider _fileProvider;
         private readonly IVolunteersRepository _repository;
+        private readonly IReadDbContext _readDbContext;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<AddPetCommand> _validator;
         private readonly ILogger<AddPetHandler> _logger;
+        private readonly ISpeciesRepository _speciesRepository;
 
 
         public AddPetHandler(
             IFileProvider fileProvider,
             IVolunteersRepository volunteersRepository,
+            IReadDbContext readDbContext,
             IUnitOfWork unitOfWork,
             IValidator<AddPetCommand> validator,
-            ILogger<AddPetHandler> logger)
+            ILogger<AddPetHandler> logger,
+            ISpeciesRepository speciesRepository)
         {
             _fileProvider = fileProvider;
             _repository = volunteersRepository;
+            _readDbContext = readDbContext;
             _unitOfWork = unitOfWork;
             _validator = validator;
             _logger = logger;
+            _speciesRepository = speciesRepository;
         }
 
         public async Task<Result<Guid, ErrorList>> Handle(
@@ -51,6 +58,17 @@ namespace PetFamily.Application.Volunteers.AddPet
             if (volunteerResult.IsFailure)
                 return volunteerResult.Error.ToErrorList();
 
+            var isSpeciesExists = _readDbContext.Species.Any(s => s.Id == command.SpeciesId);
+
+            if (isSpeciesExists == false)
+                return Errors.General.NotFound(command.SpeciesId).ToErrorList();
+
+            var isBreedExists = _readDbContext.Breeds.Any(b =>
+                b.Id == command.BreedId && b.SpeciesId == command.SpeciesId);
+
+            if (isBreedExists == false)
+                return Errors.General.NotFound(command.BreedId).ToErrorList();
+
             var pet = InitPet(command);
             volunteerResult.Value.AddPet(pet);
 
@@ -65,7 +83,7 @@ namespace PetFamily.Application.Volunteers.AddPet
         {
             var petId = PetId.NewPetId();
             var name = Name.Create(command.Name).Value;
-            var petBreed = PetBreed.Create(SpeciesId.Empty(), BreedId.Empty()).Value;
+            var petBreed = PetBreed.Create(SpeciesId.Create(command.SpeciesId), command.BreedId).Value;
             var description = Description.Create(command.Description).Value;
             var color = LowTextLength.Create(command.Color).Value;
             var healthInfo = HighTextLength.Create(command.HealthInfo).Value;

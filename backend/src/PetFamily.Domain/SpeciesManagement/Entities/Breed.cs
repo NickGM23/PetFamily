@@ -2,9 +2,9 @@
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.Shared.ValueObjects.Ids;
 
-namespace PetFamily.Domain.Models
+namespace PetFamily.Domain.SpeciesManagement.Entities
 {
-    public class Breed : Shared.Entity<BreedId>, ISoftDeletable
+    public class Breed : Entity<BreedId>, ISoftDeletable
     {
         private bool _isDeleted = false;
 

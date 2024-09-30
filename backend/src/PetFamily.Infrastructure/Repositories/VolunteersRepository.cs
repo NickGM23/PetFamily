@@ -5,14 +5,15 @@ using PetFamily.Application.Volunteers;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.ValueObjects.Ids;
 using PetFamily.Domain.VolunteersManagement;
+using PetFamily.Infrastructure.DbContexts;
 
 namespace PetFamily.Infrastructure.Repositories
 {
     public class VolunteersRepository : IVolunteersRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly WriteDbContext _context;
 
-        public VolunteersRepository(ApplicationDbContext context)
+        public VolunteersRepository(WriteDbContext context)
         {
             _context = context;
         }
@@ -27,6 +28,7 @@ namespace PetFamily.Infrastructure.Repositories
         public async Task<Result<Volunteer, Error>> GetById(Guid id, CancellationToken cancellationToken = default)
         {
             var res = await _context.Volunteers
+                .Include(v => v.Pets)
                 .FirstOrDefaultAsync(v => v.Id == VolunteerId.Create(id), cancellationToken);
 
             if (res is null)

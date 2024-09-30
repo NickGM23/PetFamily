@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using PetFamily.Infrastructure;
+using PetFamily.Infrastructure.DbContexts;
 
 #nullable disable
 
 namespace PetFamily.Infrastructure.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(WriteDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -23,17 +23,21 @@ namespace PetFamily.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("PetFamily.Domain.Models.Breed", b =>
+            modelBuilder.Entity("PetFamily.Domain.SpeciesManagement.Entities.Breed", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<bool>("_isDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
                     b.Property<Guid?>("species_id")
                         .HasColumnType("uuid")
                         .HasColumnName("species_id");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Description", "PetFamily.Domain.Models.Breed.Description#Description", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("Description", "PetFamily.Domain.SpeciesManagement.Entities.Breed.Description#Description", b1 =>
                         {
                             b1.IsRequired();
 
@@ -44,7 +48,7 @@ namespace PetFamily.Infrastructure.Migrations
                                 .HasColumnName("description");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("Name", "PetFamily.Domain.Models.Breed.Name#Name", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("Name", "PetFamily.Domain.SpeciesManagement.Entities.Breed.Name#Name", b1 =>
                         {
                             b1.IsRequired();
 
@@ -64,13 +68,17 @@ namespace PetFamily.Infrastructure.Migrations
                     b.ToTable("breeds", (string)null);
                 });
 
-            modelBuilder.Entity("PetFamily.Domain.Models.Species", b =>
+            modelBuilder.Entity("PetFamily.Domain.SpeciesManagement.Species", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Description", "PetFamily.Domain.Models.Species.Description#Description", b1 =>
+                    b.Property<bool>("_isDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
+                    b.ComplexProperty<Dictionary<string, object>>("Description", "PetFamily.Domain.SpeciesManagement.Species.Description#Description", b1 =>
                         {
                             b1.IsRequired();
 
@@ -81,7 +89,7 @@ namespace PetFamily.Infrastructure.Migrations
                                 .HasColumnName("description");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("Name", "PetFamily.Domain.Models.Species.Name#Name", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("Name", "PetFamily.Domain.SpeciesManagement.Species.Name#Name", b1 =>
                         {
                             b1.IsRequired();
 
@@ -348,9 +356,9 @@ namespace PetFamily.Infrastructure.Migrations
                     b.ToTable("volunteers", (string)null);
                 });
 
-            modelBuilder.Entity("PetFamily.Domain.Models.Breed", b =>
+            modelBuilder.Entity("PetFamily.Domain.SpeciesManagement.Entities.Breed", b =>
                 {
-                    b.HasOne("PetFamily.Domain.Models.Species", null)
+                    b.HasOne("PetFamily.Domain.SpeciesManagement.Species", null)
                         .WithMany("Breeds")
                         .HasForeignKey("species_id")
                         .HasConstraintName("fk_breeds_species_species_id");
@@ -508,7 +516,7 @@ namespace PetFamily.Infrastructure.Migrations
                     b.Navigation("SocialNetworks");
                 });
 
-            modelBuilder.Entity("PetFamily.Domain.Models.Species", b =>
+            modelBuilder.Entity("PetFamily.Domain.SpeciesManagement.Species", b =>
                 {
                     b.Navigation("Breeds");
                 });

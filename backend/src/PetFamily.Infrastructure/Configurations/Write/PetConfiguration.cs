@@ -1,12 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PetFamily.Application.Dtos;
 using PetFamily.Domain.Enums;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.Shared.ValueObjects.Ids;
 using PetFamily.Domain.VolunteersManagement.Entities;
+using PetFamily.Infrastructure.Extensions;
 
-namespace PetFamily.Infrastructure.Configurations
+namespace PetFamily.Infrastructure.Configurations.Write
 {
     public class PetConfiguration : IEntityTypeConfiguration<Pet>
     {
@@ -74,7 +76,7 @@ namespace PetFamily.Infrastructure.Configurations
                 pa.Property(a => a.City)
                   .IsRequired()
                   .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
-                  .HasColumnName("city"); 
+                  .HasColumnName("city");
 
                 pa.Property(a => a.Street)
                   .IsRequired()
@@ -125,19 +127,13 @@ namespace PetFamily.Infrastructure.Configurations
                 status => status.ToString(),
                 value => (HelpStatus)Enum.Parse(typeof(HelpStatus), value));
 
-            builder.OwnsOne(p => p.Requisites, pb =>
+            builder.OwnsOne(v => v.Requisites, vb =>
             {
-                pb.ToJson("requisites");
-
-                pb.OwnsMany(pr => pr.Requisites, prb =>
-                {
-                    prb.Property(r => r.Name)
-                    .IsRequired()
-                    .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
-                    prb.Property(r => r.Description)
-                    .IsRequired()
-                    .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
-                });
+                vb.Property(r => r.Requisites)
+                    .ValueObjectsCollectionJsonConversion(
+                        r => new RequisiteDto(r.Name, r.Description),
+                        dto => Requisite.Create(dto.Name, dto.Description).Value)
+                    .HasColumnName("requisites");
             });
 
             builder.OwnsOne(p => p.PetPhotos, pb =>
