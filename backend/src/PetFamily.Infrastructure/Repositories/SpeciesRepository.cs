@@ -35,6 +35,7 @@ namespace PetFamily.Infrastructure.Repositories
         public async Task<Result<Species, Error>> GetById(Guid id, CancellationToken cancellationToken = default)
         {
             var res = await _context.Species
+                .Include(s => s.Breeds)
                 .FirstOrDefaultAsync(v => v.Id == SpeciesId.Create(id), cancellationToken);
 
             if (res is null)
@@ -48,6 +49,7 @@ namespace PetFamily.Infrastructure.Repositories
         public async Task<Result<Species, Error>> GetByName(string speciesName, CancellationToken cancellationToken = default)
         {
             var res = await _context.Species
+                .Include(s => s.Breeds)
                 .FirstOrDefaultAsync(v => v.Name.Value.ToLower().Equals(speciesName.ToLower()), cancellationToken);
 
             if (res is null)

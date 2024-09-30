@@ -28,6 +28,7 @@ namespace PetFamily.Infrastructure.Repositories
         public async Task<Result<Volunteer, Error>> GetById(Guid id, CancellationToken cancellationToken = default)
         {
             var res = await _context.Volunteers
+                .Include(v => v.Pets)
                 .FirstOrDefaultAsync(v => v.Id == VolunteerId.Create(id), cancellationToken);
 
             if (res is null)

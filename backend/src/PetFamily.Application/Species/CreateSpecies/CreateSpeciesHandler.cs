@@ -17,20 +17,17 @@ namespace PetFamily.Application.Species.CreateSpecies
         private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<CreateSpeciesCommand> _validator;
         private readonly ISpeciesRepository _repository;
-        private readonly IReadDbContext _readDbContext;
 
         public CreateSpeciesHandler(
             ILogger<CreateSpeciesHandler> logger,
             IUnitOfWork unitOfWork,
             IValidator<CreateSpeciesCommand> validator,
-            ISpeciesRepository repository,
-            IReadDbContext readDbContext)
+            ISpeciesRepository repository)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
             _validator = validator;
             _repository = repository;
-            _readDbContext = readDbContext;
         }
 
         public async Task<Result<Guid, ErrorList>> Handle(
