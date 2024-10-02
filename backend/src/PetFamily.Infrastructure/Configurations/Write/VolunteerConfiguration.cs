@@ -88,38 +88,6 @@ namespace PetFamily.Infrastructure.Configurations.Write
                     .HasColumnName("social_networks");
             });
 
-            //builder.OwnsOne(v => v.SocialNetworks, vb =>
-            //{
-            //    vb.ToJson();
-
-            //    vb.OwnsMany(vs => vs.SocialNetworks, vsb =>
-            //    {
-            //        vsb.Property(r => r.Name)
-            //        .IsRequired()
-            //        .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
-            //        vsb.Property(r => r.Link)
-            //        .IsRequired()
-            //        .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
-
-            //    });
-            //});
-
-            //builder.OwnsOne(v => v.Requisites, vb =>
-            //{
-            //    vb.ToJson();
-
-            //    vb.OwnsMany(vr => vr.Requisites, vrb =>
-            //    {
-            //        vrb.Property(r => r.Name)
-            //        .IsRequired()
-            //        .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
-            //        vrb.Property(r => r.Description)
-            //        .IsRequired()
-            //        .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
-
-            //    });
-            //});
-
             builder.HasMany(v => v.Pets)
                 .WithOne()
                 .HasForeignKey("volunteer_id");

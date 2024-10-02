@@ -8,9 +8,9 @@ namespace PetFamily.Infrastructure.Extensions
     public static class EfCoreFluentApiExtensions
     {
         public static PropertyBuilder<IReadOnlyList<TValueObject>> ValueObjectsCollectionJsonConversion<TValueObject, TDto>(
-    this PropertyBuilder<IReadOnlyList<TValueObject>> builder,
-    Func<TValueObject, TDto> toDtoSelector,
-    Func<TDto, TValueObject> toValueObjectSelector)
+            this PropertyBuilder<IReadOnlyList<TValueObject>> builder,
+            Func<TValueObject, TDto> toDtoSelector,
+            Func<TDto, TValueObject> toValueObjectSelector)
         {
             return builder.HasConversion(
                     valueObjects => SerializeValueObjectsCollection(valueObjects, toDtoSelector),

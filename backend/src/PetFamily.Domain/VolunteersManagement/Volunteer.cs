@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Enums;
 using PetFamily.Domain.Models;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.ValueObjects;
@@ -133,6 +134,18 @@ namespace PetFamily.Domain.VolunteersManagement
             _pets.Add(pet);
 
             return Result.Success<Error>();
+        }
+
+        public void UpdatePet(Pet updatedPet)
+        {
+            var pet = GetPetById(updatedPet.Id).Value;
+
+            pet.UpdateInfo(updatedPet);
+        }
+
+        public void UpdatePetStatus(Pet pet, HelpStatus helpStatus)
+        {
+            pet.UpdateStatus(helpStatus);
         }
 
         public UnitResult<Error> MovePet(Pet pet, SerialNumber serialNumber)

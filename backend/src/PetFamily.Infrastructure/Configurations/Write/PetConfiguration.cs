@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Application.Dtos;
 using PetFamily.Domain.Enums;
+using PetFamily.Domain.Models;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.Shared.ValueObjects.Ids;
@@ -136,22 +137,13 @@ namespace PetFamily.Infrastructure.Configurations.Write
                     .HasColumnName("requisites");
             });
 
-            builder.OwnsOne(p => p.PetPhotos, pb =>
+            builder.OwnsOne(v => v.PetPhotos, vb =>
             {
-                pb.ToJson("photos");
-
-                pb.OwnsMany(pp => pp.PetPhotos, ppp =>
-                {
-                    ppp.Property(r => r.Path)
-                       .HasConversion(
-                            p => p.Path,
-                            value => FilePath.Create(value).Value)
-                        .IsRequired()
-                        .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
-
-                    ppp.Property(r => r.IsMain)
-                        .IsRequired();
-                });
+                vb.Property(r => r.PetPhotos)
+                    .ValueObjectsCollectionJsonConversion(
+                        r => new PetPhotoDto(r.Path.Path, r.IsMain),
+                        dto => PetPhoto.Create(FilePath.Create(dto.Path).Value, dto.IsMain).Value)
+                    .HasColumnName("photos");
             });
 
             builder.Property(p => p.DateCteate)
