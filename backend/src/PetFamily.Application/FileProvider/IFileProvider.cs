@@ -13,6 +13,8 @@ namespace PetFamily.Application.FileProvider
 
         Task<Result<string, Error>> Remove(FileInfo fileInfo, CancellationToken cancellationToken = default);
 
+        Task<UnitResult<ErrorList>> DeleteFiles(IEnumerable<FileInfo> files, CancellationToken cancellationToken = default);
+
         Task<Result<string, Error>> GetFile(FileInfo fileInfo, CancellationToken cancellationToken = default);
 
         Task<Result<List<string>, Error>> GetFiles(IEnumerable<FileInfo> filesInfo,

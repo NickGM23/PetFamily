@@ -2,11 +2,11 @@
 using PetFamily.Application.Validation;
 using PetFamily.Domain.Shared;
 
-namespace PetFamily.Application.Volunteers.RemoveFilesFromPet
+namespace PetFamily.Application.Volunteers.RemovePhotosFromPet
 {
-    public class RemoveFilesFromPetValidator : AbstractValidator<RemoveFilesFromPetCommand>
+    public class RemovePhotosFromPetValidator : AbstractValidator<RemovePhotosFromPetCommand>
     {
-        public RemoveFilesFromPetValidator()
+        public RemovePhotosFromPetValidator()
         {
             RuleFor(v => v.VolunteerId).NotEmpty()
                 .WithError(Errors.General.ValueIsRequired("Volunteer id"));

@@ -174,6 +174,6 @@ namespace PetFamily.Domain.VolunteersManagement.Entities
             HelpStatus = helpStatus;
         }
 
-        public void DeletePhotos() => PetPhotos = new (new List<PetPhoto>());
+        internal void RemovePhotos() => PetPhotos = new (new List<PetPhoto>());
     }
 }

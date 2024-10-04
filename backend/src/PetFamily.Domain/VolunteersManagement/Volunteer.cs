@@ -148,6 +148,11 @@ namespace PetFamily.Domain.VolunteersManagement
             pet.UpdateStatus(helpStatus);
         }
 
+        public void DeletePetPhotos(Pet pet)
+        {
+            pet.RemovePhotos();
+        }
+
         public UnitResult<Error> MovePet(Pet pet, SerialNumber serialNumber)
         {
             if (_pets.Select(p => p.Id == pet.Id).Any() == false)

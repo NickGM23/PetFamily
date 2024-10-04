@@ -9,24 +9,25 @@ using PetFamily.Application.Abstractions;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.FileProvider;
 using FileInfo = PetFamily.Application.FileProvider.FileInfo;
+using System.IO;
 
-namespace PetFamily.Application.Volunteers.RemoveFilesFromPet
+namespace PetFamily.Application.Volunteers.RemovePhotosFromPet
 {
 
-    public class RemoveFilesFromPetHandler : ICommandHandler<Guid, RemoveFilesFromPetCommand>
+    public class RemovePhotosFromPetHandler : ICommandHandler<Guid, RemovePhotosFromPetCommand>
     {
         private readonly IFileProvider _fileProvider;
         private readonly IVolunteersRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IValidator<RemoveFilesFromPetCommand> _validator;
-        private readonly ILogger<RemoveFilesFromPetHandler> _logger;
+        private readonly IValidator<RemovePhotosFromPetCommand> _validator;
+        private readonly ILogger<RemovePhotosFromPetHandler> _logger;
 
-        public RemoveFilesFromPetHandler(
+        public RemovePhotosFromPetHandler(
             IFileProvider fileProvider,
             IVolunteersRepository repository,
             IUnitOfWork unitOfWork,
-            IValidator<RemoveFilesFromPetCommand> validator,
-            ILogger<RemoveFilesFromPetHandler> logger)
+            IValidator<RemovePhotosFromPetCommand> validator,
+            ILogger<RemovePhotosFromPetHandler> logger)
         {
             _fileProvider = fileProvider;
             _repository = repository;
@@ -35,7 +36,7 @@ namespace PetFamily.Application.Volunteers.RemoveFilesFromPet
             _logger = logger;
         }
 
-        public async Task<Result<Guid, ErrorList>> Handle(RemoveFilesFromPetCommand command,
+        public async Task<Result<Guid, ErrorList>> Handle(RemovePhotosFromPetCommand command,
             CancellationToken cancellationToken = default)
         {
             var validationResult = await _validator.ValidateAsync(command, cancellationToken);
@@ -60,15 +61,24 @@ namespace PetFamily.Application.Volunteers.RemoveFilesFromPet
                     return command.PetId;
 
                 var petPhotos = pet.PetPhotos.PetPhotos.ToList();
-                pet.DeletePhotos();
+                
+                volunteer.Value.DeletePetPhotos(pet);
+                
                 await _unitOfWork.SaveChanges(cancellationToken);
+
+                List<FileInfo> filesInfo = [];
 
                 foreach (var petPhoto in petPhotos)
                 {
-                    var fileInfo = new FileInfo(command.BucketName, petPhoto.Path.Path);
-                    var filePathPhoto = await _fileProvider.GetFile(fileInfo, cancellationToken);
-                    if (filePathPhoto.IsSuccess)
-                        await _fileProvider.Remove(fileInfo, cancellationToken);
+                    filesInfo.Add(new FileInfo(command.BucketName, petPhoto.Path.Path));
+                }
+
+                var deleteResult = await _fileProvider.DeleteFiles(filesInfo, cancellationToken);
+
+                if (deleteResult.IsFailure)
+                {
+                    transaction.Rollback();
+                    return deleteResult.Error;
                 }
 
                 transaction.Commit();

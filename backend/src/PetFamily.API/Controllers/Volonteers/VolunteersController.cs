@@ -10,7 +10,7 @@ using PetFamily.Application.Volunteers.CreateVolunteer;
 using PetFamily.Application.Volunteers.Delete;
 using PetFamily.Application.Volunteers.Queries.GetVolunteer;
 using PetFamily.Application.Volunteers.Queries.GetVolunteersWithPagination;
-using PetFamily.Application.Volunteers.RemoveFilesFromPet;
+using PetFamily.Application.Volunteers.RemovePhotosFromPet;
 using PetFamily.Application.Volunteers.UpdateMainInfo;
 using PetFamily.Application.Volunteers.UpdatePet;
 using PetFamily.Application.Volunteers.UpdatePetStatus;
@@ -197,10 +197,10 @@ namespace PetFamily.API.Controllers.Volonteers
         }
 
         [HttpDelete("{id:guid}/pet/photos")]
-        public async Task<ActionResult> RemoveFilesFromPet(
+        public async Task<ActionResult> RemovePhotosFromPet(
             [FromRoute] Guid id,
-            [FromForm] RemoveFilesFromPetRequest request,
-            [FromServices] RemoveFilesFromPetHandler handler,
+            [FromForm] RemovePhotosFromPetRequest request,
+            [FromServices] RemovePhotosFromPetHandler handler,
             CancellationToken cancellationToken
         )
         {

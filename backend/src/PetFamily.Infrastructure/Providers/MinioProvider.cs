@@ -6,6 +6,7 @@ using Minio;
 using PetFamily.Domain.Shared;
 using PetFamily.Application.FileProvider;
 using FileInfo = PetFamily.Application.FileProvider.FileInfo;
+using IFileProvider = PetFamily.Application.FileProvider.IFileProvider;
 
 namespace PetFamily.Infrastructure.Providers
 {
@@ -106,6 +107,86 @@ namespace PetFamily.Infrastructure.Providers
             }
         }
 
+        public async Task<UnitResult<ErrorList>> DeleteFiles(
+            IEnumerable<FileInfo> files, 
+            CancellationToken cancellationToken = default)
+        {
+            var semaphoreSlim = new SemaphoreSlim(MAX_DEGREE_OF_PARALLELISM);
+            
+            var filesList = files.ToList();
+
+            try
+            {
+                var tasks = filesList.Select(async file =>
+                    await DeleteFile(file, semaphoreSlim, cancellationToken));
+
+                var deleteResults = await Task.WhenAll(tasks);
+
+                if (deleteResults.Any(p => p.IsFailure))
+                    return new ErrorList(deleteResults.Select(f => f.Error));
+
+                _logger.LogInformation("deleted {count} files from minio", deleteResults.Length);
+
+                return UnitResult.Success<ErrorList>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex,
+                    "Fail to upload files in minio, files amount: {amount}", filesList.Count);
+
+                return Error.Failure("file.upload", "Fail to upload files in minio")
+                    .ToErrorList();
+            }
+        }
+
+        private async Task<UnitResult<Error>> DeleteFile(
+            FileInfo fileInfo,
+            SemaphoreSlim semaphoreSlim,
+            CancellationToken cancellationToken)
+        {
+            await semaphoreSlim.WaitAsync(cancellationToken);
+
+            var statArgs = new StatObjectArgs()
+                .WithBucket(fileInfo.BucketName)
+                .WithObject(fileInfo.Path);
+
+            var statFile = await _minioClient.StatObjectAsync(statArgs);
+
+            if (statFile.ContentType == null)
+            {
+                _logger.LogError(
+                    "File with bucket '{bucket}', and name '{path}' not found",
+                    fileInfo.BucketName,
+                    fileInfo.Path);
+                return Error.NotFound("file.not.found", $"file '{fileInfo.Path}' not found");
+            }
+
+            var removeObjectArgs = new RemoveObjectArgs()
+                .WithBucket(fileInfo.BucketName)
+                .WithObject(fileInfo.Path);
+
+            try
+            {
+                await _minioClient
+                    .RemoveObjectAsync(removeObjectArgs, cancellationToken);
+
+                return UnitResult.Success<Error>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex,
+                    "Fail to delete file '{path}' in bucket '{bucket}' from minio",
+                    fileInfo.Path,
+                    fileInfo.BucketName);
+
+                return Error.Failure("file.delete", "Fail to delete file from minio");
+            }
+            finally
+            {
+                semaphoreSlim.Release();
+            }
+        }
+
         public async Task<Result<string, Error>> GetFile(
             FileInfo fileInfo,
             CancellationToken cancellationToken = default)
@@ -201,7 +282,7 @@ namespace PetFamily.Infrastructure.Providers
             catch (Exception ex)
             {
                 _logger.LogError(ex,
-                    "Fail to upload file in minio with path {path} in bucket {bucket}",
+                    "Fail to upload file in minio with path '{path}' in bucket '{bucket}'",
                     fileData.FileInfo.Path,
                     fileData.FileInfo.BucketName);
 
