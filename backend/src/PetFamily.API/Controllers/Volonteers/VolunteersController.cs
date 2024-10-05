@@ -10,7 +10,10 @@ using PetFamily.Application.Volunteers.CreateVolunteer;
 using PetFamily.Application.Volunteers.Delete;
 using PetFamily.Application.Volunteers.Queries.GetVolunteer;
 using PetFamily.Application.Volunteers.Queries.GetVolunteersWithPagination;
+using PetFamily.Application.Volunteers.RemovePhotosFromPet;
 using PetFamily.Application.Volunteers.UpdateMainInfo;
+using PetFamily.Application.Volunteers.UpdatePet;
+using PetFamily.Application.Volunteers.UpdatePetStatus;
 using PetFamily.Application.Volunteers.UpdateRequisites;
 using PetFamily.Application.Volunteers.UpdateSocialNetworks;
 using PetFamily.Application.Volunteers.UploadFilesToPet;
@@ -61,6 +64,7 @@ namespace PetFamily.API.Controllers.Volonteers
             CancellationToken cancellationToken = default)
         {
             var command = new DeleteVolunteerCommand(id);
+
             var result = await handler.Handle(command, cancellationToken);
 
             if (result.IsFailure)
@@ -135,6 +139,7 @@ namespace PetFamily.API.Controllers.Volonteers
             var command = new UploadFilesToPetCommand(id, petId, BUCKET_NAME, fileDtos);
 
             var result = await handler.Handle(command, cancellationToken);
+            
             if (result.IsFailure)
                 return result.Error.ToResponse();
 
@@ -150,6 +155,10 @@ namespace PetFamily.API.Controllers.Volonteers
             var query = request.ToQuery();
 
             var result = await handler.Handle(query, cancellationToken);
+            
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
             return Ok(result.Value);
         }
 
@@ -162,8 +171,59 @@ namespace PetFamily.API.Controllers.Volonteers
             var query = new GetVolunteerQuery(id);
 
             var result = await handler.Handle(query, cancellationToken);
+            
             if (result.IsFailure)
                 return result.Error.ToResponse();
+
+            return Ok(result.Value);
+        }
+
+        [HttpPut("{id:guid}/pet/{petId:guid}")]
+        public async Task<ActionResult<Guid>> UpdatePet(
+        [FromRoute] Guid id,
+        [FromRoute] Guid petId,
+        [FromBody] UpdatePetRequest request,
+        [FromServices] UpdatePetHandler handler,
+        CancellationToken cancellationToken = default)
+        {
+            var command = request.ToCommand(id, petId);
+
+            var result = await handler.Handle(command, cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
+        }
+
+        [HttpDelete("{id:guid}/pet/photos")]
+        public async Task<ActionResult> RemovePhotosFromPet(
+            [FromRoute] Guid id,
+            [FromForm] RemovePhotosFromPetRequest request,
+            [FromServices] RemovePhotosFromPetHandler handler,
+            CancellationToken cancellationToken
+        )
+        {
+            var result = await handler.Handle(request.ToCommand(id, BUCKET_NAME), cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
+        }
+
+        [HttpPut("{id:guid}/pet/{petId:guid}/status")]
+        public async Task<ActionResult<Guid>> UpdatePetStatus(
+            [FromRoute] Guid id,
+            [FromRoute] Guid petId,
+            [FromBody] UpdatePetStatusRequest request,
+            [FromServices] UpdatePetStatusHandler handler,
+            CancellationToken cancellationToken = default)
+        {
+            var command = request.ToCommand(id, petId);
+
+            var result = await handler.Handle(command, cancellationToken);
+
             return Ok(result.Value);
         }
     }

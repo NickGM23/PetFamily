@@ -56,5 +56,15 @@ namespace PetFamily.Domain.SpeciesManagement
             foreach (var breed in _breeds)
                 breed.Restore();
         }
+
+        public Result<Breed, Error> GetBreedById(BreedId breedId)
+        {
+            var breed = _breeds.FirstOrDefault(b => b.Id == breedId);
+
+            if (breed is null)
+                return Errors.General.NotFound(breedId);
+
+            return breed;
+        }
     }
 }

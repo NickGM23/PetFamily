@@ -10,11 +10,6 @@ namespace PetFamily.Application.Extensions
         {
             var validationErrors = validationResult.Errors;
 
-            //var errors = from validationError in validationErrors
-            //             let errorMessage = validationError.ErrorMessage
-            //             let error = Error.Deserialize(errorMessage)
-            //             select Error.Validation(error.Code, error.Message, string.IsNullOrEmpty(error.InvalidField) ? validationError.PropertyName : error.InvalidField);
-
             var errors = from validationError in validationErrors
                          let errorMessage = validationError.ErrorMessage
                          let error = Error.Deserialize(errorMessage)

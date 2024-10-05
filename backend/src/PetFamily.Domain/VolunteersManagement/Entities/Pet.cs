@@ -150,5 +150,30 @@ namespace PetFamily.Domain.VolunteersManagement.Entities
 
         public void MoveSerialNumberToBackward() =>
             SerialNumber = SerialNumber.Create(SerialNumber.Value - 1).Value;
+
+        public void UpdateInfo(Pet updatedPet)
+        {
+            Name = updatedPet.Name;
+            Breed = updatedPet.Breed;
+            Description = updatedPet.Description;
+            Color = updatedPet.Color;
+            HealthInfo = updatedPet.HealthInfo;
+            Address = updatedPet.Address;
+            Weight = updatedPet.Weight;
+            Height = updatedPet.Height;
+            PhoneNumber = updatedPet.PhoneNumber;
+            IsCastrated = updatedPet.IsCastrated;
+            BirthDay = updatedPet.BirthDay;
+            IsVaccinated = updatedPet.IsVaccinated;
+            HelpStatus = updatedPet.HelpStatus;
+            Requisites = updatedPet.Requisites;
+        }
+
+        public void UpdateStatus(HelpStatus helpStatus)
+        {
+            HelpStatus = helpStatus;
+        }
+
+        internal void RemovePhotos() => PetPhotos = new (new List<PetPhoto>());
     }
 }

@@ -1,26 +1,33 @@
-﻿
-using FluentValidation;
-using PetFamily.Application.Validation;
-using PetFamily.Domain.Shared;
+﻿using FluentValidation;
 using PetFamily.Domain.Shared.ValueObjects;
+using PetFamily.Domain.Shared;
+using PetFamily.Application.Validation;
 
-namespace PetFamily.Application.Volunteers.AddPet
+namespace PetFamily.Application.Volunteers.UpdatePet
 {
-    public class AddPetCommandValidator : AbstractValidator<AddPetCommand>
+    public class UpdatePetValidator : AbstractValidator<UpdatePetCommand>
     {
-        public AddPetCommandValidator()
+        public UpdatePetValidator()
         {
-            RuleFor(a => a.VolunteerId).NotEmpty()
+            RuleFor(v => v.VolunteerId).NotEmpty()
                 .WithError(Errors.General.ValueIsRequired("Volunteer id"));
+
+            RuleFor(v => v.PetId).NotEmpty()
+                .WithError(Errors.General.ValueIsRequired("Pet id"));
+
             RuleFor(a => a.Name).MustBeValueObject(Name.Create);
+
             RuleFor(a => a.Description).MustBeValueObject(Description.Create);
+
             RuleFor(a => a.Color).MustBeValueObject(a => LowTextLength.Create(a, "Color"));
-            RuleFor(a => a.HealthInfo).MustBeValueObject(a => HighTextLength.Create(a, "Health info"));
+
+            RuleFor(c => c.HealthInfo).NotEmpty()
+                .WithError(Errors.General.ValueIsRequired("Health info"));
 
             RuleFor(a => a.Address)
                 .MustBeValueObject(a => Address.Create(
                     a.Country,
-                    a.City, 
+                    a.City,
                     a.Street,
                     a.PostalCode,
                     a.HouseNumber,
