@@ -9,7 +9,6 @@ using PetFamily.Application.Abstractions;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.FileProvider;
 using FileInfo = PetFamily.Application.FileProvider.FileInfo;
-using System.IO;
 
 namespace PetFamily.Application.Volunteers.RemovePhotosFromPet
 {

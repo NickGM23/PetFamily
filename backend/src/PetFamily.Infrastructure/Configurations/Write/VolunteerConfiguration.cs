@@ -90,7 +90,9 @@ namespace PetFamily.Infrastructure.Configurations.Write
 
             builder.HasMany(v => v.Pets)
                 .WithOne()
-                .HasForeignKey("volunteer_id");
+                .HasForeignKey("volunteer_id")
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
 
             builder.Navigation(v => v.Pets).AutoInclude();
 
