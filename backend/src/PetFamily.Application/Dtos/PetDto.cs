@@ -6,6 +6,8 @@ namespace PetFamily.Application.Dtos
     {
         public Guid Id { get; init; }
 
+        public Guid VolunteerId { get; init; }
+
         public string Name { get; init; } = default!;
 
         public string Description { get; init; } = default!;

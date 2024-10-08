@@ -16,6 +16,8 @@ using PetFamily.Domain.VolunteersManagement;
 using PetFamily.Domain.VolunteersManagement.Entities;
 using PetFamily.Application.FileProvider;
 using PetFamily.Application.Species;
+using Microsoft.EntityFrameworkCore;
+using PetFamily.Domain.SpeciesManagement.Entities;
 
 namespace PetFamily.Application.UnitTests
 {
@@ -27,7 +29,7 @@ namespace PetFamily.Application.UnitTests
         private readonly Mock<ISpeciesRepository> _speciesRepositoryMock;
         private readonly Mock<ILogger<AddPetHandler>> _loggerMock;
         private readonly Mock<IValidator<AddPetCommand>> _validatorMock;
-        private readonly Mock<IReadDbContext> _readDbContext;
+        private readonly Mock<IReadDbContext> _readDbContextMock;
 
         public AddPetTests()
         {
@@ -37,7 +39,7 @@ namespace PetFamily.Application.UnitTests
             _loggerMock = new Mock<ILogger<AddPetHandler>>();
             _validatorMock = new Mock<IValidator<AddPetCommand>>();
             _speciesRepositoryMock = new Mock<ISpeciesRepository>();
-            _readDbContext = new Mock<IReadDbContext>();  
+            _readDbContextMock = new Mock<IReadDbContext>();  
         }
 
         [Fact]
@@ -45,7 +47,13 @@ namespace PetFamily.Application.UnitTests
         { 
             var ct = CancellationToken.None;
             var volunteer = CreateVolunteer(0);
-            var command = CreateValidAddPetCommand(volunteer.Id);
+
+            var species = CreateSpecies();
+            var breed = CreateBreed();
+            species.AddBreed(breed);
+            ReadDbContextMockSetup(species, breed);
+
+            var command = CreateValidAddPetCommand(volunteer.Id, species.Id, breed.Id);
 
             _unitOfWorkMock.Setup(u => u.SaveChanges(ct))
                 .Returns(Task.CompletedTask);
@@ -57,7 +65,7 @@ namespace PetFamily.Application.UnitTests
             var addPetHandler = new AddPetHandler(
                 _fileProviderMock.Object,
                 _volunteersRepositoryMock.Object,
-                _readDbContext.Object,
+                _readDbContextMock.Object,
                 _unitOfWorkMock.Object,
                 _validatorMock.Object,
                 _loggerMock.Object,
@@ -83,7 +91,13 @@ namespace PetFamily.Application.UnitTests
 
             var ct = CancellationToken.None;
             var volunteer = CreateVolunteer(petsCount);
-            var command = CreateValidAddPetCommand(volunteer.Id);
+            
+            var species = CreateSpecies();
+            var breed = CreateBreed();
+            species.AddBreed(breed);
+            ReadDbContextMockSetup(species, breed);
+
+            var command = CreateValidAddPetCommand(volunteer.Id, species.Id, breed.Id);
 
             _unitOfWorkMock.Setup(u => u.SaveChanges(ct))
                 .Returns(Task.CompletedTask);
@@ -95,7 +109,7 @@ namespace PetFamily.Application.UnitTests
             var addPetHandler = new AddPetHandler(
                 _fileProviderMock.Object,
                 _volunteersRepositoryMock.Object,
-                _readDbContext.Object,
+                _readDbContextMock.Object,
                 _unitOfWorkMock.Object,
                 _validatorMock.Object,
                 _loggerMock.Object,
@@ -135,7 +149,7 @@ namespace PetFamily.Application.UnitTests
             var addPetHandler = new AddPetHandler(
                 _fileProviderMock.Object,
                 _volunteersRepositoryMock.Object,
-                _readDbContext.Object,
+                _readDbContextMock.Object,
                 _unitOfWorkMock.Object,
                 _validatorMock.Object,
                 _loggerMock.Object,
@@ -156,7 +170,10 @@ namespace PetFamily.Application.UnitTests
             // arrange
             var ct = CancellationToken.None;
             var volunteer = CreateVolunteer(0);
-            var command = CreateValidAddPetCommand(volunteer.Id);
+            var species = CreateSpecies();
+            var breed = CreateBreed();
+            species.AddBreed(breed);
+            var command = CreateValidAddPetCommand(volunteer.Id, species.Id, breed.Id);
 
             _unitOfWorkMock.Setup(u => u.SaveChanges(ct))
                 .Returns(Task.CompletedTask);
@@ -168,7 +185,7 @@ namespace PetFamily.Application.UnitTests
             var addPetHandler = new AddPetHandler(
                 _fileProviderMock.Object,
                 _volunteersRepositoryMock.Object,
-                _readDbContext.Object,
+                _readDbContextMock.Object,
                 _unitOfWorkMock.Object,
                 _validatorMock.Object,
                 _loggerMock.Object,
@@ -262,7 +279,24 @@ namespace PetFamily.Application.UnitTests
             return pet;
         }
 
-        private AddPetCommand CreateValidAddPetCommand(VolunteerId volunteerId)
+        private Domain.SpeciesManagement.Species CreateSpecies()
+        {
+            return new Domain.SpeciesManagement.Species(
+                SpeciesId.NewSpeciesId(), 
+                Name.Create("Test name").Value, 
+                Description.Create("Test description").Value);
+        }
+
+        private Breed CreateBreed()
+        {
+            var breedId = BreedId.NewBreedId();
+            var name = Name.Create("Test name").Value;
+            var description = Description.Create("Test description").Value;
+
+            return new Breed(breedId, name, description);
+        }
+
+        private AddPetCommand CreateValidAddPetCommand(VolunteerId volunteerId, Guid speciesId, Guid breedId)
         {
             var name = "test";
             var description = "test";
@@ -287,8 +321,8 @@ namespace PetFamily.Application.UnitTests
                 true,
                 "FoundHome",
                 requisites,
-                Guid.NewGuid(),
-                Guid.NewGuid());
+                speciesId,
+                breedId);
         }
 
         private AddPetCommand CreateNotValidAddPetCommand(VolunteerId volunteerId)
@@ -318,6 +352,41 @@ namespace PetFamily.Application.UnitTests
                 requisites,
                 Guid.NewGuid(),
                 Guid.NewGuid());
+        }
+
+        private void ReadDbContextMockSetup(Domain.SpeciesManagement.Species species, Breed breed)
+        {
+            var spaciesDto = new SpeciesDto()
+            {
+                Id = species.Id.Value,
+                Name = species.Name.Value,
+                Description = species.Description.Value
+            };
+
+            var breedDto = new BreedDto(
+                breed.Id.Value,
+                species.Id.Value,
+                breed.Name.Value,
+                breed.Description.Value);
+
+            var speciesDtoData = new List<SpeciesDto>() { spaciesDto }.AsQueryable();
+
+            var mockSpeciesDtSet = new Mock<DbSet<SpeciesDto>>();
+            mockSpeciesDtSet.As<IQueryable<SpeciesDto>>().Setup(m => m.Provider).Returns(speciesDtoData.Provider);
+            mockSpeciesDtSet.As<IQueryable<SpeciesDto>>().Setup(m => m.Expression).Returns(speciesDtoData.Expression);
+            mockSpeciesDtSet.As<IQueryable<SpeciesDto>>().Setup(m => m.ElementType).Returns(speciesDtoData.ElementType);
+            mockSpeciesDtSet.As<IQueryable<SpeciesDto>>().Setup(m => m.GetEnumerator()).Returns(speciesDtoData.GetEnumerator());
+
+            var breedsDtoDate = new List<BreedDto>() { breedDto }.AsQueryable();
+
+            var mockBreedsDtSet = new Mock<DbSet<BreedDto>>();
+            mockBreedsDtSet.As<IQueryable<BreedDto>>().Setup(m => m.Provider).Returns(breedsDtoDate.Provider);
+            mockBreedsDtSet.As<IQueryable<BreedDto>>().Setup(m => m.Expression).Returns(breedsDtoDate.Expression);
+            mockBreedsDtSet.As<IQueryable<BreedDto>>().Setup(m => m.ElementType).Returns(breedsDtoDate.ElementType);
+            mockBreedsDtSet.As<IQueryable<BreedDto>>().Setup(m => m.GetEnumerator()).Returns(breedsDtoDate.GetEnumerator());
+
+            _readDbContextMock.Setup(x => x.Species).Returns(mockSpeciesDtSet.Object);
+            _readDbContextMock.Setup(x => x.Breeds).Returns(mockBreedsDtSet.Object);
         }
     }
 }
