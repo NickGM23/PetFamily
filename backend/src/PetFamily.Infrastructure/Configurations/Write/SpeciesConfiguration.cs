@@ -36,7 +36,9 @@ namespace PetFamily.Infrastructure.Configurations.Write
 
             builder.HasMany(v => v.Breeds)
                 .WithOne()
-                .HasForeignKey("species_id");
+                .HasForeignKey("species_id")
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
 
             builder.Navigation(v => v.Breeds).AutoInclude();
 

@@ -148,6 +148,31 @@ namespace PetFamily.Domain.VolunteersManagement
             pet.UpdateStatus(helpStatus);
         }
 
+
+        public UnitResult<Error> DeletePet(PetId petId)
+        {
+            var petResult = GetPetById(petId);
+
+            if (petResult.IsFailure)
+                return petResult.Error;
+
+            petResult.Value.Delete();
+
+            return Result.Success<Error>();
+        }
+
+        public Result<Pet, Error> ForceDeletePet(PetId petId)
+        {
+            var petResult = GetPetById(petId);
+
+            if (petResult.IsFailure)
+                return petResult.Error;
+
+            _pets.Remove(petResult.Value);
+
+            return petResult.Value;
+        }
+
         public void DeletePetPhotos(Pet pet)
         {
             pet.RemovePhotos();

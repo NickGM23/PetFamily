@@ -8,6 +8,7 @@ using PetFamily.Application.Models;
 using PetFamily.Application.Volunteers.AddPet;
 using PetFamily.Application.Volunteers.CreateVolunteer;
 using PetFamily.Application.Volunteers.Delete;
+using PetFamily.Application.Volunteers.DeletePet;
 using PetFamily.Application.Volunteers.Queries.GetVolunteer;
 using PetFamily.Application.Volunteers.Queries.GetVolunteersWithPagination;
 using PetFamily.Application.Volunteers.RemovePhotosFromPet;
@@ -223,6 +224,41 @@ namespace PetFamily.API.Controllers.Volonteers
             var command = request.ToCommand(id, petId);
 
             var result = await handler.Handle(command, cancellationToken);
+
+            return Ok(result.Value);
+        }
+
+
+        [HttpDelete("{id:guid}/pets/{petId:guid}")]
+        public async Task<ActionResult<Guid>> DeletePet(
+            [FromRoute] Guid id,
+            [FromRoute] Guid petId,
+            [FromServices] ICommandHandler<Guid, DeletePetCommand> handler,
+            CancellationToken cancellationToken = default)
+        {
+            var command = new DeletePetCommand(id, petId);
+
+            var result = await handler.Handle(command, cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
+        }
+
+        [HttpDelete("{id:guid}/pets/{petId:guid}/force")]
+        public async Task<ActionResult<Guid>> ForceDeletePet(
+            [FromRoute] Guid id,
+            [FromRoute] Guid petId,
+            [FromServices] ICommandHandler<Guid, RemovePhotosFromPetCommand> handler,
+            CancellationToken cancellationToken = default)
+        {
+            var command = new RemovePhotosFromPetCommand(id, petId, BUCKET_NAME);
+
+            var result = await handler.Handle(command, cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
 
             return Ok(result.Value);
         }
