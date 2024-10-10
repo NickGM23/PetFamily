@@ -191,7 +191,7 @@ namespace PetFamily.Domain.VolunteersManagement.Entities
                     ? PetPhoto.Create(petPhoto.Path, false).Value
                     : PetPhoto.Create(petPhoto.Path, true).Value);
             }
-            PetPhotos = new (newPetPhotoList);
+            PetPhotos = new (newPetPhotoList.OrderByDescending(x => x.IsMain));
 
             return Result.Success<Error>();
         }

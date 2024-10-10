@@ -34,6 +34,8 @@ namespace PetFamily.Application.Dtos
 
         public IEnumerable<RequisiteDto> Requisites { get; init; }
 
+        public IEnumerable<PetPhotoDto> Photos { get; init; } = default!;
+
         public Guid SpeciesId { get; init; }
 
         public Guid BreedId { get; init; }
