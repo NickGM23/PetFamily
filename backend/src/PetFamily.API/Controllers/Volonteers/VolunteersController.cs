@@ -12,12 +12,14 @@ using PetFamily.Application.Volunteers.DeletePet;
 using PetFamily.Application.Volunteers.Queries.GetVolunteer;
 using PetFamily.Application.Volunteers.Queries.GetVolunteersWithPagination;
 using PetFamily.Application.Volunteers.RemovePhotosFromPet;
+using PetFamily.Application.Volunteers.SetMainPetPhoto;
 using PetFamily.Application.Volunteers.UpdateMainInfo;
 using PetFamily.Application.Volunteers.UpdatePet;
 using PetFamily.Application.Volunteers.UpdatePetStatus;
 using PetFamily.Application.Volunteers.UpdateRequisites;
 using PetFamily.Application.Volunteers.UpdateSocialNetworks;
 using PetFamily.Application.Volunteers.UploadFilesToPet;
+using PetFamily.Domain.Shared.ValueObjects.Ids;
 
 namespace PetFamily.API.Controllers.Volonteers
 {
@@ -257,6 +259,20 @@ namespace PetFamily.API.Controllers.Volonteers
 
             var result = await handler.Handle(command, cancellationToken);
 
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
+        }
+
+        [HttpPatch("{volunteerId:guid}/pet/main-file")]
+        public async Task<ActionResult> SetMainPetPhoto(
+            [FromRoute] Guid volunteerId,
+            [FromBody] SetMainPetPhotoRequest request,
+            [FromServices] SetMainPetPhotoHandler handler,
+            CancellationToken token)
+        {
+            var result = await handler.Handle(request.ToCommand(volunteerId), token);
             if (result.IsFailure)
                 return result.Error.ToResponse();
 

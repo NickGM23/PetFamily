@@ -173,6 +173,20 @@ namespace PetFamily.Domain.VolunteersManagement
             return petResult.Value;
         }
 
+        public Result<Pet, Error> SetMainPetPhoto(PetId petId, string fileName)
+        {
+            var petResult = GetPetById(petId);
+
+            if (petResult.IsFailure)
+                return petResult.Error;
+
+            var result = petResult.Value.SetMainPhoto(fileName);
+            if (result.IsFailure)
+                return result.Error;
+
+            return petResult.Value;
+        }
+
         public void DeletePetPhotos(Pet pet)
         {
             pet.RemovePhotos();

@@ -72,6 +72,12 @@ namespace PetFamily.Infrastructure.Configurations.Read
                 .HasConversion(
                     requisites => JsonSerializer.Serialize(string.Empty, JsonSerializerOptions.Default),
                     json => JsonSerializer.Deserialize<RequisiteDto[]>(json, JsonSerializerOptions.Default)!);
+
+            builder.Property(i => i.Photos)
+                .HasConversion(
+                    requisites => JsonSerializer.Serialize(string.Empty, JsonSerializerOptions.Default),
+                    json => JsonSerializer.Deserialize<PetPhotoDto[]>(json, JsonSerializerOptions.Default)!);
+
         }
     }
 }

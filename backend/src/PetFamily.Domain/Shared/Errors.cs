@@ -21,6 +21,11 @@ namespace PetFamily.Domain.Shared
                 return Error.NotFound("record.not.found", $"record not found{forId}.");
             }
 
+            public static Error NotFound(string code, string messageError)
+            {
+                return Error.NotFound(code, messageError);
+            }
+
             public static Error ValueIsRequired(string? name = null)
             {
                 var label = name == null ? " " : $" '{name}' ";
