@@ -12,8 +12,7 @@ using System.Linq.Expressions;
 namespace PetFamily.Application.Volunteers.Queries.GetPetsWithPagination
 {
     public class GetPetsWithPaginationHandler(
-
-    IReadDbContext readDbContext) : IQueryHandler<PagedList<PetDto>, GetPetsWithPaginationQuery>
+        IReadDbContext readDbContext) : IQueryHandler<PagedList<PetDto>, GetPetsWithPaginationQuery>
     {
         public async Task<Result<PagedList<PetDto>, ErrorList>> Handle(GetPetsWithPaginationQuery query,
             CancellationToken token = default)

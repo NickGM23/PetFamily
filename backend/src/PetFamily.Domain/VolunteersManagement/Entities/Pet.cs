@@ -175,5 +175,25 @@ namespace PetFamily.Domain.VolunteersManagement.Entities
         }
 
         internal void RemovePhotos() => PetPhotos = new (new List<PetPhoto>());
+
+        internal UnitResult<Error> SetMainPhoto(string path)
+        {
+            var filePath = FilePath.Create(path).Value;
+            var photo = PetPhotos!.PetPhotos.FirstOrDefault(x => x.Path == filePath);
+
+            if (photo == null) 
+                return Errors.General.NotFound("photo.not.found", $"Photo '{path}' not found");
+
+            var newPetPhotoList = new List<PetPhoto>();
+            foreach (var petPhoto in PetPhotos!.PetPhotos)
+            {
+                newPetPhotoList.Add(petPhoto.Path != filePath
+                    ? PetPhoto.Create(petPhoto.Path, false).Value
+                    : PetPhoto.Create(petPhoto.Path, true).Value);
+            }
+            PetPhotos = new (newPetPhotoList);
+
+            return Result.Success<Error>();
+        }
     }
 }
