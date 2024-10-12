@@ -33,10 +33,10 @@ namespace PetFamily.Application.Volunteers.SetMainPetPhoto
             SetMainPetPhotoCommand command,
             CancellationToken cancellationToken)
         {
-            var validationResult1 = await _validator.ValidateAsync(command, cancellationToken);
-            if (validationResult1.IsValid == false)
+            var validationResult = await _validator.ValidateAsync(command, cancellationToken);
+            if (validationResult.IsValid == false)
             {
-                return validationResult1.ToList();
+                return validationResult.ToList();
             }
 
             var volunteerId = VolunteerId.Create(command.VolunteerId);
