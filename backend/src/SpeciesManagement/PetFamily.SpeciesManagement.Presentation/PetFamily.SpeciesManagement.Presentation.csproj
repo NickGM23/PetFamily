@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\PetFamily.Framework\PetFamily.Framework.csproj" />
+    <ProjectReference Include="..\PetFamily.SpeciesManagement.Application\PetFamily.SpeciesManagement.Application.csproj" />
+    <ProjectReference Include="..\PetFamily.SpeciesManagement.Contract\PetFamily.SpeciesManagement.Contracts.csproj" />
+    <ProjectReference Include="..\PetFamily.SpeciesManagement.Infrastructure\PetFamily.SpeciesManagement.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

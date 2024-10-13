@@ -1,8 +1,8 @@
 ﻿
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
-using PetFamily.Application.FileProvider;
-using PetFamily.Domain.Shared;
+using PetFamily.Core.FileProvider;
+using PetFamily.SharedKernel;
 
 namespace PetFamily.Application.Files.Delete
 {
@@ -21,7 +21,7 @@ namespace PetFamily.Application.Files.Delete
             RemoveFileCommand command,
             CancellationToken cancellationToken = default)
         {
-            var fileInfo = new FileProvider.FileInfo(command.BucketName, command.Path);
+            var fileInfo = new Core.FileProvider.FileInfo(command.BucketName, command.Path);
 
             var result = await _fileProvider.Remove(fileInfo, cancellationToken);
 

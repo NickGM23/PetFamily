@@ -1,8 +1,8 @@
 ﻿
 using Microsoft.Extensions.Logging;
-using PetFamily.Application.FileProvider;
-using PetFamily.Application.Messaging;
-using FileInfo = PetFamily.Application.FileProvider.FileInfo;
+using PetFamily.Core.FileProvider;
+using PetFamily.Core.Messaging;
+using FileInfo = PetFamily.Core.FileProvider.FileInfo;
 
 namespace PetFamily.Infrastructure.Files
 {

@@ -1,8 +1,8 @@
 ﻿
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
-using PetFamily.Application.FileProvider;
-using PetFamily.Domain.Shared;
+using PetFamily.Core.FileProvider;
+using PetFamily.SharedKernel;
 
 namespace PetFamily.Application.Files.Get.GetFile
 {
@@ -21,7 +21,7 @@ namespace PetFamily.Application.Files.Get.GetFile
             GetFileCommand comand,
             CancellationToken cancellationToken = default)
         {
-            var fileInfo = new FileProvider.FileInfo(comand.BucketName, comand.Path);
+            var fileInfo = new Core.FileProvider.FileInfo(comand.BucketName, comand.Path);
 
             var result = await _fileProvider.GetFile(fileInfo, cancellationToken);
 

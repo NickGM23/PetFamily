@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using PetFamily.Domain.Shared;
+using PetFamily.SharedKernel;
 
 namespace PetFamily.Infrastructure.Interceptors
 {

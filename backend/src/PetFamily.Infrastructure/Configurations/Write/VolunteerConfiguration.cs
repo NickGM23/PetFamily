@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Application.Dtos;
-using PetFamily.Domain.Models;
-using PetFamily.Domain.Shared;
-using PetFamily.Domain.Shared.ValueObjects;
-using PetFamily.Domain.Shared.ValueObjects.Ids;
-using PetFamily.Domain.VolunteersManagement;
+using PetFamily.SharedKernel.EntityIds;
 using PetFamily.Infrastructure.Extensions;
+using PetFamily.SharedKernel;
+using PetFamily.VolunteerManagement.Domain.ValueObjects;
+using PetFamily.VolunteerManagement.Domain;
+using PetFamily.Core.Dtos;
+using PetFamily.Core.Extensions;
 
 namespace PetFamily.Infrastructure.Configurations.Write
 {

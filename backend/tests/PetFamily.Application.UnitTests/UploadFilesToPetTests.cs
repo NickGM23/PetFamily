@@ -4,18 +4,17 @@ using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using Moq;
 using PetFamily.Application.Database;
-using PetFamily.Application.Volunteers.AddPet;
 using PetFamily.Application.Volunteers;
-using PetFamily.Application.Dtos;
-using PetFamily.Domain.Enums;
-using PetFamily.Domain.Models;
-using PetFamily.Domain.Shared.ValueObjects.Ids;
-using PetFamily.Domain.Shared.ValueObjects;
-using PetFamily.Domain.Shared;
-using PetFamily.Domain.VolunteersManagement.Entities;
-using PetFamily.Domain.VolunteersManagement;
 using PetFamily.Application.Volunteers.UploadFilesToPet;
-using PetFamily.Application.FileProvider;
+using PetFamily.SharedKernel.EntityIds;
+using PetFamily.SharedKernel;
+using PetFamily.SharedKernel.ValueObjects;
+using PetFamily.VolunteerManagement.Domain.Enums;
+using PetFamily.VolunteerManagement.Domain.ValueObjects;
+using PetFamily.VolunteerManagement.Domain;
+using PetFamily.VolunteerManagement.Domain.Entities;
+using PetFamily.Core.Dtos;
+using PetFamily.Core.FileProvider;
 
 namespace PetFamily.Application.UnitTests
 {

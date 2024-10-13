@@ -1,11 +1,11 @@
 ﻿
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
-using PetFamily.Application.Species;
-using PetFamily.Domain.Shared;
-using PetFamily.Domain.Shared.ValueObjects.Ids;
-using PetFamily.Domain.SpeciesManagement;
+using PetFamily.SharedKernel.EntityIds;
 using PetFamily.Infrastructure.DbContexts;
+using PetFamily.SharedKernel;
+using PetFamily.SpeciesManagement.Domain;
+using PetFamily.SpeciesManagement.Application;
 
 namespace PetFamily.Infrastructure.Repositories
 {

@@ -1,8 +1,8 @@
 ﻿
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
-using PetFamily.Application.FileProvider;
-using PetFamily.Domain.Shared;
+using PetFamily.Core.FileProvider;
+using PetFamily.SharedKernel;
 
 namespace PetFamily.Application.Files.Get.GetFiles
 {
@@ -21,10 +21,10 @@ namespace PetFamily.Application.Files.Get.GetFiles
             GetFilesCommand command,
             CancellationToken cancellationToken = default)
         {
-            List<FileProvider.FileInfo> filesInfo = [];
+            List<Core.FileProvider.FileInfo> filesInfo = [];
             foreach (var getFileRequest in command.GetFileCommands)
             {
-                var fileInfo = new FileProvider.FileInfo(getFileRequest.BucketName, getFileRequest.Path);
+                var fileInfo = new Core.FileProvider.FileInfo(getFileRequest.BucketName, getFileRequest.Path);
 
                 filesInfo.Add(fileInfo);
             }

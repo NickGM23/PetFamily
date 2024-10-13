@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using PetFamily.Application.Dtos;
+using PetFamily.Core.Dtos;
 
 namespace PetFamily.Infrastructure.Configurations.Read
 {

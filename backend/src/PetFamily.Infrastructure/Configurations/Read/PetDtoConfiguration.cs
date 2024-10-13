@@ -1,10 +1,8 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Application.Dtos;
+using PetFamily.Core.Dtos;
 using System.Text.Json;
-using PetFamily.Domain.Enums;
-using PetFamily.Domain.Shared;
 
 namespace PetFamily.Infrastructure.Configurations.Read
 {

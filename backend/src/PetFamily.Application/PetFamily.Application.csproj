@@ -16,7 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PetFamily.Domain\PetFamily.Domain.csproj" />
+    <ProjectReference Include="..\Shared\PetFamily.Core\PetFamily.Core.csproj" />
+    <ProjectReference Include="..\SpeciesManagement\PetFamily.SpeciesManagement.Application\PetFamily.SpeciesManagement.Application.csproj" />
+    <ProjectReference Include="..\SpeciesManagement\PetFamily.SpeciesManagement.Domain\PetFamily.SpeciesManagement.Domain.csproj" />
+    <ProjectReference Include="..\VolunteerManagement\PetFamily.VolunteerManagement.Domain\PetFamily.VolunteerManagement.Domain.csproj" />
   </ItemGroup>
 
 </Project>

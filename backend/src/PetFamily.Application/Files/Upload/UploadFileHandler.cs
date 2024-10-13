@@ -1,8 +1,8 @@
 ﻿
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
-using PetFamily.Application.FileProvider;
-using PetFamily.Domain.Shared;
+using PetFamily.Core.FileProvider;
+using PetFamily.SharedKernel;
 
 namespace PetFamily.Application.Files.Upload
 {
@@ -23,7 +23,7 @@ namespace PetFamily.Application.Files.Upload
         {
             var path = Guid.NewGuid().ToString();
 
-            var fileInfo = new FileProvider.FileInfo(command.BucketName, path);
+            var fileInfo = new Core.FileProvider.FileInfo(command.BucketName, path);
 
             var fileData = new FileData(command.Stream, fileInfo);
 

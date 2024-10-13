@@ -4,20 +4,20 @@ using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using Moq;
 using PetFamily.Application.Database;
-using PetFamily.Application.Dtos;
 using PetFamily.Application.Volunteers;
 using PetFamily.Application.Volunteers.AddPet;
-using PetFamily.Domain.Enums;
-using PetFamily.Domain.Models;
-using PetFamily.Domain.Shared;
-using PetFamily.Domain.Shared.ValueObjects;
-using PetFamily.Domain.Shared.ValueObjects.Ids;
-using PetFamily.Domain.VolunteersManagement;
-using PetFamily.Domain.VolunteersManagement.Entities;
-using PetFamily.Application.FileProvider;
 using PetFamily.Application.Species;
 using Microsoft.EntityFrameworkCore;
-using PetFamily.Domain.SpeciesManagement.Entities;
+using PetFamily.SharedKernel.EntityIds;
+using PetFamily.SharedKernel;
+using PetFamily.SharedKernel.ValueObjects;
+using PetFamily.VolunteerManagement.Domain.Enums;
+using PetFamily.VolunteerManagement.Domain.ValueObjects;
+using PetFamily.VolunteerManagement.Domain;
+using PetFamily.VolunteerManagement.Domain.Entities;
+using PetFamily.SpeciesManagement.Domain.Entities;
+using PetFamily.Core.Dtos;
+using PetFamily.Core.FileProvider;
 
 namespace PetFamily.Application.UnitTests
 {
@@ -279,9 +279,9 @@ namespace PetFamily.Application.UnitTests
             return pet;
         }
 
-        private Domain.SpeciesManagement.Species CreateSpecies()
+        private SpeciesManagement.Domain.Species CreateSpecies()
         {
-            return new Domain.SpeciesManagement.Species(
+            return new SpeciesManagement.Domain.Species(
                 SpeciesId.NewSpeciesId(), 
                 Name.Create("Test name").Value, 
                 Description.Create("Test description").Value);
@@ -354,7 +354,7 @@ namespace PetFamily.Application.UnitTests
                 Guid.NewGuid());
         }
 
-        private void ReadDbContextMockSetup(Domain.SpeciesManagement.Species species, Breed breed)
+        private void ReadDbContextMockSetup(SpeciesManagement.Domain.Species species, Breed breed)
         {
             var spaciesDto = new SpeciesDto()
             {
