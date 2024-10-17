@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="CSharpFunctionalExtensions" Version="2.42.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -34,6 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Accounts\PetFamily.Accounts.Presentation\PetFamily.Accounts.Presentation.csproj" />
     <ProjectReference Include="..\Shared\PetFamily.Framework\PetFamily.Framework.csproj" />
     <ProjectReference Include="..\Shared\PetFamily.SharedKernel\PetFamily.SharedKernel.csproj" />
     <ProjectReference Include="..\SpeciesManagement\PetFamily.SpeciesManagement.Presentation\PetFamily.SpeciesManagement.Presentation.csproj" />

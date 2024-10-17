@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Dtos;
@@ -15,6 +16,8 @@ namespace PetFamily.SpeciesManagement.Presentation
 {
     public class SpeciesController : ApplicationController
     {
+
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> Create(
             [FromServices] CreateSpeciesHandler handler,
@@ -31,6 +34,7 @@ namespace PetFamily.SpeciesManagement.Presentation
             return Ok(result.Value);
         }
 
+        [Authorize]
         [HttpPost("{id:guid}/breed")]
         public async Task<ActionResult> AddBreed(
             [FromRoute] Guid id,
@@ -48,6 +52,7 @@ namespace PetFamily.SpeciesManagement.Presentation
             return Ok(result.Value);
         }
 
+        [Authorize]
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> Delete(
             [FromServices] DeleteSpeciesHandler handler,
