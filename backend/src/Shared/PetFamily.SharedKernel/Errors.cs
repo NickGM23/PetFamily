@@ -66,5 +66,13 @@
                 return Error.Conflict("value.already.used", $"{id} is already used");
             }
         }
+
+        public static class User
+        {
+            public static Error InvalidCredentials()
+            {
+                return Error.Validation("invalid.user.credentials", "Invalid user credentials");
+            }
+        }
     }
 }

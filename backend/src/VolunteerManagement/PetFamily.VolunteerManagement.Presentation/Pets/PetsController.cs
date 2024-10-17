@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetFamily.Framework;
 using PetFamily.VolunteerManagement.Application.Queries.GetPetById;
 using PetFamily.VolunteerManagement.Application.Queries.GetPetsWithPagination;
@@ -8,6 +9,8 @@ namespace PetFamily.VolunteerManagement.Presentation.Pets
 {
     public class PetsController : ApplicationController
     {
+
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult> GetPetsWithPagination(
             [FromQuery] GetPetsWithPaginationRequest request,
