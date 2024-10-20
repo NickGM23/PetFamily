@@ -22,14 +22,6 @@ namespace PetFamily.Accounts.Application.Commands.Register
             if (!validationResult.IsValid)
                 return validationResult.ToList();
 
-            var existsUser = await userManager.FindByNameAsync(command.Email);
-            if (existsUser != null)
-                return Errors.General.AlreadyExist("email").ToErrorList();
-
-            var existsUserWithUserName = await userManager.FindByNameAsync(command.UserName);
-            if (existsUserWithUserName != null)
-                return Errors.General.AlreadyExist("username").ToErrorList();
-
             var user = new User { UserName = command.UserName, Email = command.Email };
             var result = await userManager.CreateAsync(user, command.Password);
 
