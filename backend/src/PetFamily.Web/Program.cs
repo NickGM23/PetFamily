@@ -1,6 +1,5 @@
 using Serilog.Events;
 using Serilog;
-using System.Reflection;
 using PetFamily.Web.Middlewares;
 using PetFamily.Web.Extensions;
 using PetFamily.Web;
@@ -8,6 +7,7 @@ using PetFamily.VolunteerManagement.Presentation;
 using PetFamily.SpeciesManagement.Infrastructure;
 using PetFamily.VolunteerManagement.Infrastructure;
 using PetFamily.SpeciesManagement.Presentation;
+using PetFamily.Accounts.Presentation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,12 +22,16 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Services
-    .AddWeb()
     .AddSpeciesModule(builder.Configuration)
-    .AddVolunteerModule(builder.Configuration);
+    .AddVolunteerModule(builder.Configuration)
+    .AddAccountsModule(builder.Configuration)
+    .AddWeb()
+    .AddHttpLogging(u =>
+    {
+        u.CombineLogs = true;
+    });
 
-var xmlDoc = Path.ChangeExtension(Assembly.GetExecutingAssembly().Location, "xml");
-builder.Services.AddSwaggerGen(options => options.IncludeXmlComments(xmlDoc, true));
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -44,8 +48,10 @@ if (app.Environment.IsDevelopment())
     await app.ApplyMigrations<VolunteersWriteDbContext>();
 }
 
+app.UseHttpLogging();
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -39,9 +39,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFamily.VolunteerManageme
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFamily.VolunteerManagement.Presentation", "src\VolunteerManagement\PetFamily.VolunteerManagement.Presentation\PetFamily.VolunteerManagement.Presentation.csproj", "{E98997EA-28B3-4094-B23A-AEA1B6C5F869}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.SpeciesManagement.Infrastructure", "src\SpeciesManagement\PetFamily.SpeciesManagement.Infrastructure\PetFamily.SpeciesManagement.Infrastructure.csproj", "{4854C67D-6BE3-40FC-84D5-99771722D237}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFamily.SpeciesManagement.Infrastructure", "src\SpeciesManagement\PetFamily.SpeciesManagement.Infrastructure\PetFamily.SpeciesManagement.Infrastructure.csproj", "{4854C67D-6BE3-40FC-84D5-99771722D237}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.SpeciesManagement.Presentation", "src\SpeciesManagement\PetFamily.SpeciesManagement.Presentation\PetFamily.SpeciesManagement.Presentation.csproj", "{1490F596-D6BA-417D-AB67-3A402844797A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFamily.SpeciesManagement.Presentation", "src\SpeciesManagement\PetFamily.SpeciesManagement.Presentation\PetFamily.SpeciesManagement.Presentation.csproj", "{1490F596-D6BA-417D-AB67-3A402844797A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Accounts", "Accounts", "{25CFE8EF-F87D-4775-BE44-DD545D331CCB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFamily.Accounts.Domain", "src\Accounts\PetFamily.Accounts.Domain\PetFamily.Accounts.Domain.csproj", "{3630F507-CE68-4181-8140-758165214286}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFamily.Accounts.Application", "src\Accounts\PetFamily.Accounts.Application\PetFamily.Accounts.Application.csproj", "{AB859786-081B-442C-98B1-F886E84C343A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Accounts.Infrastructure", "src\Accounts\PetFamily.Accounts.Infrastructure\PetFamily.Accounts.Infrastructure.csproj", "{A0B3F73F-4AD6-4BBB-8043-F3BD2B2F7CC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Accounts.Presentation", "src\Accounts\PetFamily.Accounts.Presentation\PetFamily.Accounts.Presentation.csproj", "{872115EB-822C-4383-9835-4BBF5E8339BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,6 +127,22 @@ Global
 		{1490F596-D6BA-417D-AB67-3A402844797A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1490F596-D6BA-417D-AB67-3A402844797A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1490F596-D6BA-417D-AB67-3A402844797A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3630F507-CE68-4181-8140-758165214286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3630F507-CE68-4181-8140-758165214286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3630F507-CE68-4181-8140-758165214286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3630F507-CE68-4181-8140-758165214286}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB859786-081B-442C-98B1-F886E84C343A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB859786-081B-442C-98B1-F886E84C343A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB859786-081B-442C-98B1-F886E84C343A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB859786-081B-442C-98B1-F886E84C343A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0B3F73F-4AD6-4BBB-8043-F3BD2B2F7CC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0B3F73F-4AD6-4BBB-8043-F3BD2B2F7CC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0B3F73F-4AD6-4BBB-8043-F3BD2B2F7CC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0B3F73F-4AD6-4BBB-8043-F3BD2B2F7CC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{872115EB-822C-4383-9835-4BBF5E8339BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{872115EB-822C-4383-9835-4BBF5E8339BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{872115EB-822C-4383-9835-4BBF5E8339BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{872115EB-822C-4383-9835-4BBF5E8339BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -137,6 +163,10 @@ Global
 		{E98997EA-28B3-4094-B23A-AEA1B6C5F869} = {3676D985-E664-43FC-A7A1-437E0E030279}
 		{4854C67D-6BE3-40FC-84D5-99771722D237} = {87C28635-CC7F-48EE-B72B-1C2C6BBAF6D0}
 		{1490F596-D6BA-417D-AB67-3A402844797A} = {87C28635-CC7F-48EE-B72B-1C2C6BBAF6D0}
+		{3630F507-CE68-4181-8140-758165214286} = {25CFE8EF-F87D-4775-BE44-DD545D331CCB}
+		{AB859786-081B-442C-98B1-F886E84C343A} = {25CFE8EF-F87D-4775-BE44-DD545D331CCB}
+		{A0B3F73F-4AD6-4BBB-8043-F3BD2B2F7CC2} = {25CFE8EF-F87D-4775-BE44-DD545D331CCB}
+		{872115EB-822C-4383-9835-4BBF5E8339BC} = {25CFE8EF-F87D-4775-BE44-DD545D331CCB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {41568A51-9DC6-4AB1-A55B-AA73F8C2DEAD}
