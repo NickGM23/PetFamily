@@ -31,7 +31,7 @@ namespace PetFamily.Accounts.Application.Commands.Login
             if (!passwordCorrect)
                 return Errors.User.InvalidCredentials().ToErrorList();
 
-            var accessToken = tokenProvider.GenerateAccessToken(existsUser, cancellationToken);
+            var accessToken = tokenProvider.GenerateAccessToken(existsUser);
             var refreshToken = await tokenProvider.GenerateRefreshToken(existsUser, accessToken.Jti, cancellationToken);
             return new LoginResponse(accessToken.AccessToken, refreshToken);
         }

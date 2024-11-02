@@ -19,7 +19,7 @@ namespace PetFamily.Accounts.Infrastructure.Providers
     public class JwtTokenProvider(IOptions<JwtOptions> options,
         AccountsWriteDbContext context) : ITokenProvider
     {
-        public JwtTokenResult GenerateAccessToken(User user, CancellationToken cancellationToken)
+        public JwtTokenResult GenerateAccessToken(User user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.Value.Key));
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

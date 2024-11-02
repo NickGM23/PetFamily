@@ -22,7 +22,6 @@ using Microsoft.AspNetCore.Http;
 using PetFamily.VolunteerManagement.Presentation.Processors;
 using PetFamily.Framework.Authorization;
 using PetFamily.SharedKernel;
-using Microsoft.AspNetCore.Authorization;
 
 namespace PetFamily.VolunteerManagement.Presentation.Volonteers
 {
@@ -31,7 +30,6 @@ namespace PetFamily.VolunteerManagement.Presentation.Volonteers
         private const string BUCKET_NAME = "photos";
 
         [Permission(Permissions.Participant.Create)]
-        //[Authorize]
         [HttpPost]
         public async Task<ActionResult> Create(
             [FromServices] CreateVolunteerHandler handler,

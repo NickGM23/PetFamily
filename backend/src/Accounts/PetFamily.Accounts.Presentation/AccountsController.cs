@@ -11,7 +11,6 @@ using PetFamily.Core.Dtos;
 using PetFamily.Framework;
 using PetFamily.Framework.Authorization;
 using PetFamily.SharedKernel;
-using System.Threading;
 
 namespace PetFamily.Accounts.Presentation
 {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -35,7 +36,8 @@ namespace PetFamily.Accounts.Infrastructure
                 options.Password.RequiredLength = 6;
                 options.Password.RequiredUniqueChars = 0;
             })
-                .AddEntityFrameworkStores<AccountsWriteDbContext>();
+                .AddEntityFrameworkStores<AccountsWriteDbContext>()
+                .AddDefaultTokenProviders();
 
             collection.AddScoped<AccountsWriteDbContext>();
 
@@ -85,6 +87,7 @@ namespace PetFamily.Accounts.Infrastructure
             })
                 .AddJwtBearer(options =>
                 {
+                    options.IncludeErrorDetails = true;
                     var jwtOptions = collection
                         .BuildServiceProvider()
                         .GetRequiredService<IOptions<JwtOptions>>().Value;
@@ -95,13 +98,13 @@ namespace PetFamily.Accounts.Infrastructure
                     //    ValidIssuer = jwtOptions.Issuer,
                     //    ValidAudience = jwtOptions.Audience,
                     //    IssuerSigningKey = issuerSigningKey,
-                    //    ValidateIssuer = true,
-                    //    ValidateAudience = true,
-                    //    ValidateLifetime = true,
+                    //    ValidateIssuer = false,
+                    //    ValidateAudience = false,
+                    //    ValidateLifetime = false,
                     //    ValidateIssuerSigningKey = true,
                     //    ClockSkew = TimeSpan.Zero
                     //};
-                     options.TokenValidationParameters = TokenValidationParametersFactory.CreateWithLifetime(jwtOptions);
+                    options.TokenValidationParameters = TokenValidationParametersFactory.CreateWithLifetime(jwtOptions);
                 });
             return collection;
         }

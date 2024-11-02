@@ -42,7 +42,7 @@ namespace PetFamily.Accounts.Application.Commands.RefreshToken
             refreshSessionManager.Delete(refreshSession.Value);
             var user = refreshSession.Value.User;
 
-            var accessToken = tokenProvider.GenerateAccessToken(user, cancellationToken);
+            var accessToken = tokenProvider.GenerateAccessToken(user);
             var refreshToken = await tokenProvider.GenerateRefreshToken(user, jti.Value, cancellationToken);
 
             return new LoginResponse(accessToken.AccessToken, refreshToken);
