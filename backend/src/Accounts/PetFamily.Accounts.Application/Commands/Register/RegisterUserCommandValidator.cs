@@ -2,6 +2,7 @@
 using FluentValidation;
 using PetFamily.Core.Validation;
 using PetFamily.SharedKernel;
+using PetFamily.SharedKernel.ValueObjects;
 
 namespace PetFamily.Accounts.Application.Commands.Register
 {
@@ -9,6 +10,10 @@ namespace PetFamily.Accounts.Application.Commands.Register
     {
         public RegisterUserCommandValidator()
         {
+            RuleFor(r => new { r.Name, r.Surname, r.Patronymic })
+                .MustBeValueObject(r => FullName.Create(r.Surname, r.Name, r.Patronymic))
+                .When(r => !string.IsNullOrEmpty(r.Name) && !string.IsNullOrEmpty(r.Surname));
+
             RuleFor(l => l.Email)
                 .NotEmpty().WithError(Errors.General.ValueIsRequired("email"))
                 .EmailAddress().WithError(Errors.General.ValueIsInvalid("email"));

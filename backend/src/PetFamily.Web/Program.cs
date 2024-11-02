@@ -8,6 +8,8 @@ using PetFamily.SpeciesManagement.Infrastructure;
 using PetFamily.VolunteerManagement.Infrastructure;
 using PetFamily.SpeciesManagement.Presentation;
 using PetFamily.Accounts.Presentation;
+using PetFamily.Accounts.Infrastructure.Seeding;
+using PetFamily.Accounts.Infrastructure.DbContexts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,7 +48,19 @@ if (app.Environment.IsDevelopment())
 
     await app.ApplyMigrations<SpeciesWriteDbContext>();
     await app.ApplyMigrations<VolunteersWriteDbContext>();
+    await app.ApplyMigrations<AccountsWriteDbContext>();
 }
+
+app.UseCors(config =>
+{
+    config.WithOrigins("http://localhost:5173")
+        .AllowCredentials()
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+});
+
+var accountSeeder = app.Services.GetRequiredService<AccountsSeeder>();
+await accountSeeder.SeedAsync();
 
 app.UseHttpLogging();
 app.UseHttpsRedirection();

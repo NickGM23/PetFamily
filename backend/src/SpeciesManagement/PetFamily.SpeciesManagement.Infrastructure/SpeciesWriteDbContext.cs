@@ -20,6 +20,8 @@ namespace PetFamily.SpeciesManagement.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema("species");
+
             modelBuilder.ApplyConfigurationsFromAssembly(
                 typeof(SpeciesWriteDbContext).Assembly,
                 type => type.FullName?.Contains("Configurations.Write") ?? false);

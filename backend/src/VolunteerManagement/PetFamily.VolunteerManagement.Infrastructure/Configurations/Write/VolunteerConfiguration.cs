@@ -2,10 +2,10 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.SharedKernel.EntityIds;
 using PetFamily.SharedKernel;
-using PetFamily.VolunteerManagement.Domain.ValueObjects;
 using PetFamily.VolunteerManagement.Domain;
 using PetFamily.Core.Dtos;
-using PetFamily.VolunteerManagement.Infrastructure.Extensions;
+using PetFamily.SharedKernel.ValueObjects;
+using PetFamily.Core.Extensions;
 
 namespace PetFamily.VolunteerManagement.Infrastructure.Configurations.Write
 {

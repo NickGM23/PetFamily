@@ -20,7 +20,7 @@ namespace PetFamily.Web
             serviceCollection.AddSerilog();
 
             serviceCollection.AddAuthFieldInSwagger();
-            serviceCollection.AddJwtAuthentication();
+            //serviceCollection.AddJwtAuthentication();
 
             serviceCollection.AddFluentValidationAutoValidation(configuration =>
             {
@@ -56,34 +56,34 @@ namespace PetFamily.Web
             });
         }
 
-        private static IServiceCollection AddJwtAuthentication(this IServiceCollection collection)
-        {
-            collection.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(options =>
-                {
-                    var jwtOptions = collection
-                        .BuildServiceProvider()
-                        .GetRequiredService<IOptions<JwtOptions>>().Value;
-                    var issuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key));
+        //private static IServiceCollection AddJwtAuthentication(this IServiceCollection collection)
+        //{
+        //    collection.AddAuthentication(options =>
+        //    {
+        //        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        //        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        //        options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+        //    })
+        //        .AddJwtBearer(options =>
+        //        {
+        //            var jwtOptions = collection
+        //                .BuildServiceProvider()
+        //                .GetRequiredService<IOptions<JwtOptions>>().Value;
+        //            var issuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key));
 
-                    options.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        ValidIssuer = jwtOptions.Issuer,
-                        ValidAudience = jwtOptions.Audience,
-                        IssuerSigningKey = issuerSigningKey,
-                        ValidateIssuer = false,
-                        ValidateAudience = true,
-                        ValidateLifetime = false,
-                        ValidateIssuerSigningKey = true,
-                        ClockSkew = TimeSpan.Zero
-                    };
-                });
-            return collection;
-        }
+        //            options.TokenValidationParameters = new TokenValidationParameters()
+        //            {
+        //                ValidIssuer = jwtOptions.Issuer,
+        //                ValidAudience = jwtOptions.Audience,
+        //                IssuerSigningKey = issuerSigningKey,
+        //                ValidateIssuer = false,
+        //                ValidateAudience = true,
+        //                ValidateLifetime = false,
+        //                ValidateIssuerSigningKey = true,
+        //                ClockSkew = TimeSpan.Zero
+        //            };
+        //        });
+        //    return collection;
+        //}
     }
 }

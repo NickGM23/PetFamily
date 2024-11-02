@@ -20,6 +20,8 @@ using PetFamily.VolunteerManagement.Application.Queries.GetVolunteersWithPaginat
 using PetFamily.VolunteerManagement.Presentation.Volonteers.Requests;
 using Microsoft.AspNetCore.Http;
 using PetFamily.VolunteerManagement.Presentation.Processors;
+using PetFamily.Framework.Authorization;
+using PetFamily.SharedKernel;
 using Microsoft.AspNetCore.Authorization;
 
 namespace PetFamily.VolunteerManagement.Presentation.Volonteers
@@ -28,7 +30,8 @@ namespace PetFamily.VolunteerManagement.Presentation.Volonteers
     {
         private const string BUCKET_NAME = "photos";
 
-        [Authorize]
+        [Permission(Permissions.Participant.Create)]
+        //[Authorize]
         [HttpPost]
         public async Task<ActionResult> Create(
             [FromServices] CreateVolunteerHandler handler,
@@ -45,7 +48,7 @@ namespace PetFamily.VolunteerManagement.Presentation.Volonteers
             return Ok(result.Value);
         }
 
-        [Authorize]
+        [Permission(Permissions.Volunteer.Update)]
         [HttpPut("{id:guid}/main-info")]
         public async Task<ActionResult> UpdateMainInfo(
             [FromServices] UpdateVolunteerMainInfoHandler handler,
@@ -63,7 +66,7 @@ namespace PetFamily.VolunteerManagement.Presentation.Volonteers
             return Ok(result.Value);
         }
 
-        [Authorize]
+        [Permission(Permissions.Volunteer.Delete)]
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> Delete(
             [FromServices] DeleteVolunteerHandler handler,
@@ -80,7 +83,7 @@ namespace PetFamily.VolunteerManagement.Presentation.Volonteers
             return Ok(result.Value);
         }
 
-        [Authorize]
+        [Permission(Permissions.Volunteer.Update)]
         [HttpPatch("{id:guid}/requisites")]
         public async Task<ActionResult<Guid>> UpdateRequisites(
             [FromRoute] Guid id,
@@ -98,7 +101,7 @@ namespace PetFamily.VolunteerManagement.Presentation.Volonteers
             return Ok(result.Value);
         }
 
-        [Authorize]
+        [Permission(Permissions.Volunteer.Update)]
         [HttpPatch("{id:guid}/social-networks")]
         public async Task<ActionResult<Guid>> UpdateSocialNetworks(
             [FromRoute] Guid id,
@@ -116,7 +119,7 @@ namespace PetFamily.VolunteerManagement.Presentation.Volonteers
             return Ok(result.Value);
         }
 
-        [Authorize]
+        [Permission(Permissions.Volunteer.CreatePet)]
         [HttpPost("{id:guid}/pet")]
         [ProducesResponseType(typeof(AddPetRequest), StatusCodes.Status200OK)]
         public async Task<ActionResult> AddPet(
@@ -135,7 +138,7 @@ namespace PetFamily.VolunteerManagement.Presentation.Volonteers
             return Ok(result.Value);
         }
 
-        [Authorize]
+        [Permission(Permissions.Volunteer.UpdatePet)]
         [HttpPost("{id:guid}/pet/{petId:guid}/files")]
         public async Task<ActionResult> UploadFilesToPet(
             [FromRoute] Guid id,
@@ -189,7 +192,7 @@ namespace PetFamily.VolunteerManagement.Presentation.Volonteers
             return Ok(result.Value);
         }
 
-        [Authorize]
+        [Permission(Permissions.Volunteer.UpdatePet)]
         [HttpPut("{id:guid}/pet/{petId:guid}")]
         public async Task<ActionResult<Guid>> UpdatePet(
         [FromRoute] Guid id,
@@ -208,7 +211,7 @@ namespace PetFamily.VolunteerManagement.Presentation.Volonteers
             return Ok(result.Value);
         }
 
-        [Authorize]
+        [Permission(Permissions.Volunteer.UpdatePet)]
         [HttpDelete("{id:guid}/pet/photos")]
         public async Task<ActionResult> RemovePhotosFromPet(
             [FromRoute] Guid id,
@@ -225,7 +228,7 @@ namespace PetFamily.VolunteerManagement.Presentation.Volonteers
             return Ok(result.Value);
         }
 
-        [Authorize]
+        [Permission(Permissions.Volunteer.UpdatePet)]
         [HttpPut("{id:guid}/pet/{petId:guid}/status")]
         public async Task<ActionResult<Guid>> UpdatePetStatus(
             [FromRoute] Guid id,
@@ -241,7 +244,7 @@ namespace PetFamily.VolunteerManagement.Presentation.Volonteers
             return Ok(result.Value);
         }
 
-        [Authorize]
+        [Permission(Permissions.Volunteer.DeletePet)]
         [HttpDelete("{id:guid}/pets/{petId:guid}")]
         public async Task<ActionResult<Guid>> DeletePet(
             [FromRoute] Guid id,
@@ -259,7 +262,7 @@ namespace PetFamily.VolunteerManagement.Presentation.Volonteers
             return Ok(result.Value);
         }
 
-        [Authorize]
+        [Permission(Permissions.Volunteer.DeletePet)]
         [HttpDelete("{id:guid}/pets/{petId:guid}/force")]
         public async Task<ActionResult<Guid>> ForceDeletePet(
             [FromRoute] Guid id,
@@ -277,7 +280,7 @@ namespace PetFamily.VolunteerManagement.Presentation.Volonteers
             return Ok(result.Value);
         }
 
-        [Authorize]
+        [Permission(Permissions.Volunteer.UpdatePet)]
         [HttpPatch("{volunteerId:guid}/pet/main-file")]
         public async Task<ActionResult> SetMainPetPhoto(
             [FromRoute] Guid volunteerId,
