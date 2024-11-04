@@ -49,9 +49,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFamily.Accounts.Domain",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFamily.Accounts.Application", "src\Accounts\PetFamily.Accounts.Application\PetFamily.Accounts.Application.csproj", "{AB859786-081B-442C-98B1-F886E84C343A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Accounts.Infrastructure", "src\Accounts\PetFamily.Accounts.Infrastructure\PetFamily.Accounts.Infrastructure.csproj", "{A0B3F73F-4AD6-4BBB-8043-F3BD2B2F7CC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFamily.Accounts.Infrastructure", "src\Accounts\PetFamily.Accounts.Infrastructure\PetFamily.Accounts.Infrastructure.csproj", "{A0B3F73F-4AD6-4BBB-8043-F3BD2B2F7CC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Accounts.Presentation", "src\Accounts\PetFamily.Accounts.Presentation\PetFamily.Accounts.Presentation.csproj", "{872115EB-822C-4383-9835-4BBF5E8339BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFamily.Accounts.Presentation", "src\Accounts\PetFamily.Accounts.Presentation\PetFamily.Accounts.Presentation.csproj", "{872115EB-822C-4383-9835-4BBF5E8339BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Accounts.Contracts", "src\Accounts\PetFamily.Accounts.Contracts\PetFamily.Accounts.Contracts.csproj", "{1D694960-4BE9-45BC-B65C-EA6922EC56F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -143,6 +145,10 @@ Global
 		{872115EB-822C-4383-9835-4BBF5E8339BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{872115EB-822C-4383-9835-4BBF5E8339BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{872115EB-822C-4383-9835-4BBF5E8339BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D694960-4BE9-45BC-B65C-EA6922EC56F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D694960-4BE9-45BC-B65C-EA6922EC56F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D694960-4BE9-45BC-B65C-EA6922EC56F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D694960-4BE9-45BC-B65C-EA6922EC56F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -167,6 +173,7 @@ Global
 		{AB859786-081B-442C-98B1-F886E84C343A} = {25CFE8EF-F87D-4775-BE44-DD545D331CCB}
 		{A0B3F73F-4AD6-4BBB-8043-F3BD2B2F7CC2} = {25CFE8EF-F87D-4775-BE44-DD545D331CCB}
 		{872115EB-822C-4383-9835-4BBF5E8339BC} = {25CFE8EF-F87D-4775-BE44-DD545D331CCB}
+		{1D694960-4BE9-45BC-B65C-EA6922EC56F6} = {25CFE8EF-F87D-4775-BE44-DD545D331CCB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {41568A51-9DC6-4AB1-A55B-AA73F8C2DEAD}

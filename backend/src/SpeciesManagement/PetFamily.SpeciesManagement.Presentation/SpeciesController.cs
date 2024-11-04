@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Dtos;
 using PetFamily.Core.Models;
 using PetFamily.Framework;
+using PetFamily.Framework.Authorization;
+using PetFamily.SharedKernel;
 using PetFamily.SpeciesManagement.Application.Commands.AddBreed;
 using PetFamily.SpeciesManagement.Application.Commands.CreateSpecies;
 using PetFamily.SpeciesManagement.Application.Commands.Delete;
@@ -17,7 +17,7 @@ namespace PetFamily.SpeciesManagement.Presentation
     public class SpeciesController : ApplicationController
     {
 
-        [Authorize]
+        [Permission(Permissions.Admin.Create)]
         [HttpPost]
         public async Task<ActionResult> Create(
             [FromServices] CreateSpeciesHandler handler,
@@ -34,7 +34,7 @@ namespace PetFamily.SpeciesManagement.Presentation
             return Ok(result.Value);
         }
 
-        [Authorize]
+        [Permission(Permissions.Admin.Create)]
         [HttpPost("{id:guid}/breed")]
         public async Task<ActionResult> AddBreed(
             [FromRoute] Guid id,
@@ -52,7 +52,7 @@ namespace PetFamily.SpeciesManagement.Presentation
             return Ok(result.Value);
         }
 
-        [Authorize]
+        [Permission(Permissions.Admin.Delete)]
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> Delete(
             [FromServices] DeleteSpeciesHandler handler,

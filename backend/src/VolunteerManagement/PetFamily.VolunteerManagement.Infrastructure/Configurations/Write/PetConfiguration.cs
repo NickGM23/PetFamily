@@ -6,8 +6,8 @@ using PetFamily.VolunteerManagement.Domain.Enums;
 using PetFamily.VolunteerManagement.Domain.ValueObjects;
 using PetFamily.VolunteerManagement.Domain.Entities;
 using PetFamily.Core.Dtos;
+using PetFamily.SharedKernel.ValueObjects;
 using PetFamily.Core.Extensions;
-using PetFamily.VolunteerManagement.Infrastructure.Extensions;
 
 namespace PetFamily.VolunteerManagement.Infrastructure.Configurations.Write
 {
